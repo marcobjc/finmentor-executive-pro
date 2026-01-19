@@ -28,25 +28,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
     menu_items={'Get Help': None, 'Report a bug': None, 'About': None}
 )
-# Forçar sidebar visível
-st.markdown("""
-<style>
-    [data-testid="stSidebar"] {
-        display: block !important;
-        visibility: visible !important;
-        width: 300px !important;
-        min-width: 300px !important;
-    }
-    [data-testid="stSidebarContent"] {
-        display: block !important;
-        visibility: visible !important;
-    }
-    section[data-testid="stSidebar"] > div {
-        display: block !important;
-        visibility: visible !important;
-    }
-</style>
-""", unsafe_allow_html=True)
+
 def get_image_base64(image_path: str) -> str:
     try:
         with open(image_path, "rb") as img_file:
@@ -660,7 +642,64 @@ def render_phase_2():
         render_risks(response['riscos_mitigacoes'])
 
 def main():
-    render_sidebar()
+    with st.sidebar:
+        # Avatar
+        if os.path.exists("assets/avatar.jpg"):
+            st.image("assets/avatar.jpg", width=130)
+        else:
+            st.markdown("### 👤")
+        
+        # Nome e contato
+        st.markdown("### Marco A. Duarte Jr.")
+        st.caption("Finance Professional | CFO Virtual Creator")
+        st.markdown("📧 marcobjc@gmail.com")
+        st.link_button("🔗 Conectar no LinkedIn", "https://www.linkedin.com/in/mduarte89/", use_container_width=True)
+        
+        st.divider()
+        
+        # Mercado em tempo real
+        st.markdown("### 📊 Mercado em Tempo Real")
+        if st.session_state.market_data is None:
+            with st.spinner("Carregando..."):
+                st.session_state.market_data = MarketDataFetcher.get_market_data()
+        m = st.session_state.market_data
+        col1, col2 = st.columns(2)
+        col1.metric("Dólar", f"R$ {m.get('dolar', 'N/D')}")
+        col2.metric("SELIC", m.get('selic', 'N/D'))
+        col3, col4 = st.columns(2)
+        col3.metric("IBOV", m.get('ibov', 'N/D'))
+        col4.metric("IPCA", m.get('ipca', 'N/D'))
+        st.caption(f"Atualizado: {m.get('timestamp', 'N/D')}")
+        
+        st.divider()
+        
+        # Materiais de apoio
+        st.markdown("### 📚 Materiais de Apoio")
+        materials_folder = "materiais_download"
+        if os.path.exists(materials_folder):
+            files = [f for f in os.listdir(materials_folder) if not f.startswith('.')]
+            if files:
+                for filename in sorted(files):
+                    filepath = os.path.join(materials_folder, filename)
+                    icon = get_file_icon(filename)
+                    display_name = filename.rsplit('.', 1)[0].replace('_', ' ').replace('-', ' ')
+                    try:
+                        with open(filepath, 'rb') as f:
+                            st.download_button(
+                                label=f"{icon} {display_name}",
+                                data=f.read(),
+                                file_name=filename,
+                                mime="application/octet-stream",
+                                key=f"sidebar_dl_{filename}",
+                                use_container_width=True
+                            )
+                    except:
+                        pass
+            else:
+                st.caption("Nenhum material disponível")
+        else:
+            st.caption("📁 Crie a pasta `materiais_download`")
+    
     if st.session_state.fase == 1:
         render_phase_1()
     else:
