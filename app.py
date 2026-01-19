@@ -28,7 +28,25 @@ st.set_page_config(
     initial_sidebar_state="expanded",
     menu_items={'Get Help': None, 'Report a bug': None, 'About': None}
 )
-
+# Forçar sidebar visível
+st.markdown("""
+<style>
+    [data-testid="stSidebar"] {
+        display: block !important;
+        visibility: visible !important;
+        width: 300px !important;
+        min-width: 300px !important;
+    }
+    [data-testid="stSidebarContent"] {
+        display: block !important;
+        visibility: visible !important;
+    }
+    section[data-testid="stSidebar"] > div {
+        display: block !important;
+        visibility: visible !important;
+    }
+</style>
+""", unsafe_allow_html=True)
 def get_image_base64(image_path: str) -> str:
     try:
         with open(image_path, "rb") as img_file:
