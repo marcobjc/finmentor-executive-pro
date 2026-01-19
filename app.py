@@ -453,13 +453,18 @@ def render_sidebar():
             <img src="{avatar_src}" class="avatar-image" alt="Marco A. Duarte Jr.">
             <p class="avatar-name">Marco A. Duarte Jr.</p>
             <p class="avatar-title">Finance Professional | CFO Virtual Creator</p>
-            <a href="https://www.linkedin.com/in/marcoaureliodj/" target="_blank" class="linkedin-btn">
+            <p style="color: #94A3B8; font-size: 0.85rem; margin-bottom: 1rem;">
+                📧 marcobjc@gmail.com
+            </p>
+            <a href="https://www.linkedin.com/in/mduarte89/" target="_blank" class="linkedin-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                     <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
                 </svg>
                 Conectar no LinkedIn
             </a>
         </div>''', unsafe_allow_html=True)
+        
+        st.markdown("---")
         
         st.markdown('<div class="market-section"><p class="market-section-title">📊 Mercado em Tempo Real</p></div>', unsafe_allow_html=True)
         
@@ -480,6 +485,8 @@ def render_sidebar():
             st.markdown(f'<div class="market-indicator"><div class="value">{market.get("ipca", "N/D")}</div><div class="label">IPCA</div></div>', unsafe_allow_html=True)
         st.markdown(f'<p class="market-timestamp">Atualizado: {market.get("timestamp", "N/D")}</p>', unsafe_allow_html=True)
         
+        st.markdown("---")
+        
         st.markdown('<div class="material-section"><p class="material-section-title">📚 Materiais de Apoio</p></div>', unsafe_allow_html=True)
         
         materials_folder = "materiais_download"
@@ -499,7 +506,6 @@ def render_sidebar():
                 st.markdown('<p class="no-materials">Nenhum material disponível.</p>', unsafe_allow_html=True)
         else:
             st.markdown('<p class="no-materials">📁 Adicione arquivos na pasta<br><code>materiais_download</code></p>', unsafe_allow_html=True)
-
 def render_phase_1():
     st.markdown('''<div style="text-align: center; padding: 2rem 0;">
         <h1 style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.5rem; font-weight: 700;">📊 FinMentor: Executive Pro</h1>
