@@ -43,6 +43,7 @@ CUSTOM_CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 * { font-family: 'Quicksand', sans-serif !important; }
 footer, .stDeployButton { visibility: hidden !important; display: none !important; }
+span[data-testid="stIconMaterial"] { display: none !important; }
 /* .stIconMaterial { visibility: hidden !important; display: none !important; } */
 /* [data-testid="stToolbar"], [data-testid="stDecoration"] { display: none !important; } */
 [data-testid="stSidebar"] {
