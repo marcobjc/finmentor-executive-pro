@@ -1,0 +1,29 @@
+# FinMentor: Executive Pro - Dependências
+# =========================================
+
+# Frontend
+streamlit>=1.31.0
+
+# IA e LLM
+openai>=1.12.0
+langchain>=0.1.0
+langchain-openai>=0.0.5
+
+# Manipulação de dados
+pandas>=2.0.0
+xlsxwriter>=3.1.9
+openpyxl>=3.1.2
+
+# Visualização
+graphviz>=0.20.1
+
+# Dados de mercado
+yfinance>=0.2.36
+requests>=2.31.0
+
+# Processamento de documentos (RAG)
+pypdf>=4.0.0
+python-docx>=1.1.0
+
+# Utilitários
+python-dotenv>=1.0.0

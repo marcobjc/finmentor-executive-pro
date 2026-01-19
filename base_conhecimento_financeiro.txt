@@ -1,0 +1,110 @@
+# Base de Conhecimento FinMentor
+# ===============================
+# Este arquivo contém referências financeiras para enriquecer as respostas da IA
+
+## GLOSSÁRIO FINANCEIRO CFO-LEVEL
+
+### Indicadores de Rentabilidade
+- **ROE (Return on Equity)**: Retorno sobre o Patrimônio Líquido. Fórmula: Lucro Líquido / Patrimônio Líquido
+- **ROI (Return on Investment)**: Retorno sobre Investimento. Fórmula: (Ganho - Custo) / Custo
+- **ROIC (Return on Invested Capital)**: Retorno sobre Capital Investido. Fórmula: NOPAT / Capital Investido
+- **EVA (Economic Value Added)**: Valor Econômico Agregado. Fórmula: NOPAT - (Capital Investido x WACC)
+
+### Indicadores de Liquidez
+- **Liquidez Corrente**: Ativo Circulante / Passivo Circulante. Ideal > 1,5
+- **Liquidez Seca**: (AC - Estoques) / PC. Ideal > 1,0
+- **Liquidez Imediata**: Disponibilidades / PC. Varia por setor
+
+### Indicadores de Endividamento
+- **Dívida Líquida/EBITDA**: Capacidade de pagamento. Ideal < 3,0
+- **Índice de Cobertura de Juros (ICJ)**: EBITDA / Despesas Financeiras. Ideal > 2,0
+
+## FRAMEWORKS DE VALUATION
+
+### Método DCF (Discounted Cash Flow)
+Valor da Empresa = Σ (FCFt / (1 + WACC)^t) + Valor Terminal
+Onde:
+- FCF = Free Cash Flow (Fluxo de Caixa Livre)
+- WACC = Custo Médio Ponderado de Capital
+- Valor Terminal = FCFn+1 / (WACC - g)
+
+### Múltiplos de Mercado
+- **P/E (Price-to-Earnings)**: Preço / Lucro por Ação
+- **EV/EBITDA**: Enterprise Value / EBITDA
+- **P/VPA**: Preço / Valor Patrimonial por Ação
+
+## METODOLOGIA DuPONT
+
+ROE = Margem Líquida × Giro do Ativo × Alavancagem
+ROE = (LL/Receita) × (Receita/Ativo) × (Ativo/PL)
+
+Desdobramento permite identificar:
+1. Problemas de rentabilidade operacional
+2. Ineficiência no uso de ativos
+3. Estrutura de capital inadequada
+
+## WACC (Custo Médio Ponderado de Capital)
+
+WACC = (E/V × Ke) + (D/V × Kd × (1-t))
+
+Onde:
+- E = Valor de mercado do equity
+- D = Valor de mercado da dívida
+- V = E + D
+- Ke = Custo do equity (CAPM)
+- Kd = Custo da dívida
+- t = Alíquota de impostos
+
+## CAPM (Capital Asset Pricing Model)
+
+Ke = Rf + β × (Rm - Rf)
+
+Onde:
+- Rf = Taxa livre de risco (SELIC ou Treasury)
+- β = Beta (sensibilidade ao mercado)
+- Rm = Retorno esperado do mercado
+- (Rm - Rf) = Prêmio de risco de mercado
+
+## ANÁLISE DE PROJETOS
+
+### TIR (Taxa Interna de Retorno)
+Taxa que zera o VPL. Projeto viável se TIR > WACC
+
+### Payback Descontado
+Tempo para recuperar o investimento considerando o valor do dinheiro no tempo
+
+### VPL (Valor Presente Líquido)
+VPL = -I₀ + Σ (CFt / (1 + r)^t)
+Projeto viável se VPL > 0
+
+## REFERÊNCIAS BIBLIOGRÁFICAS
+
+1. **Damodaran, Aswath** - "Investment Valuation" - Referência mundial em valuation
+2. **Ross, Westerfield & Jaffe** - "Corporate Finance" - Finanças corporativas clássico
+3. **Assaf Neto, Alexandre** - "Finanças Corporativas e Valor" - Contexto brasileiro
+4. **Gitman, Lawrence** - "Principles of Managerial Finance" - Fundamentos de gestão financeira
+
+## NORMAS CONTÁBEIS
+
+- **CPC 00**: Estrutura Conceitual
+- **CPC 03**: Demonstração dos Fluxos de Caixa
+- **CPC 26**: Apresentação das Demonstrações Contábeis
+- **IFRS 9**: Instrumentos Financeiros
+- **IFRS 16**: Arrendamentos
+
+## INDICADORES MACROECONÔMICOS BRASIL
+
+### SELIC (Sistema Especial de Liquidação e de Custódia)
+- Taxa básica de juros da economia brasileira
+- Definida pelo COPOM (Comitê de Política Monetária)
+- Impacta custo de capital e decisões de investimento
+
+### IPCA (Índice Nacional de Preços ao Consumidor Amplo)
+- Índice oficial de inflação do Brasil
+- Medido pelo IBGE
+- Base para metas de inflação
+
+### CDI (Certificado de Depósito Interbancário)
+- Taxa de referência para investimentos de renda fixa
+- Geralmente próximo à SELIC
+- Benchmark para fundos de investimento
