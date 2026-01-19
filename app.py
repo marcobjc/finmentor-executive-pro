@@ -133,14 +133,15 @@ CUSTOM_CSS = """
         border: 1px solid #333;
     }
     
-    /* Card de estratégia */
-    .strategy-card {
-        background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%);
-        border: 1px solid #333;
+/* Card de estratégia */
+  .strategy-card {
+        background: linear-gradient(135deg, #1e2a3a 0%, #2d3748 100%);
+        border: 1px solid #4a5568;
         border-radius: 12px;
         padding: 1.5rem;
         margin: 1rem 0;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        color: #f7fafc;
     }
     
     /* Header da estratégia */
@@ -154,13 +155,14 @@ CUSTOM_CSS = """
         margin-bottom: 1rem;
     }
     
-    /* Seção de análise */
+/* Seção de análise */
     .analysis-section {
-        background: rgba(255, 255, 255, 0.03);
+        background: linear-gradient(135deg, #1e2a3a 0%, #2d3748 100%);
         border-radius: 8px;
         padding: 1rem;
         margin: 0.5rem 0;
         border-left: 3px solid #667eea;
+        color: #e2e8f0;
     }
     
     /* KPI badges */
@@ -776,8 +778,24 @@ def render_checklist(items: List[str]):
 def render_risks(risks: List[Dict]):
     """Renderiza riscos e mitigações de forma segura."""
     for risk in risks:
-        with st.expander(f"⚠️ {risk.get('risco', 'Risco')}"):
-            st.markdown(f"**Mitigação:** {risk.get('mitigacao', 'N/D')}")
+        risco_texto = risk.get('risco', 'Risco')
+        mitigacao_texto = risk.get('mitigacao', 'N/D')
+        st.markdown(f"""
+        <div style="
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            border-left: 4px solid #f6ad55;
+            border-radius: 0 8px 8px 0;
+            padding: 1rem 1.5rem;
+            margin: 0.5rem 0;
+        ">
+            <p style="color: #f6ad55; font-weight: 600; margin-bottom: 0.5rem;">
+                ⚠️ {risco_texto}
+            </p>
+            <p style="color: #e2e8f0; margin: 0;">
+                <strong>Mitigação:</strong> {mitigacao_texto}
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
 
 
 # ============================================================================
