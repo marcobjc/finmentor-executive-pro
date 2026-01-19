@@ -42,18 +42,19 @@ CUSTOM_CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 * { font-family: 'Quicksand', sans-serif !important; }
-#MainMenu, footer, .stDeployButton { visibility: hidden !important; display: none !important; }
-.stIconMaterial { visibility: hidden !important; display: none !important; }
-[data-testid="stToolbar"], [data-testid="stDecoration"] { display: none !important; }
-
+footer, .stDeployButton { visibility: hidden !important; display: none !important; }
+/* .stIconMaterial { visibility: hidden !important; display: none !important; } */
+/* [data-testid="stToolbar"], [data-testid="stDecoration"] { display: none !important; } */
+[data-testid="stSidebar"] {
+/*
 [data-testid="stSidebar"] {
     background: linear-gradient(180deg, #0f1419 0%, #1a1f2e 50%, #0f1419 100%) !important;
     border-right: 1px solid #2d3748;
 }
 [data-testid="stSidebar"] > div:first-child { background: transparent !important; padding-top: 1rem; }
-[data-testid="collapsedControl"] { display: block !important; visibility: visible !important; color: #667eea !important; position: fixed !important; top: 0.5rem !important; left: 0.5rem !important; z-index: 999999 !important; }
+[data-testid="collapsedControl"] { display: flex !important; visibility: visible !important; color: #E2E8F0 !important; }
 [data-testid="stSidebar"][aria-expanded="true"] { min-width: 300px !important; max-width: 300px !important; }
-.main .block-container { padding-top: 1rem; padding-bottom: 2rem; max-width: 1000px; }
+*/
 
 .avatar-container {
     text-align: center; padding: 1.5rem 1rem;
