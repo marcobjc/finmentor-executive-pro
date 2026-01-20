@@ -1,0 +1,497 @@
+# NORMAS CONTÁBEIS - CPC E IFRS
+# Base de Conhecimento Premium - FinMentor Executive Pro
+# =========================================================
+
+## 1. ESTRUTURA NORMATIVA BRASILEIRA
+
+### 1.1 Hierarquia das Normas
+
+```
+IFRS (International Financial Reporting Standards)
+    ↓
+CPC (Comitê de Pronunciamentos Contábeis)
+    ↓
+CVM (Companhias Abertas) / CFC (Profissionais) / BACEN (Instituições Financeiras)
+    ↓
+Empresas
+```
+
+### 1.2 Principais Órgãos
+
+| Órgão | Função |
+|-------|--------|
+| IASB | Emite IFRS internacionalmente |
+| CPC | Adapta IFRS para Brasil |
+| CVM | Aprova para companhias abertas |
+| CFC | Aprova para profissionais contábeis |
+| BACEN | Normas específicas para bancos |
+
+---
+
+## 2. CPCs FUNDAMENTAIS
+
+### 2.1 CPC 00 - Estrutura Conceitual
+
+**Objetivo das Demonstrações Financeiras:**
+- Fornecer informações úteis para decisões econômicas
+- Usuários: investidores, credores, outros
+
+**Características Qualitativas Fundamentais:**
+1. **Relevância**: Informação capaz de fazer diferença na decisão
+   - Valor preditivo
+   - Valor confirmatório
+   - Materialidade
+
+2. **Representação Fidedigna**: 
+   - Completa
+   - Neutra
+   - Livre de erros
+
+**Características de Melhoria:**
+- Comparabilidade
+- Verificabilidade
+- Tempestividade
+- Compreensibilidade
+
+**Elementos das Demonstrações:**
+| Elemento | Definição |
+|----------|-----------|
+| Ativo | Recurso controlado, benefícios futuros |
+| Passivo | Obrigação presente, saída de recursos |
+| Patrimônio Líquido | Resíduo (Ativo - Passivo) |
+| Receita | Aumento de ativo ou redução de passivo |
+| Despesa | Redução de ativo ou aumento de passivo |
+
+**Critérios de Reconhecimento:**
+- Provável fluxo de benefícios
+- Mensuração confiável
+
+**Bases de Mensuração:**
+- Custo histórico
+- Valor justo
+- Valor em uso
+- Custo corrente
+
+### 2.2 CPC 26 - Apresentação das Demonstrações Contábeis
+
+**Demonstrações Obrigatórias:**
+1. Balanço Patrimonial
+2. Demonstração do Resultado (DRE)
+3. Demonstração do Resultado Abrangente (DRA)
+4. Demonstração das Mutações do PL (DMPL)
+5. Demonstração dos Fluxos de Caixa (DFC)
+6. Notas Explicativas
+7. DVA (obrigatória para S.A. abertas no Brasil)
+
+**Premissas:**
+- Regime de competência
+- Continuidade (going concern)
+- Apresentação adequada
+- Materialidade e agregação
+- Compensação (geralmente proibida)
+- Informação comparativa
+
+### 2.3 CPC 03 - Demonstração dos Fluxos de Caixa
+
+**Classificação dos Fluxos:**
+
+| Atividade | Exemplos |
+|-----------|----------|
+| **Operacionais** | Recebimentos de clientes, pagamentos a fornecedores, salários, impostos |
+| **Investimento** | Compra/venda de imobilizado, aquisições, empréstimos concedidos |
+| **Financiamento** | Empréstimos obtidos, emissão de ações, pagamento de dividendos |
+
+**Métodos de Elaboração:**
+
+**Método Direto:**
+```
+Recebimentos de clientes
+(-) Pagamentos a fornecedores
+(-) Pagamentos de salários
+(-) Pagamentos de impostos
+(-) Outros pagamentos operacionais
+= Caixa Gerado nas Operações
+```
+
+**Método Indireto:**
+```
+Lucro Líquido
+(+) Depreciação e amortização
+(+/-) Resultado de equivalência
+(+/-) Variações no capital de giro
+    (+/-) Δ Contas a receber
+    (+/-) Δ Estoques
+    (+/-) Δ Fornecedores
+    (+/-) Δ Outros
+= Caixa Gerado nas Operações
+```
+
+---
+
+## 3. RECONHECIMENTO DE RECEITA - CPC 47 (IFRS 15)
+
+### 3.1 Modelo de 5 Passos
+
+**Passo 1: Identificar o Contrato**
+- Aprovação das partes
+- Direitos identificáveis
+- Condições de pagamento
+- Substância comercial
+- Probabilidade de recebimento
+
+**Passo 2: Identificar Obrigações de Desempenho**
+- Bens ou serviços distintos
+- Série de bens/serviços substancialmente iguais
+
+**Passo 3: Determinar o Preço da Transação**
+- Consideração fixa e variável
+- Componente de financiamento significativo
+- Consideração não monetária
+- Consideração a pagar ao cliente
+
+**Passo 4: Alocar o Preço às Obrigações**
+- Base: preço de venda individual
+- Métodos: observável, custo + margem, residual
+
+**Passo 5: Reconhecer a Receita**
+- Ao longo do tempo (over time): controle transferido continuamente
+- Em ponto no tempo (point in time): controle transferido em momento específico
+
+### 3.2 Reconhecimento ao Longo do Tempo
+
+**Critérios (pelo menos um):**
+1. Cliente recebe e consome benefícios simultaneamente
+2. Ativo criado/melhorado controlado pelo cliente
+3. Ativo sem uso alternativo + direito a pagamento
+
+**Métodos de Mensuração:**
+- Output: unidades produzidas, marcos atingidos
+- Input: custos incorridos, horas trabalhadas
+
+### 3.3 Casos Especiais
+
+| Situação | Tratamento |
+|----------|------------|
+| Garantias | Garantia-tipo: provisão / Garantia-serviço: obrigação separada |
+| Licenças | Direito de uso: ponto / Direito de acesso: ao longo |
+| Consignação | Receita quando vendido ao cliente final |
+| Bill-and-hold | Receita se critérios atendidos |
+
+---
+
+## 4. INSTRUMENTOS FINANCEIROS - CPC 48 (IFRS 9)
+
+### 4.1 Classificação de Ativos Financeiros
+
+**Baseada em:**
+1. Modelo de negócios para gestão dos ativos
+2. Características contratuais de fluxo de caixa
+
+**Categorias:**
+
+| Categoria | Critério | Mensuração |
+|-----------|----------|------------|
+| Custo Amortizado | Manter para receber fluxos contratuais | Custo amortizado |
+| VJORA* | Manter e vender | Valor justo - ORA |
+| VJR** | Outros | Valor justo - Resultado |
+
+*VJORA: Valor Justo por meio de Outros Resultados Abrangentes
+**VJR: Valor Justo por meio do Resultado
+
+### 4.2 Perda de Crédito Esperada (ECL)
+
+**Modelo de 3 Estágios:**
+
+| Estágio | Critério | Provisão |
+|---------|----------|----------|
+| 1 | Risco de crédito não aumentou significativamente | ECL 12 meses |
+| 2 | Aumento significativo no risco | ECL lifetime |
+| 3 | Evidência objetiva de impairment | ECL lifetime |
+
+**Abordagem Simplificada (Recebíveis comerciais):**
+- Provisão sempre para lifetime ECL
+- Matriz de provisão por aging
+
+### 4.3 Hedge Accounting
+
+**Tipos de Hedge:**
+1. **Hedge de valor justo**: Protege valor justo de ativo/passivo
+2. **Hedge de fluxo de caixa**: Protege variabilidade de fluxos
+3. **Hedge de investimento líquido**: Operações no exterior
+
+**Requisitos:**
+- Documentação formal
+- Relação econômica
+- Rácio de hedge adequado
+- Efetividade
+
+---
+
+## 5. ARRENDAMENTOS - CPC 06 R2 (IFRS 16)
+
+### 5.1 Conceito
+
+**Definição de Arrendamento:**
+Contrato que transfere o direito de controlar o uso de ativo identificado por período em troca de contraprestação.
+
+### 5.2 Contabilização pelo Arrendatário
+
+**Reconhecimento Inicial:**
+- **Ativo de direito de uso**: Valor presente dos pagamentos + custos diretos
+- **Passivo de arrendamento**: Valor presente dos pagamentos futuros
+
+**Mensuração Subsequente:**
+- Ativo: Custo - depreciação - impairment (ou valor justo)
+- Passivo: Custo amortizado (juros + pagamentos)
+
+**Taxa de Desconto:**
+1. Taxa implícita no arrendamento (se determinável)
+2. Taxa incremental de empréstimo do arrendatário
+
+### 5.3 Exceções (Arrendatário)
+
+**Isenções opcionais:**
+- Arrendamentos de curto prazo (≤ 12 meses)
+- Arrendamentos de baixo valor (< USD 5.000)
+
+Tratamento: Despesa linear no resultado
+
+### 5.4 Impacto nas Demonstrações
+
+| Item | Antes IFRS 16 | Após IFRS 16 |
+|------|---------------|--------------|
+| Balanço | Off-balance | Ativo + Passivo |
+| DRE | Despesa de aluguel | Depreciação + Juros |
+| EBITDA | Menor | Maior |
+| Dívida | Menor | Maior |
+| Alavancagem | Menor | Maior |
+
+---
+
+## 6. IMOBILIZADO - CPC 27 (IAS 16)
+
+### 6.1 Reconhecimento
+
+**Critérios:**
+- Provável geração de benefícios econômicos
+- Custo mensurável com confiabilidade
+
+**Custo Inicial:**
+- Preço de compra
+- Custos diretamente atribuíveis
+- Estimativa de custos de desmontagem
+
+### 6.2 Mensuração Subsequente
+
+**Modelo do Custo:**
+Custo - Depreciação Acumulada - Perdas por Impairment
+
+**Modelo de Reavaliação:**
+Valor justo - Depreciação Subsequente - Impairment Subsequente
+(Aumento: ORA; Redução: Resultado, exceto se reverter aumento anterior)
+
+### 6.3 Depreciação
+
+**Métodos:**
+- Linear: (Custo - Valor Residual) / Vida Útil
+- Saldos decrescentes
+- Unidades produzidas
+
+**Vida Útil vs Vida Útil Fiscal:**
+| Ativo | Vida Útil Contábil | Vida Útil Fiscal |
+|-------|-------------------|------------------|
+| Edificações | 25-50 anos | 25 anos |
+| Máquinas | 10-20 anos | 10 anos |
+| Veículos | 5-10 anos | 5 anos |
+| Equipamentos TI | 3-5 anos | 5 anos |
+
+### 6.4 Impairment - CPC 01 (IAS 36)
+
+**Teste de Recuperabilidade:**
+Valor Contábil vs Valor Recuperável
+
+**Valor Recuperável = Maior entre:**
+- Valor justo menos custos de venda
+- Valor em uso (VP dos fluxos de caixa futuros)
+
+**Quando Testar:**
+- Indicadores de perda (obrigatório)
+- Anualmente para: ágio, intangíveis com vida indefinida
+
+---
+
+## 7. INTANGÍVEIS - CPC 04 (IAS 38)
+
+### 7.1 Definição e Reconhecimento
+
+**Características:**
+- Identificável
+- Não monetário
+- Sem substância física
+
+**Reconhecimento:**
+- Provável benefício econômico futuro
+- Custo mensurável com confiabilidade
+
+### 7.2 Intangíveis Gerados Internamente
+
+**Fase de Pesquisa:**
+- Sempre despesa
+
+**Fase de Desenvolvimento:**
+- Capitalizar se todos os critérios atendidos:
+  1. Viabilidade técnica
+  2. Intenção de concluir
+  3. Capacidade de usar/vender
+  4. Geração de benefícios
+  5. Recursos disponíveis
+  6. Mensuração confiável
+
+### 7.3 Amortização
+
+- **Vida útil definida**: Amortizar
+- **Vida útil indefinida**: Não amortiza, teste anual de impairment
+
+---
+
+## 8. PROVISÕES E CONTINGÊNCIAS - CPC 25 (IAS 37)
+
+### 8.1 Definições
+
+| Termo | Definição |
+|-------|-----------|
+| Provisão | Passivo de prazo ou valor incerto |
+| Passivo contingente | Obrigação possível ou não mensurável |
+| Ativo contingente | Benefício possível |
+
+### 8.2 Reconhecimento
+
+**Provisão (Reconhece):**
+- Obrigação presente
+- Provável saída de recursos
+- Estimativa confiável
+
+**Passivo Contingente (Divulga):**
+- Obrigação possível
+- Ou: provável mas não mensurável
+
+**Ativo Contingente:**
+- Praticamente certo: Reconhece
+- Provável: Divulga
+- Possível: Não divulga
+
+### 8.3 Classificação de Probabilidade
+
+| Classificação | Probabilidade | Tratamento |
+|---------------|---------------|------------|
+| Praticamente certo | > 95% | Reconhece ativo |
+| Provável | > 50% | Reconhece provisão |
+| Possível | 25-50% | Divulga |
+| Remota | < 25% | Não divulga |
+
+### 8.4 Mensuração
+
+**Melhor estimativa:**
+- Valor esperado (média ponderada) para população
+- Valor mais provável para evento único
+
+**Valor presente:**
+- Se efeito do tempo for material
+
+---
+
+## 9. COMBINAÇÃO DE NEGÓCIOS - CPC 15 (IFRS 3)
+
+### 9.1 Método de Aquisição
+
+**Passos:**
+1. Identificar o adquirente
+2. Determinar a data de aquisição
+3. Reconhecer/mensurar ativos e passivos
+4. Reconhecer/mensurar ágio ou ganho
+
+### 9.2 Alocação do Preço de Compra (PPA)
+
+**Contraprestação transferida:**
+- Caixa
+- Ações emitidas
+- Contingente
+
+**Ativos identificáveis / Passivos assumidos:**
+- Valor justo na data de aquisição
+- Inclui intangíveis não registrados (marca, carteira, tecnologia)
+
+### 9.3 Ágio (Goodwill)
+
+**Cálculo:**
+Ágio = Contraprestação - Valor justo dos ativos líquidos identificáveis
+
+**Tratamento:**
+- Não amortiza
+- Teste de impairment anual
+- Alocado a UGC (Unidade Geradora de Caixa)
+
+### 9.4 Compra Vantajosa (Deságio)
+
+- Reconhecido imediatamente no resultado
+- Raro na prática
+- Revisar mensuração antes de reconhecer
+
+---
+
+## 10. CONVERSÃO DE DEMONSTRAÇÕES - CPC 02 (IAS 21)
+
+### 10.1 Moeda Funcional
+
+**Definição:** Moeda do ambiente econômico principal da entidade
+
+**Indicadores:**
+- Moeda que influencia preços de venda
+- Moeda de custos de mão de obra e materiais
+- Moeda de financiamentos
+- Moeda de recebimentos operacionais
+
+### 10.2 Conversão para Moeda de Apresentação
+
+| Item | Taxa |
+|------|------|
+| Ativos e Passivos | Fechamento |
+| Receitas e Despesas | Data da transação (ou média) |
+| Patrimônio Líquido | Histórica |
+
+**Variação cambial:** Outros Resultados Abrangentes
+
+---
+
+## CHECKLIST DE CONFORMIDADE CONTÁBIL
+
+### Demonstrações Financeiras
+- [ ] Todas as demonstrações obrigatórias
+- [ ] Notas explicativas completas
+- [ ] Informação comparativa
+- [ ] Políticas contábeis divulgadas
+
+### Reconhecimento e Mensuração
+- [ ] Receitas conforme CPC 47
+- [ ] Instrumentos financeiros CPC 48
+- [ ] Arrendamentos CPC 06
+- [ ] Provisões e contingências CPC 25
+- [ ] Teste de impairment realizado
+
+### Divulgação
+- [ ] Julgamentos significativos
+- [ ] Estimativas e incertezas
+- [ ] Riscos financeiros
+- [ ] Partes relacionadas
+- [ ] Eventos subsequentes
+
+---
+
+## REFERÊNCIAS
+
+1. CPC - Comitê de Pronunciamentos Contábeis. Pronunciamentos Técnicos. www.cpc.org.br
+2. IASB - International Accounting Standards Board. IFRS Standards.
+3. ERNST & YOUNG. Manual de Normas Internacionais de Contabilidade. Atlas.
+4. DELOITTE. iGAAP: IFRS em seu bolso.
+5. KPMG. Insights into IFRS.
+6. PWC. Manual of Accounting - IFRS.
