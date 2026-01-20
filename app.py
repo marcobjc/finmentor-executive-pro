@@ -214,7 +214,27 @@ span[data-testid="stIconMaterial"] { display: none !important; }
 }
 .stForm { background: transparent; }
 [data-testid="stForm"] { border: none !important; padding: 0 !important; }
-.streamlit-expanderHeader { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-radius: 8px; color: #E2E8F0 !important; }
+/* Estilo do container do Expander */
+.streamlit-expanderHeader {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 8px;
+    border: 1px solid #334155; /* Adiciona uma borda sutil para destacar do fundo */
+}
+
+/* Força a cor branca no texto e no ícone dentro do Expander */
+.streamlit-expanderHeader p, 
+.streamlit-expanderHeader span,
+.streamlit-expanderHeader svg {
+    color: #F1F5F9 !important; /* Branco quase puro */
+    font-weight: 600;          /* Deixa o texto um pouco mais grosso */
+    fill: #F1F5F9 !important;  /* Garante que a setinha também fique branca */
+}
+
+/* Efeito Hover para dar feedback visual */
+.streamlit-expanderHeader:hover {
+    border-color: #667eea;
+    color: #FFFFFF !important;
+}
 .stSpinner > div { border-color: #667eea transparent transparent transparent; }
 </style>
 """
