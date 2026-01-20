@@ -102,7 +102,9 @@ Ke = Rf + β × (Rm - Rf) + Risco País + Prêmio por Tamanho + Prêmio por Iliq
 
 **Componentes para Brasil:**
 - Rf (Risk-free): Treasury 10Y dos EUA (~4-5%)
-- β (Beta): Obtido de empresas comparáveis ou Damodaran
+- β (Beta):  - Fonte principal: https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/Betas.html
+ - Betas por setor (atualizado anualmente)
+ - Para Brasil: usar beta emergentes + ajuste"
 - Rm - Rf (Prêmio de mercado): ~5-6% histórico
 - Risco País (CDS Brasil): ~2-3%
 - Prêmio por Tamanho: 2-4% para small caps
