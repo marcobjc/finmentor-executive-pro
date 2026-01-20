@@ -641,8 +641,43 @@ def render_phase_2():
     
     if response.get('modelagem_matematica'):
         st.markdown("### 📐 Modelagem Matemática")
-        try: st.latex(clean_latex(response['modelagem_matematica']))
-        except: st.markdown(f'<div class="latex-block">{clean_latex(response["modelagem_matematica"])}</div>', unsafe_allow_html=True)
+        try:
+            # Remove APENAS os delimitadores externos (Streamlit adiciona automaticamente)
+            formula = response['modelagem_matematica']
+            formula = formula.strip()
+            # Remove \[ e \] do início e fim
+            formula = re.sub(r'^\\\[', '', formula)
+            formula = re.sub(r'\\\]$', '', formula)
+            # Remove $$ do início e fim
+            formula = re.sub(r'^\$\$', '', formula)
+            formula = re.sub(r'\$\$$', '', formula)
+            # Remove $ simples do início e fim
+            formula = re.sub(r'^\$', '', formula)
+            formula = re.sub(r'\$$', '', formula)
+            formula = formula.strip()
+            st.latex(formula)
+        except Exception as e:
+            # Fallback: exibe como texto
+            st.code(response['modelagem_matematica'], language='latex')
+```
+
+---
+
+## 🔍 O QUE MUDOU
+
+**ANTES:**
+```
+Input da IA: \[ \text{EBITDA} = \text{Receita} - \text{Custos} \]
+st.latex() recebe: [ \text{EBITDA} = ... ]  ❌ (clean_latex removeu apenas \)
+Resultado na tela: [ \text{EBITDA} = ... ]
+```
+
+**DEPOIS:**
+```
+Input da IA: \[ \text{EBITDA} = \text{Receita} - \text{Custos} \]
+Limpeza: \text{EBITDA} = \text{Receita} - \text{Custos}  ✅
+st.latex() adiciona delimitadores automaticamente
+Resultado na tela: EBITDA = Receita - Custos (renderizado)
     
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
     st.markdown("### 🌳 Árvore de Decisão")
