@@ -784,7 +784,7 @@ if __name__ == "__main__":
         # Mercado em tempo real
                 
         # ✅ Dados de mercado carregados em background (usados pela IA, não exibidos)
-            if st.session_state.market_data is None:
+        if st.session_state.market_data is None:
             st.session_state.market_data = MarketDataFetcher.get_market_data()
         
         # ✅ Materiais de apoio - RECOLHÍVEL
