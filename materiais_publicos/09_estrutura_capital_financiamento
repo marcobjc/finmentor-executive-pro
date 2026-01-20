@@ -1,0 +1,910 @@
+# BASE DE CONHECIMENTO FINMENTOR
+# MÓDULO 09: ESTRUTURA DE CAPITAL E FINANCIAMENTO
+# Versão: 1.0
+# Última atualização: Janeiro/2025
+
+================================================================================
+SEÇÃO 9.1: FUNDAMENTOS DE ESTRUTURA DE CAPITAL
+================================================================================
+
+## 9.1.1 Conceitos Básicos
+
+### Definição
+
+Estrutura de Capital é a composição das fontes de financiamento de longo prazo
+de uma empresa, envolvendo a proporção entre capital próprio (equity) e
+capital de terceiros (dívida).
+
+### Componentes da Estrutura de Capital
+
+**Capital Próprio (Equity):**
+- Capital social integralizado
+- Reservas de capital
+- Reservas de lucros
+- Lucros acumulados
+- Ações em tesouraria (dedução)
+
+**Capital de Terceiros (Dívida):**
+- Empréstimos e financiamentos
+- Debêntures
+- Notas promissórias
+- Arrendamentos (IFRS 16)
+- Outras obrigações onerosas
+
+### Métricas de Estrutura
+
+```
+INDICADORES DE ESTRUTURA DE CAPITAL
+
+Endividamento Total = Passivo Total / Ativo Total
+
+Dívida/Equity (D/E) = Dívida Onerosa / Patrimônio Líquido
+
+Dívida/Capital = Dívida / (Dívida + Equity)
+
+Dívida Líquida = Dívida Bruta - Caixa e Equivalentes
+
+Dívida Líquida/EBITDA = Indicador mais usado pelo mercado
+
+Exemplo:
+├── Dívida Bruta: R$ 500 MM
+├── Caixa: R$ 100 MM
+├── Dívida Líquida: R$ 400 MM
+├── EBITDA: R$ 200 MM
+├── Dívida Líquida/EBITDA: 2,0x
+└── Patrimônio Líquido: R$ 600 MM
+    D/E = 500/600 = 0,83x
+```
+
+--------------------------------------------------------------------------------
+
+## 9.1.2 Teorias de Estrutura de Capital
+
+### Modigliani & Miller (M&M)
+
+**Proposição I (Sem Impostos):**
+O valor da empresa independe da estrutura de capital em mercados perfeitos.
+V_alavancada = V_desalavancada
+
+**Proposição II (Sem Impostos):**
+O custo do equity aumenta linearmente com a alavancagem.
+Ke = Ku + (Ku - Kd) × (D/E)
+
+**Com Impostos:**
+A dívida gera benefício fiscal (tax shield).
+V_alavancada = V_desalavancada + (t × D)
+
+Onde t = alíquota de impostos, D = valor da dívida
+
+### Trade-off Theory
+
+Existe uma estrutura ótima que equilibra:
+- **Benefício:** Tax shield da dívida
+- **Custo:** Custos de financial distress
+
+```
+TRADE-OFF: VALOR DA EMPRESA vs. ALAVANCAGEM
+
+Valor
+  │
+  │                    * Ponto Ótimo
+  │               ****
+  │          *****    ****
+  │      ****              ****
+  │   ***                      *** Custos de Distress
+  │ **                             dominam
+  │*
+  │  Tax Shield
+  │  domina
+  └─────────────────────────────────────► Dívida/Equity
+         Estrutura Ótima
+```
+
+### Pecking Order Theory
+
+Empresas preferem fontes de financiamento na ordem:
+1. **Lucros retidos** (sem custo de emissão, sem assimetria)
+2. **Dívida** (menor assimetria de informação)
+3. **Equity** (último recurso, maior custo)
+
+### Market Timing Theory
+
+Empresas emitem equity quando ações estão sobrevalorizadas
+e recompram quando estão subvalorizadas.
+
+--------------------------------------------------------------------------------
+
+## 9.1.3 Determinantes da Estrutura de Capital
+
+### Fatores que Favorecem Mais Dívida
+
+| Fator | Explicação |
+|-------|------------|
+| Alta lucratividade | Maior capacidade de pagamento |
+| Ativos tangíveis | Melhor colateral |
+| Tamanho grande | Menor risco de falência |
+| Baixa volatilidade | Fluxos mais previsíveis |
+| Alta alíquota de IR | Maior benefício fiscal |
+| Setor maduro | Menor necessidade de flexibilidade |
+
+### Fatores que Favorecem Mais Equity
+
+| Fator | Explicação |
+|-------|------------|
+| Alto crescimento | Necessidade de flexibilidade |
+| Ativos intangíveis | Difícil dar em garantia |
+| Alta volatilidade | Risco de distress |
+| P&D intensivo | Incerteza nos resultados |
+| Setor cíclico | Receitas voláteis |
+
+### Benchmarks por Setor (Brasil)
+
+| Setor | Dívida Líq./EBITDA | D/E |
+|-------|-------------------|-----|
+| Utilities | 2,5 - 4,0x | 0,8 - 1,5x |
+| Telecom | 1,5 - 2,5x | 0,5 - 1,0x |
+| Varejo | 1,0 - 2,5x | 0,5 - 1,2x |
+| Indústria | 1,5 - 3,0x | 0,6 - 1,2x |
+| Tecnologia | 0 - 1,0x | 0 - 0,5x |
+| Imobiliário | 2,0 - 4,0x | 1,0 - 2,0x |
+
+================================================================================
+SEÇÃO 9.2: CUSTO DE CAPITAL
+================================================================================
+
+## 9.2.1 WACC - Custo Médio Ponderado de Capital
+
+### Fórmula
+
+```
+WACC = Ke × (E/V) + Kd × (1-t) × (D/V)
+
+Onde:
+Ke = Custo do capital próprio
+Kd = Custo da dívida (bruto)
+t = Alíquota de impostos
+E = Valor de mercado do equity
+D = Valor de mercado da dívida
+V = E + D
+
+Exemplo:
+├── Equity (E): R$ 800 MM (80%)
+├── Dívida (D): R$ 200 MM (20%)
+├── Ke: 15%
+├── Kd: 12%
+├── Alíquota (t): 34%
+│
+└── WACC = 15% × 80% + 12% × (1-34%) × 20%
+         = 12% + 1,58%
+         = 13,58%
+```
+
+### Estrutura de Capital para WACC
+
+**Questão:** Usar estrutura atual ou estrutura-alvo?
+
+**Recomendação:**
+- Para valuation: estrutura-alvo de longo prazo
+- Para decisões operacionais: estrutura atual
+- Consistência com comparáveis do setor
+
+--------------------------------------------------------------------------------
+
+## 9.2.2 Custo do Capital Próprio (Ke)
+
+### CAPM - Capital Asset Pricing Model
+
+```
+Ke = Rf + β × (Rm - Rf) + Prêmios Adicionais
+
+Componentes para Brasil:
+
+1. Taxa Livre de Risco (Rf)
+   └── Treasury 10Y EUA: ~4,5%
+
+2. Beta (β)
+   ├── Beta alavancado de comparáveis
+   ├── Desalavancar: βu = βL / [1 + (1-t) × D/E]
+   └── Realavancar com estrutura-alvo
+
+3. Prêmio de Risco de Mercado (Rm - Rf)
+   └── Histórico: 5-6%
+
+4. Prêmios Adicionais
+   ├── Risco País (CDS Brasil): 2-3%
+   ├── Prêmio por Tamanho: 2-4% (small caps)
+   └── Prêmio por Iliquidez: 2-5% (fechadas)
+
+Exemplo:
+Ke = 4,5% + 1,2 × 6% + 2,5% + 3%
+   = 4,5% + 7,2% + 5,5%
+   = 17,2%
+```
+
+### Build-Up Method (Alternativo)
+
+```
+Ke = Rf + Prêmio Equity + Prêmio Tamanho + Prêmio Específico
+
+Usado quando não há beta confiável disponível.
+```
+
+--------------------------------------------------------------------------------
+
+## 9.2.3 Custo da Dívida (Kd)
+
+### Métodos de Estimativa
+
+**1. Custo Médio Ponderado da Dívida Existente:**
+```
+Kd = Σ (Dívida_i × Taxa_i) / Σ Dívida_i
+
+Exemplo:
+├── Debêntures: R$ 100 MM a 12%
+├── BNDES: R$ 50 MM a 9%
+├── Capital de Giro: R$ 50 MM a 14%
+│
+└── Kd = (100×12% + 50×9% + 50×14%) / 200
+       = (12 + 4,5 + 7) / 200
+       = 11,75%
+```
+
+**2. Taxa de Novas Captações:**
+- Spread atual de crédito da empresa
+- Yield de debêntures no mercado secundário
+
+**3. Rating Sintético:**
+```
+Com base em indicadores, estimar rating e spread:
+
+| Cobertura Juros | Rating Estimado | Spread |
+|-----------------|-----------------|--------|
+| > 8,5x          | AAA             | 0,5%   |
+| 6,5 - 8,5x      | AA              | 0,8%   |
+| 5,5 - 6,5x      | A+              | 1,0%   |
+| 4,25 - 5,5x     | A               | 1,2%   |
+| 3,0 - 4,25x     | A-              | 1,5%   |
+| 2,5 - 3,0x      | BBB             | 2,0%   |
+| 2,0 - 2,5x      | BB+             | 3,0%   |
+| 1,5 - 2,0x      | BB              | 4,0%   |
+| < 1,5x          | B ou menor      | 5,0%+  |
+```
+
+================================================================================
+SEÇÃO 9.3: FONTES DE FINANCIAMENTO - DÍVIDA
+================================================================================
+
+## 9.3.1 Empréstimos Bancários
+
+### Tipos Principais
+
+**Capital de Giro:**
+- Prazo: até 24 meses
+- Taxa: CDI + 2-6% (depende do risco)
+- Garantias: aval, recebíveis, imóveis
+- Uso: necessidades operacionais
+
+**Conta Garantida:**
+- Limite rotativo
+- Taxa: CDI + 4-10%
+- Flexibilidade máxima
+- Custo mais elevado
+
+**FINAME/BNDES:**
+- Prazo: até 120 meses
+- Taxa: TLP + spread (1-4%)
+- Garantia: bem financiado + aval
+- Uso: máquinas, equipamentos, projetos
+
+**Financiamento Imobiliário:**
+- Prazo: até 240 meses
+- Taxa: TR + 8-12% ou IPCA + 4-7%
+- Garantia: alienação fiduciária do imóvel
+
+### Comparativo de Custos (Referência)
+
+| Produto | Taxa Indicativa* | Prazo |
+|---------|------------------|-------|
+| Conta garantida | CDI + 6-10% | Rotativo |
+| Capital de giro | CDI + 2-5% | 6-24 meses |
+| FINAME | TLP + 1-3% | 24-120 meses |
+| Imobiliário | IPCA + 5-7% | 60-240 meses |
+
+*Taxas variam conforme rating, garantias e relacionamento
+
+--------------------------------------------------------------------------------
+
+## 9.3.2 Debêntures
+
+### Conceito
+
+Títulos de dívida emitidos por sociedades anônimas para captar recursos
+diretamente no mercado de capitais.
+
+### Tipos de Debêntures
+
+**Simples:** Não conversíveis em ações
+**Conversíveis:** Podem ser convertidas em ações
+**Permutáveis:** Podem ser trocadas por ações de outra empresa
+**Incentivadas (Lei 12.431):** Isenção de IR para pessoa física
+
+### Características
+
+```
+ESTRUTURA TÍPICA DE DEBÊNTURE
+
+Emissora: Empresa XYZ S.A.
+Volume: R$ 500 milhões
+Séries: 2 (diferentes prazos/taxas)
+Prazo: 5 anos
+Remuneração: CDI + 1,8% a.a.
+Pagamento de Juros: Semestral
+Amortização: Bullet (no vencimento)
+Rating: brAA (S&P)
+Garantias: Quirografária (sem garantia real)
+Covenants:
+├── Dívida Líquida/EBITDA ≤ 3,5x
+├── EBITDA/Despesa Financeira ≥ 2,0x
+└── Não distribuir dividendos se covenant violado
+```
+
+### Processo de Emissão
+
+```
+TIMELINE DE EMISSÃO DE DEBÊNTURES
+
+Semana 1-2: Estruturação
+├── Definição de características
+├── Contratação de coordenador/bookrunner
+└── Due diligence
+
+Semana 3-4: Documentação
+├── Escritura de emissão
+├── Prospecto
+└── Parecer jurídico
+
+Semana 5-6: Registro e Aprovações
+├── Registro na CVM (se pública)
+├── Aprovação em RCA/AGE
+└── Rating (se aplicável)
+
+Semana 7-8: Distribuição
+├── Roadshow com investidores
+├── Bookbuilding
+├── Precificação
+└── Liquidação
+```
+
+### Custos de Emissão
+
+| Item | Custo Típico |
+|------|--------------|
+| Coordenação/Distribuição | 0,5-1,5% do volume |
+| Assessoria jurídica | R$ 150-300 mil |
+| Rating | R$ 100-200 mil/ano |
+| Agente fiduciário | R$ 30-60 mil/ano |
+| Registro CVM/B3 | ~R$ 50 mil |
+| Auditoria/Due diligence | R$ 50-150 mil |
+
+--------------------------------------------------------------------------------
+
+## 9.3.3 Outros Instrumentos de Dívida
+
+### Notas Promissórias (Commercial Paper)
+
+- Prazo: até 360 dias
+- Uso: capital de giro de curto prazo
+- Mais simples que debênture
+- Geralmente sem garantia
+
+### CRI/CRA
+
+**CRI (Certificado de Recebíveis Imobiliários):**
+- Lastro em recebíveis imobiliários
+- Emitido por securitizadora
+- Isento de IR para PF
+- Prazo médio: 5-15 anos
+
+**CRA (Certificado de Recebíveis do Agronegócio):**
+- Lastro em recebíveis do agro
+- Estrutura similar ao CRI
+- Isento de IR para PF
+
+### Bonds (Emissão Internacional)
+
+- Captação em moeda estrangeira (USD, EUR)
+- Acesso a mercado mais profundo
+- Hedge cambial necessário
+- Custos de emissão mais elevados
+- Rating internacional requerido
+
+```
+EXEMPLO DE BOND
+
+Emissora: Empresa XYZ (garantia da holding)
+Volume: USD 500 milhões
+Prazo: 10 anos
+Cupom: 6,5% a.a. (semestral)
+Yield to Maturity: 6,75%
+Rating: BB+ (S&P) / Ba1 (Moody's)
+Listagem: NYSE/Luxembourg
+Lei aplicável: Nova York
+```
+
+================================================================================
+SEÇÃO 9.4: FONTES DE FINANCIAMENTO - EQUITY
+================================================================================
+
+## 9.4.1 Lucros Retidos
+
+### Conceito
+
+Reinvestimento de lucros gerados pela operação.
+Fonte mais barata (sem custos de emissão).
+
+### Política de Dividendos
+
+```
+TRADE-OFF DE DIVIDENDOS
+
+RETER LUCROS                    DISTRIBUIR DIVIDENDOS
+├── Financia crescimento        ├── Sinaliza confiança
+├── Evita custo de emissão      ├── Atrai investidores de renda
+├── Flexibilidade               ├── Disciplina de capital
+└── Pode indicar falta de       └── Reduz caixa disponível
+    oportunidades de investimento
+```
+
+**Dividend Yield vs. Payout:**
+- Dividend Yield = DPA / Preço da Ação
+- Payout = Dividendos / Lucro Líquido
+
+**Brasil:** Mínimo obrigatório de 25% do lucro ajustado (Lei das S.A.)
+
+--------------------------------------------------------------------------------
+
+## 9.4.2 Aumento de Capital
+
+### Tipos
+
+**Aumento com Subscrição:**
+- Emissão de novas ações
+- Pode ser privado ou público
+- Direito de preferência aos acionistas atuais
+
+**Incorporação de Reservas:**
+- Conversão de reservas em capital
+- Não há entrada de recursos
+- Apenas reclassificação contábil
+
+### Processo de Aumento Privado
+
+```
+AUMENTO DE CAPITAL PRIVADO
+
+1. Proposta da administração
+2. Aprovação em AGE
+3. Prazo de preferência (30 dias)
+4. Sobras (se houver)
+5. Homologação
+6. Registro na Junta Comercial
+```
+
+--------------------------------------------------------------------------------
+
+## 9.4.3 IPO (Initial Public Offering)
+
+### Conceito
+
+Primeira oferta pública de ações, transformando empresa fechada em aberta
+com ações negociadas em bolsa.
+
+### Motivações para IPO
+
+**Vantagens:**
+- Acesso a capital para crescimento
+- Liquidez para acionistas
+- Moeda de troca para M&A
+- Visibilidade e credibilidade
+- Atração de talentos (stock options)
+
+**Desvantagens:**
+- Custos elevados (5-8% do volume)
+- Obrigações de disclosure
+- Pressão por resultados de curto prazo
+- Perda de privacidade
+- Governança mais rígida
+
+### Timeline de IPO
+
+```
+PROCESSO DE IPO (6-12 MESES)
+
+FASE 1: PREPARAÇÃO (3-6 meses)
+├── Diagnóstico de prontidão
+├── Ajustes de governança
+├── Auditoria de 3 anos (IFRS)
+├── Estruturação societária
+└── Contratação de assessores
+
+FASE 2: ESTRUTURAÇÃO (2-3 meses)
+├── Due diligence
+├── Valuation e sizing
+├── Prospecto preliminar
+├── Registro na CVM
+└── Definição de faixa de preço
+
+FASE 3: DISTRIBUIÇÃO (1-2 meses)
+├── Roadshow (investidores institucionais)
+├── Período de reserva (varejo)
+├── Bookbuilding
+├── Precificação
+├── Liquidação
+└── Início de negociação
+
+FASE 4: PÓS-IPO
+├── Quiet period (40 dias)
+├── Lock-up de acionistas (90-180 dias)
+├── Início de cobertura por analistas
+└── Obrigações de companhia aberta
+```
+
+### Custos de IPO
+
+| Item | % do Volume |
+|------|-------------|
+| Comissão de coordenação | 3-5% |
+| Assessoria jurídica | 0,3-0,5% |
+| Auditoria | 0,2-0,4% |
+| Outros (CVM, B3, publicações) | 0,3-0,5% |
+| **Total** | **4-7%** |
+
+--------------------------------------------------------------------------------
+
+## 9.4.4 Follow-On (Oferta Subsequente)
+
+### Tipos
+
+**Primária:** Emissão de novas ações pela empresa
+- Recursos vão para o caixa da empresa
+- Aumenta o capital social
+- Dilui acionistas existentes
+
+**Secundária:** Venda de ações por acionistas existentes
+- Recursos vão para os vendedores
+- Não altera capital social
+- Aumenta free float
+
+**Mista:** Combinação de primária e secundária
+
+### Processo Simplificado
+
+Empresas já listadas podem usar processo mais rápido:
+- Formulário de referência atualizado
+- Menor prazo de análise CVM
+- Custos menores que IPO
+
+================================================================================
+SEÇÃO 9.5: PRIVATE EQUITY E VENTURE CAPITAL
+================================================================================
+
+## 9.5.1 Conceitos
+
+### Definições
+
+**Private Equity (PE):**
+- Investimento em empresas maduras
+- Geralmente controle ou participação relevante
+- Foco em eficiência operacional e crescimento
+- Horizonte: 4-7 anos
+
+**Venture Capital (VC):**
+- Investimento em startups/empresas em crescimento
+- Participação minoritária
+- Foco em escala e inovação
+- Horizonte: 5-10 anos
+
+### Estágios de Investimento
+
+```
+ESTÁGIOS DE VENTURE CAPITAL
+
+PRE-SEED / SEED
+├── Ideia ou MVP
+├── Ticket: R$ 100k - R$ 2MM
+├── Investidores: Anjos, Aceleradoras
+└── Valuation: R$ 1-10 MM
+
+SÉRIE A
+├── Product-market fit comprovado
+├── Ticket: R$ 5-30 MM
+├── Investidores: VCs early-stage
+└── Valuation: R$ 20-100 MM
+
+SÉRIE B
+├── Escala e expansão
+├── Ticket: R$ 30-100 MM
+├── Investidores: VCs growth
+└── Valuation: R$ 100-500 MM
+
+SÉRIE C+
+├── Consolidação, internacionalização
+├── Ticket: R$ 100 MM+
+├── Investidores: Late-stage, PE
+└── Valuation: R$ 500 MM+
+
+PRIVATE EQUITY
+├── Empresas maduras
+├── Ticket: R$ 100 MM - R$ 2 BI
+├── Controle ou participação relevante
+└── Foco em valor e eficiência
+```
+
+--------------------------------------------------------------------------------
+
+## 9.5.2 Estrutura de Operação de PE
+
+### Termos Típicos
+
+```
+TERM SHEET DE PRIVATE EQUITY
+
+Investimento: R$ 200 milhões
+Participação: 40%
+Valuation Pre-money: R$ 300 MM
+Valuation Post-money: R$ 500 MM
+
+GOVERNANÇA:
+├── 2 de 5 assentos no Conselho
+├── Veto em decisões estratégicas
+├── Direito de informação amplo
+└── Auditoria Big Four obrigatória
+
+PROTEÇÕES:
+├── Anti-diluição (weighted average)
+├── Tag-along (100%)
+├── Drag-along (após 5 anos)
+├── Liquidation preference (1x, não participante)
+└── ROFR/ROFO em transferências
+
+SAÍDA:
+├── IPO (preferencial)
+├── Venda estratégica
+├── Venda para outro PE
+└── Recompra pela empresa
+    Prazo-alvo: 5 anos
+    TIR-alvo: 25%+ a.a.
+```
+
+### Criação de Valor em PE
+
+```
+ALAVANCAS DE CRIAÇÃO DE VALOR
+
+1. CRESCIMENTO DE RECEITA
+   ├── Expansão orgânica
+   ├── Novos mercados/produtos
+   └── Aquisições (buy and build)
+
+2. MELHORIA DE MARGEM
+   ├── Eficiência operacional
+   ├── Otimização de custos
+   └── Sinergias (se houver M&A)
+
+3. EXPANSÃO DE MÚLTIPLO
+   ├── Melhoria de governança
+   ├── Aumento de escala
+   └── Redução de risco
+
+4. DESALAVANCAGEM
+   ├── Pagamento de dívida com FCL
+   └── Transferência de valor para equity
+
+EXEMPLO:
+Entrada: 8x EBITDA, EBITDA R$ 50MM, EV R$ 400MM
+Saída: 10x EBITDA, EBITDA R$ 80MM, EV R$ 800MM
+Retorno: 2x em 5 anos = ~15% a.a.
+Com alavancagem de 3x: TIR pode chegar a 25-30%
+```
+
+================================================================================
+SEÇÃO 9.6: DECISÕES DE ESTRUTURA DE CAPITAL
+================================================================================
+
+## 9.6.1 Framework de Decisão
+
+### Perguntas-Chave
+
+```
+FRAMEWORK PARA DECISÃO DE FINANCIAMENTO
+
+1. QUANTO CAPITAL É NECESSÁRIO?
+   ├── Investimentos planejados
+   ├── Necessidade de capital de giro
+   └── Refinanciamento de dívidas
+
+2. QUAL A CAPACIDADE DE ENDIVIDAMENTO?
+   ├── Dívida Líquida/EBITDA atual vs. limite
+   ├── Cobertura de juros
+   └── Covenants existentes
+
+3. QUAL O CUSTO DE CADA ALTERNATIVA?
+   ├── Custo da dívida (Kd)
+   ├── Custo do equity (Ke)
+   └── Impacto no WACC
+
+4. QUAL O IMPACTO NA FLEXIBILIDADE?
+   ├── Covenants restritivos
+   ├── Capacidade de futura captação
+   └── Controle acionário
+
+5. QUAL A PREFERÊNCIA DOS STAKEHOLDERS?
+   ├── Acionistas (diluição?)
+   ├── Credores (risco?)
+   └── Mercado (expectativas?)
+```
+
+### Matriz de Decisão
+
+```
+QUANDO USAR CADA FONTE
+
+                    DÍVIDA                  EQUITY
+                    ══════                  ══════
+Crescimento      Moderado/Estável         Alto/Incerto
+Ativos           Tangíveis                Intangíveis
+Fluxo de Caixa   Previsível               Volátil
+Alavancagem      Baixa atual              Alta atual
+Custo Relativo   Kd < Ke                  Ke aceitável
+Mercado          Juros baixos             Ações valorizadas
+Controle         Manter                   Pode diluir
+```
+
+--------------------------------------------------------------------------------
+
+## 9.6.2 Covenants e Restrições
+
+### Tipos de Covenants
+
+**Financeiros (mais comuns):**
+- Dívida Líquida/EBITDA ≤ X
+- EBITDA/Despesa Financeira ≥ Y
+- Dívida/Patrimônio Líquido ≤ Z
+- Liquidez Corrente ≥ W
+
+**Operacionais:**
+- Manutenção de seguros
+- Limitação de investimentos
+- Restrição de novos endividamentos
+- Limitação de distribuição de dividendos
+
+**Restritivos:**
+- Change of control
+- Cross-default
+- Negative pledge
+- Pari passu
+
+### Gestão de Covenants
+
+```
+MONITORAMENTO DE COVENANTS
+
+Covenant               Limite    Atual    Folga    Status
+═══════════════════════════════════════════════════════════
+Dív.Líq/EBITDA        ≤ 3,5x    2,8x     20%      ✓ OK
+EBITDA/Desp.Fin       ≥ 2,0x    2,5x     25%      ✓ OK
+Liquidez Corrente     ≥ 1,2x    1,3x     8%       ⚠ Atenção
+CAPEX Anual           ≤ R$100MM R$85MM   15%      ✓ OK
+
+PROJEÇÃO (próximo trimestre):
+- Cenário base: Todos cumpridos
+- Cenário stress: Liquidez em risco
+- Plano de ação: Reperfilar curto prazo
+```
+
+================================================================================
+SEÇÃO 9.7: CASOS ESPECIAIS
+================================================================================
+
+## 9.7.1 Reestruturação de Dívida
+
+### Situações que Demandam Reestruturação
+
+- Violação de covenants
+- Dificuldade de refinanciamento
+- Custo elevado da dívida atual
+- Descasamento de prazos
+- Mudança no perfil de risco
+
+### Alternativas de Reestruturação
+
+```
+OPÇÕES DE REESTRUTURAÇÃO
+
+1. REPERFILAMENTO
+   ├── Alongamento de prazo
+   ├── Carência de principal
+   └── Mantém montante
+
+2. RENEGOCIAÇÃO DE TAXAS
+   ├── Redução de spread
+   ├── Mudança de indexador
+   └── Waiver de covenant
+
+3. CONVERSÃO
+   ├── Dívida em equity
+   ├── Capitalização de juros
+   └── Mudança de instrumento
+
+4. REFINANCIAMENTO
+   ├── Nova captação para quitar antiga
+   ├── Troca de credor
+   └── Melhores condições
+
+5. RECUPERAÇÃO JUDICIAL
+   ├── Último recurso
+   ├── Stay de 180 dias
+   └── Plano aprovado por credores
+```
+
+--------------------------------------------------------------------------------
+
+## 9.7.2 Leveraged Buyout (LBO)
+
+### Conceito
+
+Aquisição financiada majoritariamente com dívida, usando os ativos e
+fluxo de caixa da empresa-alvo como garantia e fonte de pagamento.
+
+### Estrutura Típica
+
+```
+ESTRUTURA DE LBO
+
+FONTES DE RECURSOS:
+├── Equity do PE: 30-40%
+├── Dívida Senior: 40-50%
+└── Dívida Subordinada/Mezanino: 10-20%
+
+CARACTERÍSTICAS DA EMPRESA IDEAL:
+├── Fluxo de caixa estável e previsível
+├── Baixa necessidade de CAPEX
+├── Ativos tangíveis (colateral)
+├── Posição de mercado defensável
+├── Oportunidades de melhoria operacional
+└── Gestão competente (ou substituível)
+
+MÉTRICAS DE VIABILIDADE:
+├── Dívida/EBITDA de entrada: 4-6x
+├── Cobertura mínima: 1,5x
+├── Payback da dívida: 5-7 anos
+└── TIR-alvo do equity: 20-25%+
+```
+
+================================================================================
+SEÇÃO 9.8: GLOSSÁRIO
+================================================================================
+
+**Bullet:** Amortização integral no vencimento
+**Covenant:** Cláusula restritiva em contrato de dívida
+**Cross-default:** Default em uma dívida aciona default em outras
+**Drag-along:** Direito de forçar venda conjunta
+**EBITDA:** Lucro antes de juros, impostos, depreciação e amortização
+**Equity:** Capital próprio dos acionistas
+**Follow-on:** Oferta subsequente de ações
+**IPO:** Initial Public Offering
+**LBO:** Leveraged Buyout
+**Lock-up:** Período de restrição à venda de ações
+**Mezanino:** Dívida subordinada, híbrida entre dívida e equity
+**Negative pledge:** Restrição a dar ativos em garantia
+**Pari passu:** Tratamento igualitário entre credores
+**PE:** Private Equity
+**Roadshow:** Apresentações a investidores
+**Tag-along:** Direito de vender junto com controlador
+**Tax shield:** Benefício fiscal dos juros
+**VC:** Venture Capital
+**WACC:** Custo médio ponderado de capital
+
+================================================================================
+FIM DO MÓDULO 09
+================================================================================
