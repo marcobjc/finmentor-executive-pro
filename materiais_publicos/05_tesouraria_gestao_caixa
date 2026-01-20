@@ -1,0 +1,538 @@
+# TESOURARIA E GESTÃO DE CAIXA
+# Base de Conhecimento Premium - FinMentor Executive Pro
+# =========================================================
+
+## 1. FUNDAMENTOS DE TESOURARIA
+
+### 1.1 Objetivos da Tesouraria
+
+1. **Liquidez**: Garantir recursos para honrar compromissos
+2. **Rentabilidade**: Otimizar aplicação de excedentes
+3. **Segurança**: Minimizar riscos financeiros
+4. **Controle**: Visibilidade e governança sobre o caixa
+
+### 1.2 Funções da Tesouraria
+
+| Função | Descrição |
+|--------|-----------|
+| Cash Management | Gestão diária de caixa |
+| Funding | Captação de recursos |
+| Investimentos | Aplicação de excedentes |
+| Risco | Hedge e proteção |
+| Relacionamento Bancário | Negociação e gestão |
+| Planejamento | Projeções e orçamento |
+
+---
+
+## 2. GESTÃO DE FLUXO DE CAIXA
+
+### 2.1 Tipos de Fluxo de Caixa
+
+**Fluxo de Caixa Realizado:**
+- Registra movimentações efetivas
+- Base para conciliação bancária
+- Histórico para análise
+
+**Fluxo de Caixa Projetado:**
+- Previsão de entradas e saídas
+- Horizonte: diário, semanal, mensal, anual
+- Base para decisões
+
+**Fluxo de Caixa Orçado:**
+- Derivado do orçamento anual
+- Meta de gestão
+- Base para comparação
+
+### 2.2 Estrutura do Fluxo de Caixa Gerencial
+
+```
+SALDO INICIAL
+
+(+) ENTRADAS OPERACIONAIS
+    Recebimento de vendas à vista
+    Recebimento de vendas a prazo
+    Recebimento de cartões
+    Outras receitas operacionais
+
+(-) SAÍDAS OPERACIONAIS
+    Fornecedores
+    Salários e encargos
+    Impostos operacionais (ICMS, PIS, COFINS)
+    Aluguéis
+    Utilidades (energia, água, telecom)
+    Serviços terceirizados
+    Outras despesas operacionais
+
+= SALDO OPERACIONAL
+
+(+) ENTRADAS NÃO OPERACIONAIS
+    Venda de ativos
+    Empréstimos recebidos
+    Aporte de capital
+    Outras entradas
+
+(-) SAÍDAS NÃO OPERACIONAIS
+    Investimentos (CAPEX)
+    Amortização de empréstimos
+    Juros pagos
+    Impostos sobre lucro (IR/CSLL)
+    Dividendos
+    Outras saídas
+
+= SALDO FINAL
+
+(=) VARIAÇÃO DO PERÍODO
+```
+
+### 2.3 Horizontes de Projeção
+
+| Horizonte | Frequência | Objetivo |
+|-----------|------------|----------|
+| Diário (D+0 a D+5) | Diário | Gestão imediata |
+| Semanal (2-8 semanas) | Semanal | Planejamento curto prazo |
+| Mensal (3-12 meses) | Mensal | Planejamento médio prazo |
+| Anual (1-5 anos) | Anual | Planejamento estratégico |
+
+### 2.4 Técnicas de Projeção
+
+**Recebimentos:**
+- Aging de contas a receber
+- Taxa de inadimplência histórica
+- Sazonalidade de vendas
+- Prazo médio de recebimento
+
+**Pagamentos:**
+- Contas a pagar por vencimento
+- Folha de pagamento (fixo)
+- Contratos e compromissos
+- Impostos por competência/caixa
+
+---
+
+## 3. CAPITAL DE GIRO
+
+### 3.1 Conceitos
+
+**Capital de Giro Bruto (CGB):**
+CGB = Ativo Circulante
+
+**Capital de Giro Líquido (CGL):**
+CGL = Ativo Circulante - Passivo Circulante
+
+**Necessidade de Capital de Giro (NCG):**
+NCG = Ativo Circulante Operacional - Passivo Circulante Operacional
+NCG = (Clientes + Estoques + Outros ACO) - (Fornecedores + Outros PCO)
+
+**Saldo de Tesouraria (ST):**
+ST = CGL - NCG
+ST = Ativo Circulante Financeiro - Passivo Circulante Financeiro
+
+### 3.2 Dinâmica do Capital de Giro
+
+**Situações:**
+
+| NCG | CGL | ST | Situação |
+|-----|-----|-----|----------|
+| + | + | + | Sólida (CGL financia NCG com folga) |
+| + | + | - | Alerta (NCG financiada por dívida) |
+| + | - | - | Crítica (Passivo financia tudo) |
+| - | + | + | Excelente (Operação gera caixa) |
+| - | - | - | Ruim (estrutura comprometida) |
+
+### 3.3 Otimização do Capital de Giro
+
+**Reduzir Prazo Médio de Recebimento (PMR):**
+- Política de crédito mais restritiva
+- Desconto para pagamento antecipado
+- Antecipação de recebíveis
+- Cobrança mais eficiente
+
+**Reduzir Prazo Médio de Estocagem (PME):**
+- Just-in-time
+- Gestão de demanda
+- Redução de SKUs
+- Liquidação de obsoletos
+
+**Aumentar Prazo Médio de Pagamento (PMP):**
+- Negociação com fornecedores
+- Não prejudicar relacionamento
+- Avaliar custo financeiro embutido
+
+### 3.4 Financiamento do Capital de Giro
+
+| Fonte | Custo | Prazo | Garantia |
+|-------|-------|-------|----------|
+| Fornecedores | Embutido | Curto | Nenhuma |
+| Desconto duplicatas | CDI + 1-3% | Curto | Recebíveis |
+| Capital de giro | CDI + 2-5% | Curto | Variável |
+| Conta garantida | CDI + 3-8% | Rotativo | Aval/Recebíveis |
+| FINAME | TLP + spread | Médio/Longo | Bem financiado |
+
+---
+
+## 4. RELACIONAMENTO BANCÁRIO
+
+### 4.1 Critérios de Seleção de Bancos
+
+**Quantitativos:**
+- Taxas de juros
+- Tarifas de serviços
+- Spread em operações de câmbio
+- Custos de cobrança
+
+**Qualitativos:**
+- Agilidade no atendimento
+- Plataforma digital
+- Capilaridade
+- Produtos disponíveis
+- Solidez financeira
+
+### 4.2 Estratégia de Bancos
+
+**Banco Principal:**
+- Concentra folha de pagamento
+- Principais operações de crédito
+- Maior poder de negociação
+
+**Bancos Secundários:**
+- Diversificação de risco
+- Benchmark de taxas
+- Produtos específicos
+
+**Proporção sugerida:**
+- 60-70% no banco principal
+- 30-40% em 2-3 bancos secundários
+
+### 4.3 Negociação Bancária
+
+**Alavancas de negociação:**
+- Volume de operações
+- Reciprocidade (folha, cobrança, seguros)
+- Histórico de relacionamento
+- Saúde financeira da empresa
+- Garantias oferecidas
+
+**Indicadores para apresentar:**
+- Dívida Líquida / EBITDA
+- EBITDA / Despesas Financeiras
+- Liquidez Corrente
+- Histórico de faturamento
+
+---
+
+## 5. PRODUTOS DE CAPTAÇÃO
+
+### 5.1 Curto Prazo
+
+**Capital de Giro:**
+- Prazo: até 360 dias
+- Taxa: CDI + spread
+- Garantia: aval, recebíveis, imóveis
+
+**Conta Garantida:**
+- Limite rotativo
+- Juros sobre saldo utilizado
+- Mais caro, mais flexível
+
+**Desconto de Duplicatas/Cheques:**
+- Antecipação de recebíveis
+- Custo: deságio sobre valor de face
+- Risco de crédito do sacado
+
+**Antecipação de Cartões:**
+- Antecipação de vendas em cartão
+- Taxa fixa por bandeira
+- Liquidez rápida
+
+**Vendor:**
+- Banco financia o cliente da empresa
+- Empresa recebe à vista
+- Cliente paga ao banco a prazo
+
+**Compror:**
+- Banco financia compras da empresa
+- Fornecedor recebe à vista
+- Empresa paga ao banco a prazo
+
+### 5.2 Médio/Longo Prazo
+
+**FINAME (BNDES):**
+- Financiamento de máquinas e equipamentos
+- Taxa: TLP + spread
+- Prazo: até 120 meses
+- Garantia: bem financiado + aval
+
+**BNDES Automático:**
+- Projetos de investimento
+- Via bancos credenciados
+- Taxas subsidiadas
+
+**Debêntures:**
+- Título de dívida corporativa
+- Para empresas de maior porte
+- Pode ser incentivada (Lei 12.431)
+
+**CRI/CRA:**
+- Certificados de Recebíveis
+- Lastro em recebíveis imobiliários (CRI) ou agro (CRA)
+- Isenção de IR para PF
+
+### 5.3 Comparativo de Custos
+
+| Produto | Custo Indicativo* | Prazo |
+|---------|-------------------|-------|
+| Conta garantida | CDI + 5-10% | Rotativo |
+| Capital de giro | CDI + 2-5% | 6-24 meses |
+| Desconto duplicatas | CDI + 1-3% | Curto |
+| FINAME | TLP + 1-4% | 24-120 meses |
+| Debêntures | CDI + 1-3% | 3-7 anos |
+
+*Custos variam conforme rating, garantias e relacionamento
+
+---
+
+## 6. PRODUTOS DE APLICAÇÃO
+
+### 6.1 Liquidez Diária
+
+**CDB Liquidez Diária:**
+- Rentabilidade: 80-100% CDI
+- Liquidez: D+0
+- FGC: até R$ 250 mil
+
+**Fundos DI:**
+- Rentabilidade: ~100% CDI - taxa adm
+- Liquidez: D+0 ou D+1
+- Diversificação
+
+**Compromissadas:**
+- Lastro em títulos públicos
+- Rentabilidade: ~Selic
+- Liquidez: D+0
+
+### 6.2 Curto Prazo
+
+**CDB Prefixado:**
+- Taxa fixa conhecida
+- Prazo definido
+- Resgate antecipado com deságio
+
+**LCA/LCI:**
+- Isenção de IR para PF
+- Prazo mínimo: 90 dias (LCA) / 90 dias (LCI)
+- Geralmente 90-95% CDI
+
+**Fundos de Crédito Privado:**
+- Debêntures, CRI, CRA
+- Maior rentabilidade
+- Maior risco e prazo
+
+### 6.3 Política de Aplicação
+
+**Critérios:**
+1. Preservação do principal
+2. Liquidez compatível com necessidades
+3. Rentabilidade adequada ao risco
+4. Diversificação de emissores
+
+**Limites sugeridos:**
+| Tipo | Limite |
+|------|--------|
+| Mesmo banco/emissor | Máx 30% |
+| Crédito privado | Máx 20% |
+| Prazo > 180 dias | Máx 40% |
+| Sem FGC | Máx 50% |
+
+---
+
+## 7. GESTÃO DE RISCOS FINANCEIROS
+
+### 7.1 Risco de Liquidez
+
+**Definição:** Incapacidade de honrar compromissos
+
+**Mitigação:**
+- Colchão de liquidez (1-3 meses de despesas)
+- Linhas de crédito pré-aprovadas
+- Diversificação de fontes
+- Projeção de caixa robusta
+
+### 7.2 Risco de Taxa de Juros
+
+**Definição:** Impacto de variações na taxa de juros
+
+**Mensuração:**
+- Gap de reprecificação
+- Duration das dívidas
+- Sensibilidade a variações
+
+**Mitigação:**
+- Mix de dívidas pré e pós-fixadas
+- Swap de taxa de juros
+- Matching de prazos ativo/passivo
+
+### 7.3 Risco Cambial
+
+**Exposições:**
+- Transacional: recebíveis/pagáveis em moeda estrangeira
+- Translação: conversão de subsidiárias
+- Econômica: competitividade
+
+**Instrumentos de Hedge:**
+
+| Instrumento | Características |
+|-------------|-----------------|
+| NDF (Termo) | Trava taxa futura, sem desembolso inicial |
+| Opção | Direito de comprar/vender, paga prêmio |
+| Swap | Troca de indexadores |
+| ACC/ACE | Antecipação de exportação em USD |
+
+**Política de Hedge:**
+- Definir % de exposição a proteger (50-100%)
+- Horizonte de proteção
+- Instrumentos permitidos
+- Limites por contraparte
+
+### 7.4 Risco de Crédito
+
+**De Clientes:**
+- Análise de crédito
+- Limites por cliente
+- Seguro de crédito
+- Diversificação de carteira
+
+**De Contrapartes Financeiras:**
+- Rating mínimo
+- Limites por instituição
+- Garantias (FGC)
+
+---
+
+## 8. INDICADORES DE TESOURARIA
+
+### 8.1 KPIs de Liquidez
+
+| Indicador | Fórmula | Meta |
+|-----------|---------|------|
+| Dias de Caixa | Caixa / (Despesas / 30) | 30-90 dias |
+| Liquidez Corrente | AC / PC | > 1,2 |
+| Quick Ratio | (AC - Estoques) / PC | > 1,0 |
+
+### 8.2 KPIs de Eficiência
+
+| Indicador | Fórmula | Meta |
+|-----------|---------|------|
+| Ciclo Financeiro | PME + PMR - PMP | Mínimo |
+| Acuracidade Forecast | Real / Projetado | > 90% |
+| % Caixa Ocioso | Caixa não aplicado / Total | < 5% |
+
+### 8.3 KPIs de Custo
+
+| Indicador | Fórmula | Meta |
+|-----------|---------|------|
+| Custo Médio de Captação | Despesa Fin / Dívida Média | Benchmark |
+| Spread Bancário | Taxa paga - CDI | Mínimo |
+| Rentabilidade Aplicações | Receita Fin / Aplicação Média | > 95% CDI |
+
+---
+
+## 9. CONTROLES E PROCESSOS
+
+### 9.1 Conciliação Bancária
+
+**Frequência:** Diária
+
+**Processo:**
+1. Importar extratos bancários
+2. Comparar com movimentação interna
+3. Identificar pendências
+4. Regularizar divergências
+5. Documentar e aprovar
+
+**Itens comuns de divergência:**
+- Cheques não compensados
+- Tarifas não previstas
+- Depósitos não identificados
+- Juros/multas não registrados
+
+### 9.2 Alçadas de Aprovação
+
+| Valor | Aprovador |
+|-------|-----------|
+| Até R$ 10 mil | Analista de Tesouraria |
+| R$ 10 mil - 50 mil | Coordenador |
+| R$ 50 mil - 200 mil | Gerente Financeiro |
+| Acima de R$ 200 mil | Diretor/CFO |
+
+### 9.3 Segregação de Funções
+
+| Função | Responsável |
+|--------|-------------|
+| Cadastro de favorecidos | Contas a Pagar |
+| Aprovação de pagamentos | Gestores |
+| Liberação no banco | Tesouraria |
+| Conciliação | Contabilidade |
+
+---
+
+## 10. TECNOLOGIA EM TESOURARIA
+
+### 10.1 Sistemas
+
+**TMS (Treasury Management System):**
+- Gestão centralizada de caixa
+- Projeção automatizada
+- Integração bancária
+- Gestão de riscos
+
+**Funcionalidades essenciais:**
+- Fluxo de caixa projetado
+- Conciliação automática
+- Relatórios gerenciais
+- Integração com ERP
+
+### 10.2 Conectividade Bancária
+
+**Tipos:**
+- CNAB: Arquivo texto padronizado
+- EDI: Troca eletrônica de dados
+- API: Integração em tempo real
+- Open Banking: Dados compartilhados
+
+**Arquivos CNAB comuns:**
+- 240/400: Cobrança
+- 240: Pagamentos
+- Extrato eletrônico
+
+---
+
+## CHECKLIST DE TESOURARIA
+
+### Diário
+- [ ] Posição de caixa atualizada
+- [ ] Conciliação bancária
+- [ ] Confirmação de recebimentos
+- [ ] Liberação de pagamentos
+- [ ] Atualização do fluxo de caixa
+
+### Semanal
+- [ ] Projeção de caixa 4-8 semanas
+- [ ] Análise de aging de recebíveis
+- [ ] Revisão de aplicações
+- [ ] Acompanhamento de covenants
+
+### Mensal
+- [ ] Relatório de desempenho
+- [ ] Análise de custo de capital
+- [ ] Revisão de limites de crédito
+- [ ] Atualização de projeção anual
+
+---
+
+## REFERÊNCIAS
+
+1. ASSAF NETO, Alexandre; SILVA, César Augusto Tibúrcio. Administração do Capital de Giro. 4ª ed. Atlas, 2012.
+2. HOJI, Masakazu. Administração Financeira e Orçamentária. 12ª ed. Atlas, 2017.
+3. GITMAN, Lawrence J. Princípios de Administração Financeira. 14ª ed. Pearson, 2017.
+4. BRAGG, Steven M. Treasury Management: The Practitioner's Guide. Wiley, 2010.
+5. AFP - Association for Financial Professionals. Essentials of Treasury Management. 6th ed.
