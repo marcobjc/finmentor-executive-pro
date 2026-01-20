@@ -1,0 +1,240 @@
+# VALUATION E AVALIAÇÃO DE EMPRESAS
+# Base de Conhecimento Premium - FinMentor Executive Pro
+# =========================================================
+
+## 1. MÉTODOS DE VALUATION
+
+### 1.1 Fluxo de Caixa Descontado (DCF)
+
+O DCF é considerado o método mais robusto de valuation, pois captura o valor intrínseco da empresa baseado em sua capacidade de geração de caixa futura.
+
+**Fórmula Geral:**
+Valor da Empresa = Σ (FCL_t / (1 + WACC)^t) + Valor Terminal / (1 + WACC)^n
+
+**Onde:**
+- FCL_t = Fluxo de Caixa Livre no período t
+- WACC = Custo Médio Ponderado de Capital
+- n = Período de projeção explícita (geralmente 5-10 anos)
+
+**Fluxo de Caixa Livre para a Firma (FCFF):**
+FCFF = EBIT × (1 - t) + Depreciação - CAPEX - Δ Capital de Giro
+
+**Fluxo de Caixa Livre para o Acionista (FCFE):**
+FCFE = Lucro Líquido + Depreciação - CAPEX - Δ Capital de Giro + Novas Dívidas - Amortização de Dívidas
+
+**Valor Terminal (Perpetuidade com Crescimento):**
+Valor Terminal = FCL_(n+1) / (WACC - g)
+
+Onde g = taxa de crescimento na perpetuidade (geralmente entre 2% e 4%, não deve exceder o crescimento do PIB de longo prazo)
+
+**Referência:** Damodaran, A. "Investment Valuation", Cap. 12-15
+
+### 1.2 Múltiplos de Mercado
+
+**Múltiplos de Valor da Firma (Enterprise Value):**
+- EV/EBITDA: Mais utilizado, elimina diferenças de estrutura de capital e tributação
+- EV/EBIT: Considera depreciação, útil para empresas capital-intensivas
+- EV/Receita: Para empresas em crescimento ou com EBITDA negativo
+
+**Múltiplos de Valor Patrimonial (Equity Value):**
+- P/L (Preço/Lucro): Mais popular, mas sensível a estrutura de capital
+- P/VPA (Preço/Valor Patrimonial): Para empresas com ativos tangíveis relevantes
+- P/FCF (Preço/Fluxo de Caixa): Elimina efeitos contábeis
+
+**Cálculo do Enterprise Value:**
+EV = Market Cap + Dívida Bruta - Caixa + Participações Minoritárias + Preferred Stock
+
+**Referência:** Rosenbaum & Pearl, "Investment Banking: Valuation", Cap. 7-8
+
+### 1.3 Avaliação Patrimonial
+
+**Valor Contábil:**
+Patrimônio Líquido Contábil = Ativo Total - Passivo Total
+
+**Valor Patrimonial de Mercado (AVP - Adjusted Book Value):**
+Considera ajustes a valor justo dos ativos e passivos:
+- Reavaliação de imóveis
+- Marcação a mercado de investimentos
+- Ajuste de estoques obsoletos
+- Provisões para contingências
+
+**Quando Usar:**
+- Empresas em liquidação
+- Holdings de participações
+- Empresas com ativos tangíveis significativos
+- Baseline mínimo de valor
+
+### 1.4 Valuation de Startups
+
+**Método Venture Capital:**
+Valor Pós-Money = Valor de Saída Esperado / (1 + TIR_requerida)^anos
+
+**Método Berkus:**
+Atribui valores a elementos qualitativos:
+- Ideia sólida: até R$ 500k
+- Protótipo: até R$ 500k
+- Time de gestão: até R$ 500k
+- Relações estratégicas: até R$ 500k
+- Vendas iniciais: até R$ 500k
+
+**Método Scorecard:**
+Compara com valuations médias de startups similares, ajustando por fatores como time, mercado, produto, competição.
+
+---
+
+## 2. WACC - CUSTO MÉDIO PONDERADO DE CAPITAL
+
+### 2.1 Fórmula do WACC
+
+WACC = (E/V × Ke) + (D/V × Kd × (1 - t))
+
+**Onde:**
+- E = Valor de mercado do Equity
+- D = Valor de mercado da Dívida
+- V = E + D (Valor total)
+- Ke = Custo do Equity
+- Kd = Custo da Dívida
+- t = Alíquota efetiva de impostos
+
+### 2.2 Custo do Equity (Ke) - CAPM
+
+Ke = Rf + β × (Rm - Rf) + Risco País + Prêmio por Tamanho + Prêmio por Iliquidez
+
+**Componentes para Brasil:**
+- Rf (Risk-free): Treasury 10Y dos EUA (~4-5%)
+- β (Beta): Obtido de empresas comparáveis ou Damodaran
+- Rm - Rf (Prêmio de mercado): ~5-6% histórico
+- Risco País (CDS Brasil): ~2-3%
+- Prêmio por Tamanho: 2-4% para small caps
+- Prêmio por Iliquidez: 2-5% para empresas fechadas
+
+**Beta Desalavancado (Unlevered Beta):**
+βu = βL / [1 + (1-t) × (D/E)]
+
+**Beta Realavancado:**
+βL = βu × [1 + (1-t) × (D/E)]
+
+### 2.3 Custo da Dívida (Kd)
+
+Kd = Taxa de juros média ponderada das dívidas
+
+**Para empresas brasileiras:**
+- Debêntures: Taxa da emissão ou mercado secundário
+- Empréstimos bancários: CDI + spread
+- BNDES: TJLP/TLP + spread
+- Capital de giro: Taxa média das linhas
+
+**Referência:** Assaf Neto, "Finanças Corporativas e Valor", Cap. 16
+
+---
+
+## 3. MÚLTIPLOS SETORIAIS DE REFERÊNCIA (BRASIL)
+
+### 3.1 EV/EBITDA por Setor (Mediana)
+
+| Setor | EV/EBITDA | Observações |
+|-------|-----------|-------------|
+| Tecnologia/SaaS | 15-25x | Empresas de crescimento, recorrência |
+| Varejo | 6-10x | Margem baixa, capital intensivo |
+| Bancos | N/A | Usar P/L ou P/VPA |
+| Energia Elétrica | 6-8x | Regulado, previsível |
+| Saneamento | 7-9x | Concessões longas |
+| Construção Civil | 5-7x | Cíclico |
+| Agronegócio | 5-8x | Commodities |
+| Saúde | 8-12x | Crescimento, consolidação |
+| Educação | 8-12x | Escala, recorrência |
+| Indústria | 5-8x | Depende do subsetor |
+
+### 3.2 P/L por Setor (Mediana)
+
+| Setor | P/L | Observações |
+|-------|-----|-------------|
+| Tecnologia | 20-40x | Alto crescimento esperado |
+| Bancos | 6-10x | Maturos, dividendos |
+| Utilities | 8-12x | Estável, yield |
+| Varejo | 12-20x | Crescimento moderado |
+| Commodities | 5-10x | Cíclico |
+
+**Fonte:** Economatica, Bloomberg, análises setoriais (dados referenciais)
+
+---
+
+## 4. ANÁLISE DE SENSIBILIDADE
+
+### 4.1 Variáveis Críticas no DCF
+
+1. **Taxa de crescimento na perpetuidade (g)**
+   - Variação de 0.5% pode alterar valor em 10-20%
+   - Nunca usar g > crescimento PIB longo prazo
+
+2. **WACC**
+   - Cada 1% de variação altera valor em 10-15%
+   - Testar cenários de alta/baixa de juros
+
+3. **Margem EBITDA**
+   - Projetar convergência para margem do setor
+   - Considerar ganhos de escala realistas
+
+4. **CAPEX e Capital de Giro**
+   - Usar % da receita baseado em histórico
+   - Ajustar para fase de crescimento
+
+### 4.2 Matriz de Sensibilidade Recomendada
+
+Criar tabela cruzando:
+- WACC (± 1-2%) vs g (± 0.5-1%)
+- Margem EBITDA (± 2-3%) vs Crescimento de receita (± 2-3%)
+
+---
+
+## 5. CHECKLIST DE VALUATION
+
+### 5.1 Due Diligence Financeira
+- [ ] Demonstrações auditadas dos últimos 3-5 anos
+- [ ] Normalização de EBITDA (itens não recorrentes)
+- [ ] Análise de capital de giro (sazonalidade)
+- [ ] Mapeamento de dívidas e garantias
+- [ ] Contingências fiscais, trabalhistas, cíveis
+- [ ] Contratos relevantes (clientes, fornecedores)
+
+### 5.2 Premissas de Projeção
+- [ ] Crescimento de receita justificado (mercado, market share)
+- [ ] Margem convergindo para benchmark setorial
+- [ ] CAPEX de manutenção vs expansão
+- [ ] Necessidade de capital de giro
+- [ ] Estrutura de capital alvo
+
+### 5.3 Cálculo do WACC
+- [ ] Beta de empresas comparáveis (desalavancado)
+- [ ] Estrutura de capital alvo
+- [ ] Custo da dívida atual
+- [ ] Prêmios adicionais (tamanho, iliquidez, país)
+
+### 5.4 Validação
+- [ ] Múltiplos implícitos fazem sentido?
+- [ ] Comparação com transações precedentes
+- [ ] Análise de sensibilidade realizada
+- [ ] Football field com diferentes métodos
+
+---
+
+## 6. ERROS COMUNS EM VALUATION
+
+1. **Usar g > WACC**: Valor terminal infinito/negativo
+2. **Não normalizar EBITDA**: Superestimar valor
+3. **Ignorar necessidade de investimento**: CAPEX e capital de giro
+4. **Beta histórico sem ajuste**: Empresas com mudança de perfil
+5. **Não considerar controle/liquidez**: Prêmio ou desconto
+6. **Projeções hóquei-stick**: Crescimento irrealista
+7. **Dupla contagem**: Caixa no DCF e no múltiplo
+
+---
+
+## REFERÊNCIAS BIBLIOGRÁFICAS
+
+1. DAMODARAN, Aswath. Investment Valuation. 3rd ed. Wiley, 2012.
+2. DAMODARAN, Aswath. The Dark Side of Valuation. 2nd ed. FT Press, 2009.
+3. ROSENBAUM, Joshua; PEARL, Joshua. Investment Banking: Valuation, LBOs, M&A. 3rd ed. Wiley, 2020.
+4. KOLLER, Tim; GOEDHART, Marc; WESSELS, David. Valuation: Measuring and Managing the Value of Companies. 7th ed. McKinsey & Company, Wiley, 2020.
+5. ASSAF NETO, Alexandre. Finanças Corporativas e Valor. 8ª ed. Atlas, 2020.
+6. PÓVOA, Alexandre. Valuation: Como Precificar Ações. 2ª ed. Elsevier, 2012.
