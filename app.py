@@ -780,9 +780,8 @@ def main():
 
 if __name__ == "__main__":
     main()
-        
-        # Mercado em tempo real
-                
+        st.markdown("---")       
+      
         # ✅ Dados de mercado carregados em background (usados pela IA, não exibidos)
         if st.session_state.market_data is None:
             st.session_state.market_data = MarketDataFetcher.get_market_data()
