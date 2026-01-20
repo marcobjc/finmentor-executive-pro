@@ -11,11 +11,12 @@ import logging
 import os
 import json
 import re
+import urllib.parse  # ✅ ADICIONADO PARA YOUTUBE
 from datetime import datetime
 from typing import Optional, Dict, Any, List
 from io import BytesIO
 import base64
-from pathlib import Path  # ✅ ADICIONADO
+from pathlib import Path
 
 warnings.filterwarnings("ignore")
 logging.getLogger("streamlit").setLevel(logging.ERROR)
@@ -39,6 +40,7 @@ def get_image_base64(image_path: str) -> str:
 
 AVATAR_PATH = "assets/avatar.jpg"
 
+# ✅ ALTERAÇÃO 3: CSS ATUALIZADO (Expander sempre branco)
 CUSTOM_CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
@@ -214,28 +216,28 @@ span[data-testid="stIconMaterial"] { display: none !important; }
 }
 .stForm { background: transparent; }
 [data-testid="stForm"] { border: none !important; padding: 0 !important; }
-/* Estilo do container do Expander */
+.stSpinner > div { border-color: #667eea transparent transparent transparent; }
+
+/* --- CORREÇÃO AGRESSIVA DO EXPANDER (ALTERAÇÃO 3) --- */
 .streamlit-expanderHeader {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    border-radius: 8px;
-    border: 1px solid #334155; /* Adiciona uma borda sutil para destacar do fundo */
-}
-
-/* Força a cor branca no texto e no ícone dentro do Expander */
-.streamlit-expanderHeader p, 
-.streamlit-expanderHeader span,
-.streamlit-expanderHeader svg {
-    color: #F1F5F9 !important; /* Branco quase puro */
-    font-weight: 600;          /* Deixa o texto um pouco mais grosso */
-    fill: #F1F5F9 !important;  /* Garante que a setinha também fique branca */
-}
-
-/* Efeito Hover para dar feedback visual */
-.streamlit-expanderHeader:hover {
-    border-color: #667eea;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+    border: 1px solid #334155 !important;
+    border-radius: 8px !important;
     color: #FFFFFF !important;
 }
-.stSpinner > div { border-color: #667eea transparent transparent transparent; }
+.streamlit-expanderHeader p, 
+.streamlit-expanderHeader span, 
+.streamlit-expanderHeader div {
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+}
+.streamlit-expanderHeader svg {
+    fill: #FFFFFF !important;
+    color: #FFFFFF !important;
+}
+.streamlit-expanderHeader:hover {
+    border-color: #667eea !important;
+}
 </style>
 """
 
@@ -246,8 +248,8 @@ def init_session_state():
         'fase': 1, 'ctx': None, 'tree': None, 'market_data': None,
         'strategy_response': None, 'excel_data': None, 'audio_transcription': '',
         'kb_content': '', 'processing': False, 'error_message': None,
-        'chat_messages': [],  # ✅ NOVO: Histórico do chat
-        'chat_context': ''     # ✅ NOVO: Contexto do tema principal
+        'chat_messages': [],
+        'chat_context': ''
     }
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -290,18 +292,12 @@ class KnowledgeBaseLoader:
     @staticmethod
     @st.cache_data(ttl=3600)
     def load_knowledge_base(folder: str = "materiais_publicos") -> str:
-        """Carrega todos os arquivos .txt da pasta materiais_publicos"""
         content_parts = []
-        
-        # ✅ CORRIGIDO: Verifica se a pasta existe
         if not os.path.exists(folder):
             return ""
-        
-        # ✅ CORRIGIDO: Lê apenas arquivos .txt
         for filename in sorted(os.listdir(folder)):
             if not filename.endswith('.txt'):
                 continue
-                
             filepath = os.path.join(folder, filename)
             try:
                 with open(filepath, 'r', encoding='utf-8') as f:
@@ -313,11 +309,10 @@ class KnowledgeBaseLoader:
             except Exception as e:
                 print(f"Erro ao ler {filename}: {e}")
                 continue
-        
         return "".join(content_parts)
 
 class LLMClient:
-    # ✅ CORRIGIDO: SYSTEM_PROMPT reforçado para evitar erros de LaTeX
+    # ✅ ALTERAÇÃO 1 e 2: BLINDAGEM LATEX/JSON E ESTRUTURA YOUTUBE
     @staticmethod
     def _get_system_prompt(conhecimento: str) -> str:
         return f"""Você é o FinMentor, um CFO Virtual de alto nível especializado em finanças corporativas e pessoais.
@@ -352,20 +347,13 @@ Antes de enviar, confirme:
 
 {conhecimento}
 
-IMPORTANTE: Use este conhecimento técnico para fundamentar suas respostas com:
-- Fórmulas e cálculos corretos
-- Metodologias reconhecidas (DCF, WACC, DuPont, etc)
-- Referências a autores especializados (Damodaran, Ross, Assaf Neto, Gitman)
-- KPIs e métricas apropriadas
-- Frameworks e modelos estabelecidos
-
-## FORMATO DE RESPOSTA (CRÍTICO)
-Retorne EXCLUSIVAMENTE um JSON válido.
+IMPORTANTE: Use este conhecimento técnico para fundamentar suas respostas.
 ⚠️ REGRA DE OURO PARA LATEX: Você DEVE usar barra invertida DUPLA para fórmulas LaTeX dentro do JSON.
-- ERRADO: "\frac{{A}}{{B}}"
-- CORRETO: "\\frac{{A}}{{B}}"
+- ERRADO: "\\frac{{A}}{{B}}"
+- CORRETO: "\\\\frac{{A}}{{B}}"
 
-Estrutura do JSON:
+## FORMATO DE RESPOSTA
+Retorne EXCLUSIVAMENTE um JSON válido com esta estrutura:
 {{
     "titulo": "Título da Estratégia",
     "area_identificada": "Área principal identificada",
@@ -374,7 +362,11 @@ Estrutura do JSON:
     "analise_dos_dados": "Explicação detalhada do raciocínio Chain of Thought usado",
     "resumo": "Resumo executivo em 3-5 parágrafos com linguagem técnica sênior",
     "modelagem_matematica": "Fórmulas em LaTeX puro (use double backslash)",
-    "video_sugestao": {{"titulo": "Título do vídeo", "url": "https://youtube.com/watch?v=...", "motivo": "Por que é relevante"}},
+    "video_sugestao": {{
+        "titulo": "Título chamativo para o vídeo", 
+        "termo_busca": "Termo exato para pesquisar no YouTube (ex: Valuation Damodaran Prática)", 
+        "motivo": "Por que é relevante"
+    }},
     "template_sugerido": {{"nome": "Nome do template Excel", "colunas": ["Col1", "Col2"], "linhas_exemplo": [{{"Col1": "Val1", "Col2": "Val2"}}], "formulas_sugeridas": ["=FORMULA1"]}},
     "componentes": {{"pergunta_raiz": "Pergunta principal", "filhos": [{{"condicao": "Se X", "acao": "Faça Y", "filhos": []}}]}},
     "checklist_implementacao": ["Passo 1", "Passo 2"],
@@ -404,7 +396,7 @@ IMPORTANTE: Retorne APENAS o JSON, sem texto adicional ou formatação markdown.
 - IPCA: {mercado.get('ipca', 'N/D')}
 - Atualizado: {mercado.get('timestamp', 'N/D')}
 
-Gere uma Estratégia Estruturada. Retorne APENAS o JSON. Cuidado com escapes do LaTeX."""
+Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
 
         try:
             response = client.chat.completions.create(
@@ -417,22 +409,19 @@ Gere uma Estratégia Estruturada. Retorne APENAS o JSON. Cuidado com escapes do 
                 max_tokens=4000
             )
             content = response.choices[0].message.content.strip()
-            # Remove blocos de código Markdown
             content = re.sub(r'^```json\s*', '', content)
             content = re.sub(r'\s*```$', '', content)
             
-            # ✅ CORREÇÃO AUTOMÁTICA DE LATEX
-            # Tenta carregar o JSON. Se falhar por erro de escape, aplica correção via Regex
+            # ✅ ALTERAÇÃO 1: CORRETOR AUTOMÁTICO DE LATEX/JSON
             try:
                 return json.loads(content)
             except json.JSONDecodeError:
-                # Regex mágica: encontra barras invertidas únicas que NÃO são escapes válidos de JSON e as duplica
-                # Isso conserta coisas como "\frac" transformando em "\\frac" sem quebrar "\n" ou "\""
+                # Regex mágica: encontra barras invertidas únicas que NÃO são escapes válidos e as duplica
                 fixed_content = re.sub(r'(?<!\\)\\(?!["\\/bfnrtu])', r'\\\\', content)
                 return json.loads(fixed_content)
 
         except json.JSONDecodeError as e:
-            return {"error": True, "message": f"Erro ao processar resposta da IA (JSON inválido mesmo após correção): {str(e)}", "raw_content": content[:500] if 'content' in locals() else "N/D"}
+            return {"error": True, "message": f"Erro ao processar resposta (JSON inválido mesmo após correção): {str(e)}", "raw_content": content[:500] if 'content' in locals() else "N/D"}
         except Exception as e:
             return {"error": True, "message": f"Erro na API: {str(e)}"}
 
@@ -513,11 +502,8 @@ class ExcelTemplateGenerator:
 
 def clean_latex(text: str) -> str:
     if not text: return ""
-    # Remove delimitadores LaTeX
     text = re.sub(r'\\\[|\\\]|\\\(|\\\)|\$\$|\$', '', text)
-    # Remove \text{} e mantém apenas o conteúdo
     text = re.sub(r'\\text\{([^}]+)\}', r'\1', text)
-    # Remove espaços extras
     text = text.strip()
     return text
 
@@ -626,8 +612,8 @@ def render_phase_2():
         st.session_state.fase = 1
         st.session_state.strategy_response = None
         st.session_state.audio_transcription = ''
-        st.session_state.chat_messages = []       # ✅ Limpa chat
-        st.session_state.chat_context = ''        # ✅ Limpa contexto
+        st.session_state.chat_messages = []
+        st.session_state.chat_context = ''
         st.rerun()
     
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
@@ -635,13 +621,25 @@ def render_phase_2():
     col_video, col_excel = st.columns(2)
     with col_video:
         video = response.get('video_sugestao', {})
-        if video and video.get('url'):
+        # ✅ ALTERAÇÃO 2: LOGICA DE LINK YOUTUBE DINÂMICO
+        termo = video.get('termo_busca')
+        
+        if termo or video.get('url'):
+            if termo:
+                encoded_term = urllib.parse.quote(termo)
+                video_url = f"https://www.youtube.com/results?search_query={encoded_term}"
+            else:
+                video_url = video.get('url', '#')
+
             st.markdown(f'''<div class="video-card">
                 <h4>🎬 Vídeo Recomendado</h4>
-                <p class="video-title">{video.get('titulo', 'Vídeo')}</p>
-                <p class="video-desc">{video.get('motivo', '')}</p>
-                <a href="{video.get('url', '#')}" target="_blank">▶️ Assistir no YouTube</a>
+                <p class="video-title">{video.get('titulo', 'Sugestão de Estudo')}</p>
+                <p class="video-desc">{video.get('motivo', 'Aprofunde-se neste tópico.')}</p>
+                <a href="{video_url}" target="_blank">
+                    🔍 Pesquisar "{termo if termo else 'Vídeo'}" no YouTube
+                </a>
             </div>''', unsafe_allow_html=True)
+
     with col_excel:
         template = response.get('template_sugerido', {})
         if template and template.get('colunas'):
@@ -668,22 +666,12 @@ def render_phase_2():
     if response.get('modelagem_matematica'):
         st.markdown("### 📐 Modelagem Matemática")
         try:
-            # Remove APENAS os delimitadores externos (Streamlit adiciona automaticamente)
             formula = response['modelagem_matematica']
             formula = formula.strip()
-            # Remove \[ e \] do início e fim
-            formula = re.sub(r'^\\\[', '', formula)
-            formula = re.sub(r'\\\]$', '', formula)
-            # Remove $$ do início e fim
-            formula = re.sub(r'^\$\$', '', formula)
-            formula = re.sub(r'\$\$$', '', formula)
-            # Remove $ simples do início e fim
-            formula = re.sub(r'^\$', '', formula)
-            formula = re.sub(r'\$$', '', formula)
-            formula = formula.strip()
+            # Remove delimitadores extras que possam vir
+            formula = re.sub(r'^\\\[|\\\]$|^\$\$|\$\$$|^\$|\$$', '', formula).strip()
             st.latex(formula)
         except Exception as e:
-            # Fallback: exibe como texto
             st.code(response['modelagem_matematica'], language='latex')
     
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
@@ -703,34 +691,28 @@ def render_phase_2():
     if response.get('riscos_mitigacoes'):
         st.markdown("### ⚠️ Riscos e Mitigações")
         render_risks(response['riscos_mitigacoes'])
-    # ✅ NOVO: CHAT INTERATIVO
+
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
     st.markdown("### 💬 Tire suas Dúvidas")
     st.caption("Pergunte mais sobre este tema. O assistente já conhece o contexto da sua consulta.")
     
-    # Salva contexto principal na primeira vez
     if not st.session_state.chat_context:
         st.session_state.chat_context = f"""
 Tema: {response.get('titulo', 'Estratégia Financeira')}
 Área: {response.get('area_identificada', 'Finanças')}
 Contexto original: {st.session_state.ctx}
 KPIs relevantes: {', '.join(response.get('kpis_relevantes', []))}
-Frameworks: {', '.join(response.get('frameworks_utilizados', []))}
 """
     
-    # Exibe histórico do chat
     for msg in st.session_state.chat_messages:
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
     
-    # Input do usuário
     if user_input := st.chat_input("Digite sua pergunta..."):
-        # Adiciona pergunta do usuário
         st.session_state.chat_messages.append({"role": "user", "content": user_input})
         with st.chat_message("user"):
             st.markdown(user_input)
         
-        # Gera resposta do assistente
         with st.chat_message("assistant"):
             with st.spinner("Pensando..."):
                 api_key = os.getenv('OPENAI_API_KEY') or st.secrets.get('OPENAI_API_KEY', '')
@@ -743,7 +725,6 @@ Frameworks: {', '.join(response.get('frameworks_utilizados', []))}
                 )
                 st.markdown(response_text)
                 st.session_state.chat_messages.append({"role": "assistant", "content": response_text})
-        
         st.rerun()
 
 def main():
