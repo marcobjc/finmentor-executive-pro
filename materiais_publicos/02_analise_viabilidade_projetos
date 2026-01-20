@@ -1,0 +1,410 @@
+# ANÁLISE DE VIABILIDADE DE PROJETOS DE INVESTIMENTO
+# Base de Conhecimento Premium - FinMentor Executive Pro
+# =========================================================
+
+## 1. MÉTRICAS FUNDAMENTAIS
+
+### 1.1 Valor Presente Líquido (VPL)
+
+**Definição:** Soma dos fluxos de caixa descontados ao custo de oportunidade do capital.
+
+**Fórmula:**
+VPL = -I₀ + Σ (FC_t / (1 + k)^t)
+
+**Onde:**
+- I₀ = Investimento inicial
+- FC_t = Fluxo de caixa no período t
+- k = Taxa de desconto (custo de capital)
+- t = Período
+
+**Regra de Decisão:**
+- VPL > 0 → Projeto cria valor → ACEITAR
+- VPL < 0 → Projeto destrói valor → REJEITAR
+- VPL = 0 → Indiferente (retorna exatamente o custo de capital)
+
+**Vantagens:**
+- Considera valor do dinheiro no tempo
+- Medida absoluta de criação de valor
+- Aditivo (pode somar VPLs de projetos)
+
+**Limitações:**
+- Requer estimativa precisa do custo de capital
+- Não indica eficiência do capital empregado
+- Difícil comparar projetos de tamanhos diferentes
+
+**Referência:** Ross, Westerfield & Jaffe, "Corporate Finance", Cap. 6
+
+### 1.2 Taxa Interna de Retorno (TIR)
+
+**Definição:** Taxa que iguala o VPL a zero.
+
+**Fórmula:**
+0 = -I₀ + Σ (FC_t / (1 + TIR)^t)
+
+**Regra de Decisão:**
+- TIR > Custo de Capital → ACEITAR
+- TIR < Custo de Capital → REJEITAR
+
+**Vantagens:**
+- Fácil de comunicar (percentual)
+- Não requer definição prévia do custo de capital
+- Indica margem de segurança
+
+**Limitações:**
+- Pode ter múltiplas TIRs (fluxos não convencionais)
+- Assume reinvestimento à própria TIR
+- Pode conflitar com VPL em projetos mutuamente excludentes
+
+**TIR Modificada (TIRM):**
+Resolve problema do reinvestimento assumindo:
+- Fluxos negativos descontados ao custo de capital
+- Fluxos positivos reinvestidos à taxa de reinvestimento
+
+### 1.3 Payback Simples
+
+**Definição:** Tempo necessário para recuperar o investimento inicial.
+
+**Fórmula:**
+Payback = Ano antes da recuperação + (Saldo a recuperar / FC do ano de recuperação)
+
+**Regra de Decisão:**
+- Payback < Prazo máximo aceitável → ACEITAR
+
+**Vantagens:**
+- Simplicidade
+- Mede liquidez e risco
+- Útil para projetos de curto prazo
+
+**Limitações:**
+- Ignora valor do dinheiro no tempo
+- Ignora fluxos após o payback
+- Critério arbitrário de corte
+
+### 1.4 Payback Descontado
+
+**Definição:** Tempo para recuperar o investimento considerando o valor do dinheiro no tempo.
+
+**Fórmula:**
+Usa fluxos descontados: FC_t / (1 + k)^t
+
+**Vantagens sobre Payback Simples:**
+- Considera custo de oportunidade
+- Mais conservador
+- Melhor medida de risco
+
+### 1.5 Índice de Lucratividade (IL)
+
+**Definição:** Razão entre o valor presente dos fluxos e o investimento inicial.
+
+**Fórmula:**
+IL = VP dos Fluxos Futuros / Investimento Inicial
+IL = (VPL + I₀) / I₀
+IL = 1 + (VPL / I₀)
+
+**Regra de Decisão:**
+- IL > 1 → ACEITAR
+- IL < 1 → REJEITAR
+
+**Vantagens:**
+- Indica eficiência do capital
+- Útil para racionamento de capital
+- Permite ranking de projetos
+
+### 1.6 Retorno sobre Investimento (ROI)
+
+**Fórmula:**
+ROI = (Ganho do Investimento - Custo do Investimento) / Custo do Investimento
+
+**ROI Anualizado:**
+ROI_anual = (1 + ROI_total)^(1/n) - 1
+
+---
+
+## 2. CONSTRUÇÃO DO FLUXO DE CAIXA
+
+### 2.1 Princípios Fundamentais
+
+1. **Fluxos Incrementais:** Considerar apenas fluxos que ocorrem POR CAUSA do projeto
+2. **Custos Afundados (Sunk Costs):** IGNORAR - já ocorreram independente da decisão
+3. **Custos de Oportunidade:** INCLUIR - alternativas sacrificadas
+4. **Efeitos Colaterais:** INCLUIR - canibalização, sinergias
+5. **Capital de Giro:** INCLUIR - investimento e recuperação
+6. **After-tax:** Usar fluxos APÓS impostos
+
+### 2.2 Estrutura do Fluxo de Caixa Operacional
+
+```
+Receita Bruta
+(-) Deduções (impostos sobre vendas)
+= Receita Líquida
+(-) Custos Variáveis
+(-) Custos Fixos (exceto depreciação)
+= EBITDA
+(-) Depreciação
+= EBIT (Lucro Operacional)
+(-) IR/CSLL sobre EBIT
+= NOPAT (Lucro Operacional Após Impostos)
+(+) Depreciação (não é caixa)
+(-) CAPEX
+(-) Variação do Capital de Giro
+= Fluxo de Caixa Livre (FCL)
+```
+
+### 2.3 Tratamento da Depreciação
+
+**Benefício Fiscal da Depreciação:**
+Economia de IR = Depreciação × Alíquota de IR
+
+**Exemplo:**
+- Depreciação: R$ 100.000
+- Alíquota IR/CSLL: 34%
+- Benefício fiscal: R$ 34.000
+
+**Métodos de Depreciação:**
+- Linear: Valor / Vida útil
+- Acelerada: Benefício fiscal antecipado (aumenta VPL)
+
+### 2.4 Capital de Giro
+
+**Necessidade de Capital de Giro (NCG):**
+NCG = Contas a Receber + Estoques - Fornecedores
+
+**No fluxo de caixa:**
+- AUMENTO de NCG = SAÍDA de caixa (investimento)
+- REDUÇÃO de NCG = ENTRADA de caixa (liberação)
+
+**No final do projeto:**
+- Recuperação integral do capital de giro investido
+
+### 2.5 Valor Residual
+
+**Ao final do projeto, considerar:**
+- Venda de equipamentos (valor de mercado)
+- (-) IR sobre ganho de capital (se valor > valor contábil)
+- (+) Benefício fiscal se valor < valor contábil
+- (+) Recuperação do capital de giro
+
+---
+
+## 3. CUSTO DE CAPITAL PARA PROJETOS
+
+### 3.1 Quando usar WACC da Empresa
+
+- Projeto com risco similar ao da empresa
+- Mesma estrutura de capital
+- Mesmo setor de atuação
+
+### 3.2 Quando Ajustar o Custo de Capital
+
+**Projeto mais arriscado que a empresa:**
+- Usar beta de empresas do setor do projeto
+- Adicionar prêmio de risco
+
+**Projeto menos arriscado:**
+- Usar beta menor
+- Projetos com receita contratada, regulados
+
+### 3.3 Cálculo do Beta do Projeto
+
+1. Identificar empresas comparáveis do setor do projeto
+2. Obter beta alavancado das comparáveis
+3. Desalavancar: βu = βL / [1 + (1-t) × (D/E)]
+4. Calcular beta médio desalavancado
+5. Realavancar com estrutura de capital do projeto
+
+---
+
+## 4. ANÁLISE DE RISCO
+
+### 4.1 Análise de Sensibilidade
+
+**Objetivo:** Identificar variáveis críticas
+
+**Variáveis comuns:**
+- Preço de venda
+- Volume de vendas
+- Custo variável unitário
+- Investimento inicial
+- Taxa de desconto
+- Vida útil do projeto
+
+**Como fazer:**
+1. Variar uma variável por vez (±10%, ±20%)
+2. Recalcular VPL para cada cenário
+3. Identificar variáveis com maior impacto
+4. Criar gráfico tornado
+
+### 4.2 Análise de Cenários
+
+**Cenários típicos:**
+| Cenário | Probabilidade | Premissas |
+|---------|---------------|-----------|
+| Pessimista | 25% | Volume -20%, Preço -10% |
+| Base | 50% | Premissas originais |
+| Otimista | 25% | Volume +20%, Preço +10% |
+
+**VPL Esperado:**
+E(VPL) = Σ (Probabilidade_i × VPL_i)
+
+**Desvio Padrão do VPL:**
+σ = √[Σ P_i × (VPL_i - E(VPL))²]
+
+### 4.3 Simulação de Monte Carlo
+
+**Processo:**
+1. Definir distribuições de probabilidade para variáveis-chave
+2. Gerar milhares de cenários aleatórios
+3. Calcular VPL para cada cenário
+4. Analisar distribuição dos resultados
+
+**Outputs:**
+- VPL médio
+- Desvio padrão
+- Probabilidade de VPL < 0
+- VPL no percentil 5% e 95%
+
+### 4.4 Análise do Ponto de Equilíbrio
+
+**Ponto de Equilíbrio Contábil:**
+Q = Custos Fixos / (Preço - Custo Variável)
+
+**Ponto de Equilíbrio Financeiro (VPL = 0):**
+Considera depreciação e custo de capital
+
+**Ponto de Equilíbrio de Caixa:**
+Q = (Custos Fixos - Depreciação) / (Preço - Custo Variável)
+
+---
+
+## 5. PROJETOS MUTUAMENTE EXCLUDENTES
+
+### 5.1 Conflito VPL vs TIR
+
+**Quando ocorre:**
+- Projetos de tamanhos diferentes
+- Padrões de fluxo diferentes
+- Vidas úteis diferentes
+
+**Regra:** Sempre usar VPL para decisão final
+
+### 5.2 Projetos com Vidas Diferentes
+
+**Método da Anuidade Equivalente (AE):**
+AE = VPL / Fator de Anuidade
+
+Onde: Fator de Anuidade = [1 - (1+k)^(-n)] / k
+
+**Método da Reposição (Cadeia):**
+Replicar projetos até o MMC das vidas
+
+### 5.3 Racionamento de Capital
+
+**Quando o orçamento é limitado:**
+1. Calcular IL de cada projeto
+2. Ranquear por IL decrescente
+3. Selecionar projetos até esgotar orçamento
+
+---
+
+## 6. CASOS ESPECIAIS
+
+### 6.1 Projetos de Redução de Custos
+
+**Fluxo de caixa:**
+FC = Economia de Custos × (1 - t) + Depreciação × t
+
+### 6.2 Projetos de Substituição de Equipamentos
+
+**Considerar:**
+- Valor de venda do equipamento antigo (- IR sobre ganho)
+- Perda do benefício fiscal da depreciação remanescente
+- Economia operacional do novo equipamento
+- Nova depreciação
+
+### 6.3 Projetos com Opções Reais
+
+**Tipos de opções:**
+- Opção de expansão
+- Opção de abandono
+- Opção de adiamento
+- Opção de flexibilidade
+
+**Valor do projeto com opção:**
+VPL_expandido = VPL_tradicional + Valor da Opção
+
+---
+
+## 7. TEMPLATE DE ANÁLISE DE VIABILIDADE
+
+### 7.1 Resumo Executivo
+- Investimento total
+- VPL, TIR, Payback
+- Principais premissas
+- Recomendação
+
+### 7.2 Premissas
+- Macroeconômicas (inflação, câmbio, juros)
+- Mercado (tamanho, crescimento, market share)
+- Operacionais (capacidade, custos, preços)
+- Financeiras (estrutura de capital, custo de dívida)
+
+### 7.3 Projeção de Resultados
+- DRE projetada
+- Fluxo de caixa projetado
+- Balanço patrimonial projetado (se aplicável)
+
+### 7.4 Análise de Retorno
+- VPL em diferentes taxas
+- TIR e TIRM
+- Payback e Payback descontado
+- Índice de Lucratividade
+
+### 7.5 Análise de Risco
+- Sensibilidade das variáveis-chave
+- Cenários (otimista, base, pessimista)
+- Ponto de equilíbrio
+
+### 7.6 Conclusão e Recomendação
+- Viabilidade econômico-financeira
+- Riscos principais e mitigadores
+- Recomendação final
+
+---
+
+## 8. CHECKLIST DE VIABILIDADE
+
+### Premissas
+- [ ] Premissas de mercado documentadas e justificadas
+- [ ] Preços baseados em pesquisa/benchmark
+- [ ] Custos detalhados e validados
+- [ ] Investimento orçado com contingência
+
+### Fluxo de Caixa
+- [ ] Apenas fluxos incrementais
+- [ ] Custos afundados excluídos
+- [ ] Custos de oportunidade incluídos
+- [ ] Capital de giro considerado
+- [ ] Depreciação e benefício fiscal corretos
+- [ ] Valor residual calculado
+
+### Taxa de Desconto
+- [ ] WACC apropriado para o risco do projeto
+- [ ] Beta ajustado se necessário
+- [ ] Prêmios adicionais considerados
+
+### Análise de Risco
+- [ ] Sensibilidade das variáveis críticas
+- [ ] Cenários otimista/pessimista
+- [ ] Ponto de equilíbrio calculado
+- [ ] Principais riscos identificados
+
+---
+
+## REFERÊNCIAS BIBLIOGRÁFICAS
+
+1. ROSS, Stephen A.; WESTERFIELD, Randolph W.; JAFFE, Jeffrey. Corporate Finance. 12th ed. McGraw-Hill, 2019.
+2. BREALEY, Richard A.; MYERS, Stewart C.; ALLEN, Franklin. Principles of Corporate Finance. 13th ed. McGraw-Hill, 2020.
+3. GITMAN, Lawrence J.; ZUTTER, Chad J. Principles of Managerial Finance. 15th ed. Pearson, 2018.
+4. ASSAF NETO, Alexandre. Finanças Corporativas e Valor. 8ª ed. Atlas, 2020.
+5. DAMODARAN, Aswath. Applied Corporate Finance. 4th ed. Wiley, 2014.
+6. SOUZA, Alceu; CLEMENTE, Ademir. Decisões Financeiras e Análise de Investimentos. 6ª ed. Atlas, 2008.
