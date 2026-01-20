@@ -412,7 +412,8 @@ Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
             return response.text
         except Exception as e:
             return f"[Erro na transcrição: {str(e)}]"
-@staticmethod
+            
+    @staticmethod
     def chat_followup(user_message: str, chat_history: List[Dict], main_context: str, kb: str, api_key: str) -> str:
         """
         Responde perguntas de followup mantendo o contexto do tema principal
@@ -590,7 +591,7 @@ def render_phase_2():
     st.markdown(f'''<div style="text-align: center; padding: 1rem 0;"><span class="focus-badge">{response.get('area_identificada', 'Finanças')}</span></div>
     <h1 class="strategy-header">{response.get('titulo', 'Estratégia Financeira')}</h1>''', unsafe_allow_html=True)
     
-if st.button("⬅️ Nova Consulta"):
+    if st.button("⬅️ Nova Consulta"):
         st.session_state.fase = 1
         st.session_state.strategy_response = None
         st.session_state.audio_transcription = ''
@@ -655,7 +656,7 @@ if st.button("⬅️ Nova Consulta"):
     if response.get('riscos_mitigacoes'):
         st.markdown("### ⚠️ Riscos e Mitigações")
         render_risks(response['riscos_mitigacoes'])
-# ✅ NOVO: CHAT INTERATIVO
+    # ✅ NOVO: CHAT INTERATIVO
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
     st.markdown("### 💬 Tire suas Dúvidas")
     st.caption("Pergunte mais sobre este tema. O assistente já conhece o contexto da sua consulta.")
