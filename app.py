@@ -3,6 +3,7 @@ FinMentor: Executive Pro
 ========================
 CFO Virtual - Consultor Financeiro de Bolso
 Desenvolvido para: Marco A. Duarte Jr.
+VERSÃO CORRIGIDA - JSON Parsing Robusto
 """
 
 import streamlit as st
@@ -255,7 +256,6 @@ def init_session_state():
         'kb_content': '', 'processing': False, 'error_message': None,
         'chat_messages': [],
         'chat_context': '',
-        # Chaves de API na sessão para persistência durante uso
         'anthropic_key': '',
         'openai_key': ''
     }
@@ -319,8 +319,11 @@ class KnowledgeBaseLoader:
                 continue
         return "".join(content_parts)
 
+
 class LLMClient:
-    # ✅ ID DE MODELO ESPECÍFICO (Versão Sonnet 4.5 Testada)
+    """Cliente LLM com parsing JSON robusto"""
+    
+    # ✅ Modelo estável
     MODELO_ESCOLHIDO = "claude-sonnet-4-5-20250929"
 
     def __init__(self, api_key: str):
@@ -328,112 +331,266 @@ class LLMClient:
 
     @staticmethod
     def _get_system_prompt(conhecimento: str) -> str:
-        return f"""Você é o FinMentor, um CFO Virtual.
+        """System prompt otimizado para JSON válido"""
+        # Limita conhecimento para evitar timeout
+        kb_truncated = conhecimento[:50000] if conhecimento else ""
         
-OBJETIVO: Gerar uma estratégia financeira estruturada em JSON.
+        return f"""Você é o FinMentor, um CFO Virtual especializado em finanças corporativas brasileiras.
 
-REGRAS CRÍTICAS DE FORMATAÇÃO (JSON):
-1. NÃO use quebras de linha reais dentro das strings. Use apenas '\\n'.
-2. Para LaTeX, use BARRA DUPLA: '\\\\frac' (nunca use apenas uma barra).
-3. Se precisar usar aspas duplas dentro de um texto, escape-as: \\"texto\\".
-4. Seja conciso na 'analise_dos_dados' para não estourar o limite de texto.
+TAREFA: Analisar o desafio financeiro e retornar uma estratégia estruturada.
 
-BASE DE CONHECIMENTO:
-{conhecimento}
+REGRAS CRÍTICAS DE FORMATO:
+1. Retorne APENAS JSON válido, sem markdown, sem ```json, sem texto antes ou depois
+2. Todas as strings devem estar em uma única linha (sem quebras de linha dentro de strings)
+3. Use aspas duplas para todas as strings
+4. Não use caracteres de controle dentro das strings
+5. Para fórmulas matemáticas, use texto simples como "VPL = soma(FC/(1+r)^t)" em vez de LaTeX
 
-FORMATO DE RESPOSTA ESPERADO (JSON RAW):
+BASE DE CONHECIMENTO (resumida):
+{kb_truncated[:20000]}
+
+ESTRUTURA JSON OBRIGATÓRIA:
 {{
-    "titulo": "...",
-    "area_identificada": "...",
-    "kpis_relevantes": ["..."],
-    "frameworks_utilizados": ["..."],
-    "analise_dos_dados": "...",
-    "resumo": "...",
-    "modelagem_matematica": "...",
-    "video_sugestao": {{ "titulo": "...", "termo_busca": "...", "motivo": "..." }},
-    "template_sugerido": {{ "nome": "...", "colunas": [], "linhas_exemplo": [], "formulas_sugeridas": [] }},
-    "componentes": {{ "pergunta_raiz": "...", "filhos": [] }},
-    "checklist_implementacao": [],
-    "riscos_mitigacoes": []
-}}"""
+  "titulo": "Título da estratégia (máx 60 caracteres)",
+  "area_identificada": "Área financeira principal",
+  "kpis_relevantes": ["KPI1", "KPI2", "KPI3"],
+  "frameworks_utilizados": ["Framework1", "Framework2"],
+  "analise_dos_dados": "Análise concisa em 2-3 parágrafos sem quebras de linha",
+  "resumo": "Resumo executivo em 1 parágrafo",
+  "modelagem_matematica": "VPL = soma dos fluxos descontados",
+  "video_sugestao": {{
+    "titulo": "Nome do vídeo sugerido",
+    "termo_busca": "termo para buscar no youtube",
+    "motivo": "Por que este conteúdo é relevante"
+  }},
+  "template_sugerido": {{
+    "nome": "Nome do template Excel",
+    "colunas": ["Coluna1", "Coluna2", "Coluna3", "Coluna4"],
+    "linhas_exemplo": [
+      {{"Coluna1": "Exemplo1", "Coluna2": "100", "Coluna3": "200", "Coluna4": "300"}}
+    ],
+    "formulas_sugeridas": ["=SOMA(B2:B10)", "=VPL(taxa;fluxos)"]
+  }},
+  "componentes": {{
+    "pergunta_raiz": "Qual a decisão principal?",
+    "filhos": [
+      {{
+        "condicao": "Se cenário A",
+        "acao": "Recomendação para cenário A",
+        "filhos": []
+      }},
+      {{
+        "condicao": "Se cenário B", 
+        "acao": "Recomendação para cenário B",
+        "filhos": []
+      }}
+    ]
+  }},
+  "checklist_implementacao": [
+    "Passo 1: Ação específica",
+    "Passo 2: Ação específica",
+    "Passo 3: Ação específica"
+  ],
+  "riscos_mitigacoes": [
+    {{
+      "risco": "Descrição do risco",
+      "mitigacao": "Como mitigar"
+    }}
+  ]
+}}
 
-    def _sanitize_json(self, raw_content: str) -> str:
-        """Função auxiliar para limpar erros comuns de JSON gerados por LLMs"""
-        content = re.sub(r'^```json\s*', '', raw_content)
-        content = re.sub(r'\s*```$', '', content)
-        content = content.strip()
+Retorne APENAS o JSON, começando com {{ e terminando com }}."""
+
+    def _extract_json_from_response(self, text: str) -> Dict[str, Any]:
+        """Extrai JSON de forma robusta, mesmo com texto extra"""
         
-        # Corrige barras invertidas simples em LaTeX (transforma \frac em \\frac)
-        # Protegendo caracteres de escape válidos de JSON
-        content = re.sub(r'(?<!\\)\\(?!["\\/bfnrtu])', r'\\\\', content)
+        # Remove blocos de código markdown
+        text = re.sub(r'```json\s*', '', text)
+        text = re.sub(r'```\s*', '', text)
+        text = text.strip()
         
-        # Remove quebras de linha reais dentro de strings (erro comum)
-        content = content.replace('\n', ' ').replace('\r', '')
+        # Tenta encontrar o JSON no texto
+        # Procura pelo primeiro { e último }
+        start_idx = text.find('{')
+        end_idx = text.rfind('}')
         
-        return content
+        if start_idx == -1 or end_idx == -1 or end_idx <= start_idx:
+            raise ValueError("Não foi possível encontrar JSON válido na resposta")
+        
+        json_str = text[start_idx:end_idx + 1]
+        
+        # Tenta parse direto
+        try:
+            return json.loads(json_str)
+        except json.JSONDecodeError:
+            pass
+        
+        # Tenta corrigir problemas comuns
+        # Remove caracteres de controle exceto \n \r \t
+        json_str = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f]', '', json_str)
+        
+        # Substitui quebras de linha dentro de strings por espaços
+        # Isso é feito de forma mais cuidadosa
+        in_string = False
+        result = []
+        i = 0
+        while i < len(json_str):
+            char = json_str[i]
+            
+            if char == '"' and (i == 0 or json_str[i-1] != '\\'):
+                in_string = not in_string
+                result.append(char)
+            elif in_string and char in '\n\r':
+                result.append(' ')
+            else:
+                result.append(char)
+            i += 1
+        
+        json_str = ''.join(result)
+        
+        # Tenta parse novamente
+        try:
+            return json.loads(json_str)
+        except json.JSONDecodeError as e:
+            # Se ainda falhar, retorna erro estruturado
+            raise ValueError(f"JSON inválido após correções: {str(e)}")
 
     def generate_strategy(self, contexto: str, persona: str, mercado: Dict[str, Any], kb: str) -> Dict[str, Any]:
-        import anthropic
+        """Gera estratégia financeira com parsing robusto"""
+        
         client = anthropic.Anthropic(api_key=self.api_key)
+        system_prompt = self._get_system_prompt(kb)
         
-        system_prompt = self._get_system_prompt(kb[:150000] if kb else "Nenhuma base carregada.")
-        
-        user_prompt = f"""CONTEXTO: {contexto}
+        user_prompt = f"""DESAFIO DO USUÁRIO:
+{contexto}
+
 PERFIL: {persona}
-MERCADO: Dólar {mercado.get('dolar')}, IBOV {mercado.get('ibov')}.
-Gere o JSON."""
+DADOS DE MERCADO: Dólar R$ {mercado.get('dolar', 'N/D')}, IBOVESPA {mercado.get('ibov', 'N/D')} pontos, SELIC {mercado.get('selic', 'N/D')}, IPCA {mercado.get('ipca', 'N/D')}
+
+Analise o desafio e retorne o JSON estruturado conforme especificado."""
 
         try:
             response = client.messages.create(
                 model=self.MODELO_ESCOLHIDO,
-                max_tokens=8000, # ✅ Limite alto para evitar corte de string
-                temperature=0.5, # ✅ Estabilidade
+                max_tokens=4096,  # Reduzido para evitar respostas muito longas
+                temperature=0.3,  # Mais determinístico para JSON
                 system=system_prompt,
                 messages=[{"role": "user", "content": user_prompt}]
             )
             
             raw_content = response.content[0].text
             
-            # Tentativa 1: Parse direto
+            # Tenta extrair JSON
             try:
-                clean_content = re.sub(r'^```json\s*', '', raw_content)
-                clean_content = re.sub(r'\s*```$', '', clean_content).strip()
-                return json.loads(clean_content, strict=False)
-            except json.JSONDecodeError:
-                # Tentativa 2: Sanitização
-                try:
-                    fixed_content = self._sanitize_json(raw_content)
-                    return json.loads(fixed_content, strict=False)
-                except json.JSONDecodeError as e:
-                    return {
-                        "titulo": "Erro na Formatação",
-                        "area_identificada": "Erro Técnico",
-                        "analise_dos_dados": f"A IA gerou uma resposta válida, mas o formato JSON quebrou. Texto bruto parcial:\n\n{raw_content[:500]}...",
-                        "resumo": "Houve um erro técnico ao processar a resposta. Tente novamente ou simplifique o pedido.",
-                        "kpis_relevantes": [],
-                        "frameworks_utilizados": [],
-                        "checklist_implementacao": ["Tente novamente"],
-                        "error_details": str(e)
+                result = self._extract_json_from_response(raw_content)
+                
+                # Validação básica dos campos obrigatórios
+                required_fields = ['titulo', 'area_identificada', 'resumo']
+                for field in required_fields:
+                    if field not in result:
+                        result[field] = "Não especificado"
+                
+                # Garante que listas existam
+                if 'kpis_relevantes' not in result or not isinstance(result['kpis_relevantes'], list):
+                    result['kpis_relevantes'] = ["VPL", "TIR", "Payback"]
+                if 'frameworks_utilizados' not in result or not isinstance(result['frameworks_utilizados'], list):
+                    result['frameworks_utilizados'] = ["Análise de Viabilidade"]
+                if 'checklist_implementacao' not in result or not isinstance(result['checklist_implementacao'], list):
+                    result['checklist_implementacao'] = ["Revisar análise", "Implementar recomendações"]
+                if 'riscos_mitigacoes' not in result or not isinstance(result['riscos_mitigacoes'], list):
+                    result['riscos_mitigacoes'] = []
+                
+                # Garante estrutura do vídeo
+                if 'video_sugestao' not in result or not isinstance(result['video_sugestao'], dict):
+                    result['video_sugestao'] = {
+                        "titulo": "Análise Financeira",
+                        "termo_busca": "análise financeira investimentos",
+                        "motivo": "Aprofundar conhecimentos sobre o tema"
                     }
-
-        except Exception as e:
+                
+                # Garante estrutura do template
+                if 'template_sugerido' not in result or not isinstance(result['template_sugerido'], dict):
+                    result['template_sugerido'] = {
+                        "nome": "Análise Financeira",
+                        "colunas": ["Período", "Valor", "Acumulado"],
+                        "linhas_exemplo": [{"Período": "Mês 1", "Valor": "1000", "Acumulado": "1000"}],
+                        "formulas_sugeridas": ["=SOMA(B:B)"]
+                    }
+                elif 'colunas' not in result['template_sugerido'] or not result['template_sugerido']['colunas']:
+                    result['template_sugerido']['colunas'] = ["Período", "Valor", "Acumulado"]
+                
+                # Garante estrutura dos componentes (árvore de decisão)
+                if 'componentes' not in result or not isinstance(result['componentes'], dict):
+                    result['componentes'] = {
+                        "pergunta_raiz": "Qual a melhor decisão?",
+                        "filhos": []
+                    }
+                
+                return result
+                
+            except ValueError as e:
+                # Retorna resposta de fallback com texto bruto
+                return {
+                    "titulo": "Análise Financeira",
+                    "area_identificada": "Finanças Corporativas",
+                    "kpis_relevantes": ["VPL", "TIR", "Payback"],
+                    "frameworks_utilizados": ["Análise de Viabilidade"],
+                    "analise_dos_dados": raw_content[:2000] if raw_content else "Análise não disponível",
+                    "resumo": "A análise foi processada. Veja os detalhes acima.",
+                    "modelagem_matematica": "",
+                    "video_sugestao": {
+                        "titulo": "Análise de Investimentos",
+                        "termo_busca": "análise investimentos VPL TIR",
+                        "motivo": "Aprofundar conhecimento em análise de viabilidade"
+                    },
+                    "template_sugerido": {
+                        "nome": "Fluxo de Caixa",
+                        "colunas": ["Período", "Entrada", "Saída", "Saldo"],
+                        "linhas_exemplo": [{"Período": "Mês 1", "Entrada": "10000", "Saída": "5000", "Saldo": "5000"}],
+                        "formulas_sugeridas": ["=B2-C2"]
+                    },
+                    "componentes": {
+                        "pergunta_raiz": "O investimento é viável?",
+                        "filhos": [
+                            {"condicao": "VPL > 0", "acao": "Investimento recomendado", "filhos": []},
+                            {"condicao": "VPL < 0", "acao": "Reavaliar premissas", "filhos": []}
+                        ]
+                    },
+                    "checklist_implementacao": [
+                        "Validar premissas do modelo",
+                        "Calcular cenários alternativos",
+                        "Apresentar para stakeholders"
+                    ],
+                    "riscos_mitigacoes": [
+                        {"risco": "Variação cambial", "mitigacao": "Considerar hedge"},
+                        {"risco": "Cenário macroeconômico", "mitigacao": "Análise de sensibilidade"}
+                    ],
+                    "parse_warning": str(e)
+                }
+                
+        except anthropic.APIError as e:
             return {"error": True, "message": f"Erro na API Anthropic: {str(e)}"}
+        except Exception as e:
+            return {"error": True, "message": f"Erro inesperado: {str(e)}"}
 
     @staticmethod
     def transcribe_audio(audio_bytes: bytes, openai_api_key: str) -> str:
-        if not openai_api_key: return "[Erro: Chave OpenAI necessária]"
-        from openai import OpenAI
-        client = OpenAI(api_key=openai_api_key)
+        if not openai_api_key: 
+            return "[Erro: Chave OpenAI necessária para transcrição]"
         try:
+            client = OpenAI(api_key=openai_api_key)
             audio_file = BytesIO(audio_bytes)
             audio_file.name = "audio.wav"
-            return client.audio.transcriptions.create(model="whisper-1", file=audio_file, language="pt").text
+            return client.audio.transcriptions.create(
+                model="whisper-1", 
+                file=audio_file, 
+                language="pt"
+            ).text
         except Exception as e:
             return f"[Erro na transcrição: {str(e)}]"
             
     @staticmethod
     def chat_followup(user_message: str, chat_history: List[Dict], main_context: str, kb: str, api_key: str) -> str:
-        import anthropic
         client = anthropic.Anthropic(api_key=api_key)
         
         messages_payload = []
@@ -444,56 +601,84 @@ Gere o JSON."""
         
         try:
             response = client.messages.create(
-                model="claude-sonnet-4-5-20250929", # ✅ Mesmo modelo
+                model="claude-sonnet-4-5-20250929",
                 max_tokens=1000,
                 temperature=0.7,
-                system=f"Você é o FinMentor. Responda de forma curta e direta. Contexto: {main_context}",
+                system=f"""Você é o FinMentor, um CFO Virtual. Responda de forma direta e profissional em português brasileiro.
+                
+Contexto da conversa anterior:
+{main_context[:5000]}""",
                 messages=messages_payload
             )
             return response.content[0].text.strip()
         except Exception as e:
-            return f"❌ Erro: {str(e)}"
+            return f"❌ Erro ao processar: {str(e)}"
+
 
 class ExcelTemplateGenerator:
     @staticmethod
     def generate_template(template_data: Dict) -> BytesIO:
         import pandas as pd
         output = BytesIO()
-        with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-            colunas = template_data.get('colunas', ['Coluna1', 'Coluna2'])
-            linhas = template_data.get('linhas_exemplo', [])
-            df = pd.DataFrame(linhas) if linhas else pd.DataFrame(columns=colunas)
-            df.to_excel(writer, sheet_name='Dados', index=False)
-            workbook = writer.book
-            worksheet = writer.sheets['Dados']
-            header_format = workbook.add_format({'bold': True, 'bg_color': '#667eea', 'font_color': 'white', 'border': 1, 'align': 'center', 'valign': 'vcenter', 'font_name': 'Arial'})
-            for col_num, value in enumerate(df.columns):
-                worksheet.write(0, col_num, value, header_format)
-                worksheet.set_column(col_num, col_num, 18)
-            formulas = template_data.get('formulas_sugeridas', [])
-            if formulas:
-                formula_sheet = workbook.add_worksheet('Fórmulas')
-                formula_sheet.write(0, 0, 'Fórmulas Sugeridas', header_format)
-                for i, formula in enumerate(formulas, start=1):
-                    formula_sheet.write(i, 0, formula)
-                formula_sheet.set_column(0, 0, 50)
+        
+        try:
+            with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+                colunas = template_data.get('colunas', ['Coluna1', 'Coluna2', 'Coluna3'])
+                linhas = template_data.get('linhas_exemplo', [])
+                
+                # Cria DataFrame
+                if linhas and isinstance(linhas, list):
+                    # Normaliza as linhas para garantir que todas as colunas existam
+                    normalized_rows = []
+                    for row in linhas:
+                        if isinstance(row, dict):
+                            normalized_row = {col: row.get(col, '') for col in colunas}
+                            normalized_rows.append(normalized_row)
+                    df = pd.DataFrame(normalized_rows) if normalized_rows else pd.DataFrame(columns=colunas)
+                else:
+                    df = pd.DataFrame(columns=colunas)
+                
+                # Adiciona linhas vazias para o usuário preencher
+                empty_rows = pd.DataFrame([{col: '' for col in colunas} for _ in range(10)])
+                df = pd.concat([df, empty_rows], ignore_index=True)
+                
+                df.to_excel(writer, sheet_name='Dados', index=False)
+                
+                workbook = writer.book
+                worksheet = writer.sheets['Dados']
+                
+                # Formato do cabeçalho
+                header_format = workbook.add_format({
+                    'bold': True, 
+                    'bg_color': '#667eea', 
+                    'font_color': 'white', 
+                    'border': 1, 
+                    'align': 'center', 
+                    'valign': 'vcenter', 
+                    'font_name': 'Arial'
+                })
+                
+                for col_num, value in enumerate(df.columns):
+                    worksheet.write(0, col_num, value, header_format)
+                    worksheet.set_column(col_num, col_num, 18)
+                
+                # Aba de fórmulas
+                formulas = template_data.get('formulas_sugeridas', [])
+                if formulas:
+                    formula_sheet = workbook.add_worksheet('Fórmulas')
+                    formula_sheet.write(0, 0, 'Fórmulas Sugeridas', header_format)
+                    for i, formula in enumerate(formulas, start=1):
+                        formula_sheet.write(i, 0, str(formula))
+                    formula_sheet.set_column(0, 0, 50)
+                    
+        except Exception as e:
+            # Se falhar, cria um Excel mínimo
+            with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+                pd.DataFrame({'Erro': [str(e)]}).to_excel(writer, index=False)
+        
         output.seek(0)
         return output
 
-def clean_latex(text: str) -> str:
-    if not text: return ""
-    text = re.sub(r'\\\[|\\\]|\\\(|\\\)|\$\$|\$', '', text)
-    text = re.sub(r'\\text\{([^}]+)\}', r'\1', text)
-    text = text.strip()
-    return text
-
-def get_file_icon(filename: str) -> str:
-    ext = filename.lower().split('.')[-1] if '.' in filename else ''
-    return {'pdf': '📕', 'doc': '📘', 'docx': '📘', 'xls': '📗', 'xlsx': '📗', 'ppt': '📙', 'pptx': '📙', 'txt': '📄', 'csv': '📊'}.get(ext, '📎')
-
-def get_file_type(filename: str) -> str:
-    ext = filename.lower().split('.')[-1] if '.' in filename else ''
-    return {'pdf': 'PDF', 'doc': 'Word', 'docx': 'Word', 'xls': 'Excel', 'xlsx': 'Excel', 'ppt': 'PowerPoint', 'pptx': 'PowerPoint', 'txt': 'Texto', 'csv': 'CSV'}.get(ext, 'Arquivo')
 
 def render_checklist(items: List[str]):
     for item in items:
@@ -501,21 +686,32 @@ def render_checklist(items: List[str]):
 
 def render_risks(risks: List[Dict]):
     for risk in risks:
-        st.markdown(f'''<div class="risk-card">
-            <p class="risk-title">⚠️ {risk.get('risco', 'Risco')}</p>
-            <p class="risk-mitigation"><strong>Mitigação:</strong> {risk.get('mitigacao', 'N/D')}</p>
-        </div>''', unsafe_allow_html=True)
+        if isinstance(risk, dict):
+            st.markdown(f'''<div class="risk-card">
+                <p class="risk-title">⚠️ {risk.get('risco', 'Risco não especificado')}</p>
+                <p class="risk-mitigation"><strong>Mitigação:</strong> {risk.get('mitigacao', 'Não especificada')}</p>
+            </div>''', unsafe_allow_html=True)
 
 def render_tree_node(node: Dict, level: int = 0):
+    if not isinstance(node, dict):
+        return
+        
     margin_left = f"{level * 2}rem"
     css_class = "tree-node-root" if level == 0 else "tree-node"
     icon = "❓" if level == 0 else ("📍" if level == 1 else "📌")
-    st.markdown(f'''<div class="{css_class}" style="margin-left: {margin_left};">
-        <strong>{icon} {node.get('condicao', '')}</strong><br>
-        <span>➡️ {node.get('acao', '')}</span>
-    </div>''', unsafe_allow_html=True)
+    
+    condicao = node.get('condicao', node.get('pergunta_raiz', ''))
+    acao = node.get('acao', '')
+    
+    if condicao:
+        st.markdown(f'''<div class="{css_class}" style="margin-left: {margin_left};">
+            <strong>{icon} {condicao}</strong>
+            {f'<br><span>➡️ {acao}</span>' if acao else ''}
+        </div>''', unsafe_allow_html=True)
+    
     for filho in node.get('filhos', []):
         render_tree_node(filho, level + 1)
+
 
 def render_phase_1():
     st.markdown('''<div style="text-align: center; padding: 2rem 0;">
@@ -532,7 +728,7 @@ def render_phase_1():
         ant_key = st.text_input("Anthropic Key (sk-ant...):", type="password", key="input_ant_key")
     
     if not oai_key:
-        st.info("ℹ️ Chave OPENAI necessária apenas para áudio")
+        st.info("ℹ️ Chave OPENAI necessária apenas para áudio (opcional)")
         oai_key = st.text_input("OpenAI Key (sk-...):", type="password", key="input_oai_key")
 
     if not ant_key:
@@ -544,7 +740,6 @@ def render_phase_1():
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
     st.markdown("### 🎤 Entrada por Áudio (Opcional)")
     
-    # Só habilita áudio se tiver chave OpenAI
     if not st.session_state.openai_key:
         st.caption("Insira a chave OpenAI para habilitar transcrição de áudio.")
         audio_value = None
@@ -553,51 +748,88 @@ def render_phase_1():
         
     if audio_value is not None and st.session_state.openai_key:
         with st.spinner("Transcrevendo com Whisper (OpenAI)..."):
-            st.session_state.audio_transcription = LLMClient.transcribe_audio(audio_value.read(), st.session_state.openai_key)
-            st.success(f"✅ Transcrição: {st.session_state.audio_transcription[:100]}...")
+            st.session_state.audio_transcription = LLMClient.transcribe_audio(
+                audio_value.read(), 
+                st.session_state.openai_key
+            )
+            if not st.session_state.audio_transcription.startswith("[Erro"):
+                st.success(f"✅ Transcrição: {st.session_state.audio_transcription[:100]}...")
     
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
     st.markdown("### 📝 Descreva seu Desafio Financeiro")
     
     with st.form(key="challenge_form", clear_on_submit=False):
-        user_challenge = st.text_area("Seu desafio:", value=st.session_state.audio_transcription or "", height=150, placeholder="Ex: Preciso avaliar se devo investir R$ 500k em um novo projeto...")
+        user_challenge = st.text_area(
+            "Seu desafio:", 
+            value=st.session_state.audio_transcription or "", 
+            height=150, 
+            placeholder="Ex: Preciso avaliar se devo investir R$ 500k em um novo projeto..."
+        )
+        
         st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
         st.markdown("### 📎 Base de Dados (Opcional)")
         uploaded_file = st.file_uploader("Envie uma planilha:", type=['xlsx', 'xls', 'csv'])
+        
         st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
         st.markdown("### 👤 Seu Perfil")
-        selected_persona = st.selectbox("Selecione:", ["Diretor Financeiro (CFO)", "Controller", "Gerente de Tesouraria", "Analista de FP&A", "Investidor Individual", "Empreendedor", "Estudante de Finanças"])
-        submitted = st.form_submit_button("🚀 Gerar Estratégia (com Claude 4.5)", use_container_width=True)
+        selected_persona = st.selectbox("Selecione:", [
+            "Diretor Financeiro (CFO)", 
+            "Controller", 
+            "Gerente de Tesouraria", 
+            "Analista de FP&A", 
+            "Investidor Individual", 
+            "Empreendedor", 
+            "Estudante de Finanças"
+        ])
+        
+        submitted = st.form_submit_button("🚀 Gerar Estratégia", use_container_width=True)
         
         if submitted:
             if not user_challenge.strip():
                 st.error("❌ Descreva seu desafio financeiro.")
             else:
                 st.session_state.ctx = user_challenge
+                
                 with st.spinner("📊 Buscando dados de mercado..."):
                     st.session_state.market_data = MarketDataFetcher.get_market_data()
+                
                 with st.spinner("📚 Carregando base de conhecimento..."):
                     st.session_state.kb_content = KnowledgeBaseLoader.load_knowledge_base()
+                
                 if uploaded_file:
                     try:
                         import pandas as pd
-                        df = pd.read_csv(uploaded_file) if uploaded_file.name.endswith('.csv') else pd.read_excel(uploaded_file)
-                        st.session_state.ctx += f"\n\n## DADOS DO EXCEL:\n{df.to_string()}"
+                        if uploaded_file.name.endswith('.csv'):
+                            df = pd.read_csv(uploaded_file)
+                        else:
+                            df = pd.read_excel(uploaded_file)
+                        # Limita o tamanho dos dados
+                        df_summary = df.head(50).to_string()
+                        st.session_state.ctx += f"\n\n## DADOS DO ARQUIVO ({uploaded_file.name}):\n{df_summary[:5000]}"
                     except Exception as e:
                         st.warning(f"⚠️ Erro ao ler arquivo: {e}")
-                with st.spinner("🧠 Claude Sonnet 4.5 pensando..."):
+                
+                with st.spinner("🧠 Analisando seu desafio... (pode levar 15-30 segundos)"):
                     try:
-                        # Usa a chave Anthropic salva na sessão
                         client = LLMClient(st.session_state.anthropic_key)
-                        response = client.generate_strategy(st.session_state.ctx, selected_persona, st.session_state.market_data, st.session_state.kb_content)
+                        response = client.generate_strategy(
+                            st.session_state.ctx, 
+                            selected_persona, 
+                            st.session_state.market_data, 
+                            st.session_state.kb_content
+                        )
+                        
                         if response.get('error'):
                             st.error(f"❌ {response.get('message')}")
                         else:
+                            if response.get('parse_warning'):
+                                st.warning(f"⚠️ Aviso de parsing: {response.get('parse_warning')}")
                             st.session_state.strategy_response = response
                             st.session_state.fase = 2
                             st.rerun()
                     except Exception as e:
                         st.error(f"❌ Erro: {e}")
+
 
 def render_phase_2():
     response = st.session_state.strategy_response
@@ -606,7 +838,9 @@ def render_phase_2():
         st.rerun()
         return
     
-    st.markdown(f'''<div style="text-align: center; padding: 1rem 0;"><span class="focus-badge">{response.get('area_identificada', 'Finanças')}</span></div>
+    st.markdown(f'''<div style="text-align: center; padding: 1rem 0;">
+        <span class="focus-badge">{response.get('area_identificada', 'Finanças')}</span>
+    </div>
     <h1 class="strategy-header">{response.get('titulo', 'Estratégia Financeira')}</h1>''', unsafe_allow_html=True)
     
     if st.button("⬅️ Nova Consulta"):
@@ -619,90 +853,123 @@ def render_phase_2():
     
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
     
+    # Vídeo e Excel lado a lado
     col_video, col_excel = st.columns(2)
+    
     with col_video:
         video = response.get('video_sugestao', {})
-        # ✅ CORREÇÃO LINK YOUTUBE DINÂMICO
-        termo = video.get('termo_busca')
-        
-        if termo or video.get('url'):
-            if termo:
-                encoded_term = urllib.parse.quote(termo)
-                video_url = f"https://www.youtube.com/results?search_query={encoded_term}"
-            else:
-                video_url = video.get('url', '#')
-
+        if isinstance(video, dict):
+            termo = video.get('termo_busca', 'análise financeira')
+            titulo = video.get('titulo', 'Vídeo Recomendado')
+            motivo = video.get('motivo', 'Aprofunde-se neste tema')
+            
+            encoded_term = urllib.parse.quote(termo)
+            video_url = f"https://www.youtube.com/results?search_query={encoded_term}"
+            
             st.markdown(f'''<div class="video-card">
                 <h4>🎬 Vídeo Recomendado</h4>
-                <p class="video-title">{video.get('titulo', 'Sugestão de Estudo')}</p>
-                <p class="video-desc">{video.get('motivo', 'Aprofunde-se neste tópico.')}</p>
+                <p class="video-title">{titulo}</p>
+                <p class="video-desc">{motivo}</p>
                 <a href="{video_url}" target="_blank">
-                    🔍 Pesquisar "{termo if termo else 'Vídeo'}" no YouTube
+                    🔍 Pesquisar "{termo}" no YouTube
                 </a>
             </div>''', unsafe_allow_html=True)
 
     with col_excel:
         template = response.get('template_sugerido', {})
-        if template and template.get('colunas'):
-            st.markdown(f'<div class="download-section"><h4>📥 Template Excel</h4><p>{template.get("nome", "Template")}</p></div>', unsafe_allow_html=True)
-            st.download_button("⬇️ Baixar Template", ExcelTemplateGenerator.generate_template(template), f"FinMentor_{template.get('nome', 'Template').replace(' ', '_')}.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", use_container_width=True)
+        if isinstance(template, dict) and template.get('colunas'):
+            nome_template = template.get('nome', 'Template Financeiro')
+            st.markdown(f'''<div class="download-section">
+                <h4>📥 Template Excel</h4>
+                <p>{nome_template}</p>
+            </div>''', unsafe_allow_html=True)
+            
+            try:
+                excel_data = ExcelTemplateGenerator.generate_template(template)
+                st.download_button(
+                    "⬇️ Baixar Template", 
+                    excel_data, 
+                    f"FinMentor_{nome_template.replace(' ', '_')}.xlsx", 
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", 
+                    use_container_width=True
+                )
+            except Exception as e:
+                st.warning(f"Erro ao gerar Excel: {e}")
     
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
     
+    # KPIs e Frameworks
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("### 📈 KPIs Relevantes")
-        st.markdown("".join([f'<span class="kpi-badge">{k}</span>' for k in response.get('kpis_relevantes', [])]), unsafe_allow_html=True)
+        kpis = response.get('kpis_relevantes', [])
+        if kpis:
+            st.markdown("".join([f'<span class="kpi-badge">{k}</span>' for k in kpis]), unsafe_allow_html=True)
+    
     with col2:
         st.markdown("### 📚 Frameworks")
-        st.markdown("".join([f'<span class="focus-badge">{f}</span>' for f in response.get('frameworks_utilizados', [])]), unsafe_allow_html=True)
+        frameworks = response.get('frameworks_utilizados', [])
+        if frameworks:
+            st.markdown("".join([f'<span class="focus-badge">{f}</span>' for f in frameworks]), unsafe_allow_html=True)
     
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
+    
+    # Análise
     st.markdown("### 🧠 Análise Chain of Thought")
-    st.markdown(f'<div class="analysis-section">{response.get("analise_dos_dados", "N/D")}</div>', unsafe_allow_html=True)
+    analise = response.get('analise_dos_dados', 'Análise não disponível')
+    st.markdown(f'<div class="analysis-section">{analise}</div>', unsafe_allow_html=True)
     
+    # Resumo
     st.markdown("### 📋 Resumo Executivo")
-    st.markdown(f'<div class="strategy-card">{response.get("resumo", "N/D")}</div>', unsafe_allow_html=True)
+    resumo = response.get('resumo', 'Resumo não disponível')
+    st.markdown(f'<div class="strategy-card">{resumo}</div>', unsafe_allow_html=True)
     
+    # Modelagem (se existir)
     if response.get('modelagem_matematica'):
         st.markdown("### 📐 Modelagem Matemática")
-        try:
-            # Limpeza de delimitadores para evitar duplicação no st.latex
-            formula = response['modelagem_matematica']
-            formula = formula.strip()
-            formula = re.sub(r'^\\\[|\\\]$|^\$\$|\$\$$|^\$|\$$', '', formula).strip()
-            st.latex(formula)
-        except Exception as e:
-            st.code(response['modelagem_matematica'], language='latex')
+        st.code(response['modelagem_matematica'], language='text')
     
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
+    
+    # Árvore de Decisão
     st.markdown("### 🌳 Árvore de Decisão")
     componentes = response.get('componentes', {})
-    if componentes:
-        st.markdown(f'<div class="tree-node-root"><strong>❓ {componentes.get("pergunta_raiz", "Decisão")}</strong></div>', unsafe_allow_html=True)
+    if isinstance(componentes, dict) and componentes:
+        pergunta_raiz = componentes.get('pergunta_raiz', 'Qual a decisão?')
+        st.markdown(f'<div class="tree-node-root"><strong>❓ {pergunta_raiz}</strong></div>', unsafe_allow_html=True)
+        
         for filho in componentes.get('filhos', []):
             render_tree_node(filho, level=1)
     
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
-    if response.get('checklist_implementacao'):
-        st.markdown("### ✅ Checklist")
-        render_checklist(response['checklist_implementacao'])
+    
+    # Checklist
+    checklist = response.get('checklist_implementacao', [])
+    if checklist:
+        st.markdown("### ✅ Checklist de Implementação")
+        render_checklist(checklist)
     
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
-    if response.get('riscos_mitigacoes'):
+    
+    # Riscos
+    riscos = response.get('riscos_mitigacoes', [])
+    if riscos:
         st.markdown("### ⚠️ Riscos e Mitigações")
-        render_risks(response['riscos_mitigacoes'])
+        render_risks(riscos)
 
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
+    
+    # Chat de Follow-up
     st.markdown("### 💬 Tire suas Dúvidas")
-    st.caption("Pergunte mais sobre este tema. Claude 4.5 já conhece o contexto.")
+    st.caption("Pergunte mais sobre este tema.")
     
     if not st.session_state.chat_context:
         st.session_state.chat_context = f"""
 Tema: {response.get('titulo', 'Estratégia Financeira')}
 Área: {response.get('area_identificada', 'Finanças')}
-Contexto original: {st.session_state.ctx}
+Contexto original: {st.session_state.ctx[:2000] if st.session_state.ctx else ''}
 KPIs relevantes: {', '.join(response.get('kpis_relevantes', []))}
+Resumo: {response.get('resumo', '')}
 """
     
     for msg in st.session_state.chat_messages:
@@ -715,17 +982,29 @@ KPIs relevantes: {', '.join(response.get('kpis_relevantes', []))}
             st.markdown(user_input)
         
         with st.chat_message("assistant"):
-            with st.spinner("Claude pensando..."):
+            with st.spinner("Processando..."):
                 response_text = LLMClient.chat_followup(
                     user_message=user_input,
                     chat_history=st.session_state.chat_messages,
                     main_context=st.session_state.chat_context,
                     kb=st.session_state.kb_content,
-                    api_key=st.session_state.anthropic_key # Usa chave salva
+                    api_key=st.session_state.anthropic_key
                 )
                 st.markdown(response_text)
                 st.session_state.chat_messages.append({"role": "assistant", "content": response_text})
         st.rerun()
+
+
+def get_file_icon(filename: str) -> str:
+    ext = filename.lower().split('.')[-1] if '.' in filename else ''
+    icons = {
+        'pdf': '📕', 'doc': '📘', 'docx': '📘', 
+        'xls': '📗', 'xlsx': '📗', 
+        'ppt': '📙', 'pptx': '📙', 
+        'txt': '📄', 'csv': '📊'
+    }
+    return icons.get(ext, '📎')
+
 
 def main():
     with st.sidebar:
