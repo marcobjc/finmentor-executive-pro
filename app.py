@@ -743,14 +743,56 @@ def main():
         
         st.markdown("---")
         
-        # Mercado em tempo real
-        st.markdown("---")
-        
         # ✅ Dados de mercado carregados em background (usados pela IA, não exibidos)
         if st.session_state.market_data is None:
             st.session_state.market_data = MarketDataFetcher.get_market_data()
         
-      # ✅ Materiais de apoio - RECOLHÍVEL
+        # ✅ Materiais de apoio - RECOLHÍVEL
+        with st.expander("📚 Materiais de Apoio", expanded=False):
+            materials_folder = "materiais_download"
+            if os.path.exists(materials_folder):
+                files = [f for f in os.listdir(materials_folder) if not f.startswith('.')]
+                if files:
+                    for filename in sorted(files):
+                        filepath = os.path.join(materials_folder, filename)
+                        icon = get_file_icon(filename)
+                        display_name = filename.rsplit('.', 1)[0].replace('_', ' ').replace('-', ' ')
+                        if len(display_name) > 25:
+                            display_name = display_name[:22] + "..."
+                        try:
+                            with open(filepath, 'rb') as f:
+                                st.download_button(
+                                    label=f"{icon} {display_name}",
+                                    data=f.read(),
+                                    file_name=filename,
+                                    mime="application/octet-stream",
+                                    key=f"sidebar_dl_{filename}",
+                                    use_container_width=True
+                                )
+                        except:
+                            pass
+                else:
+                    st.caption("Nenhum material disponível.")
+            else:
+                st.caption("📁 Adicione arquivos na pasta `materiais_download`")
+    
+    # Main content
+    if st.session_state.fase == 1:
+        render_phase_1()
+    else:
+        render_phase_2()
+
+
+if __name__ == "__main__":
+    main()
+        
+        # Mercado em tempo real
+                
+        # ✅ Dados de mercado carregados em background (usados pela IA, não exibidos)
+        if st.session_state.market_data is None:
+            st.session_state.market_data = MarketDataFetcher.get_market_data()
+        
+        # ✅ Materiais de apoio - RECOLHÍVEL
         with st.expander("📚 Materiais de Apoio", expanded=False):
             materials_folder = "materiais_download"
             if os.path.exists(materials_folder):
