@@ -487,8 +487,13 @@ class ExcelTemplateGenerator:
 
 def clean_latex(text: str) -> str:
     if not text: return ""
+    # Remove delimitadores LaTeX
     text = re.sub(r'\\\[|\\\]|\\\(|\\\)|\$\$|\$', '', text)
-    return text.strip()
+    # Remove \text{} e mantém apenas o conteúdo
+    text = re.sub(r'\\text\{([^}]+)\}', r'\1', text)
+    # Remove espaços extras
+    text = text.strip()
+    return text
 
 def get_file_icon(filename: str) -> str:
     ext = filename.lower().split('.')[-1] if '.' in filename else ''
