@@ -1,0 +1,466 @@
+# INDICADORES FINANCEIROS E KPIs CORPORATIVOS
+# Base de Conhecimento Premium - FinMentor Executive Pro
+# =========================================================
+
+## 1. INDICADORES DE RENTABILIDADE
+
+### 1.1 Margem Bruta
+
+**Fórmula:**
+Margem Bruta = (Receita Líquida - CMV) / Receita Líquida × 100
+
+**Interpretação:**
+- Mede eficiência na produção/compra
+- Quanto maior, melhor poder de precificação
+- Comparar com concorrentes do setor
+
+**Benchmarks por setor:**
+| Setor | Margem Bruta Típica |
+|-------|---------------------|
+| Software/SaaS | 70-85% |
+| Varejo | 25-40% |
+| Indústria | 30-45% |
+| Serviços | 50-70% |
+| Commodities | 15-25% |
+
+### 1.2 Margem EBITDA
+
+**Fórmula:**
+Margem EBITDA = EBITDA / Receita Líquida × 100
+
+**EBITDA:**
+EBITDA = Lucro Operacional + Depreciação + Amortização
+Ou: EBITDA = Receita - Custos - Despesas Operacionais (exceto D&A)
+
+**Interpretação:**
+- Proxy de geração de caixa operacional
+- Elimina efeitos de estrutura de capital e impostos
+- Facilita comparação entre empresas
+
+**EBITDA Ajustado:**
+Exclui itens não recorrentes:
+- Ganhos/perdas com venda de ativos
+- Provisões extraordinárias
+- Reestruturação
+- Impairment
+
+**Benchmarks:**
+| Setor | Margem EBITDA |
+|-------|---------------|
+| Software/SaaS | 20-40% |
+| Telecom | 30-45% |
+| Utilities | 35-50% |
+| Varejo | 5-12% |
+| Indústria | 10-20% |
+
+### 1.3 Margem Líquida
+
+**Fórmula:**
+Margem Líquida = Lucro Líquido / Receita Líquida × 100
+
+**Interpretação:**
+- Rentabilidade final após todos os custos
+- Afetada por estrutura de capital
+- Comparar com histórico e setor
+
+### 1.4 ROE (Retorno sobre Patrimônio Líquido)
+
+**Fórmula:**
+ROE = Lucro Líquido / Patrimônio Líquido Médio × 100
+
+**Interpretação:**
+- Retorno para o acionista
+- Deve ser > custo do equity (Ke)
+- Afetado por alavancagem
+
+**ROE Sustentável:**
+g = ROE × (1 - Payout)
+Taxa de crescimento sustentável sem nova captação
+
+### 1.5 ROA (Retorno sobre Ativos)
+
+**Fórmula:**
+ROA = Lucro Líquido / Ativo Total Médio × 100
+
+**Interpretação:**
+- Eficiência no uso dos ativos
+- Independe da estrutura de capital
+- Útil para comparar empresas alavancadas
+
+### 1.6 ROIC (Retorno sobre Capital Investido)
+
+**Fórmula:**
+ROIC = NOPAT / Capital Investido × 100
+
+**Onde:**
+- NOPAT = EBIT × (1 - t)
+- Capital Investido = Patrimônio Líquido + Dívida Onerosa Líquida
+
+**Interpretação:**
+- Melhor medida de criação de valor
+- ROIC > WACC → Criação de valor
+- ROIC < WACC → Destruição de valor
+
+**EVA (Economic Value Added):**
+EVA = (ROIC - WACC) × Capital Investido
+Ou: EVA = NOPAT - (WACC × Capital Investido)
+
+### 1.7 Análise DuPont
+
+**DuPont 3 Fatores:**
+ROE = Margem Líquida × Giro do Ativo × Alavancagem
+ROE = (LL/Receita) × (Receita/Ativos) × (Ativos/PL)
+
+**DuPont 5 Fatores:**
+ROE = (LL/EBT) × (EBT/EBIT) × (EBIT/Receita) × (Receita/Ativos) × (Ativos/PL)
+ROE = Carga Tributária × Carga de Juros × Margem Operacional × Giro × Alavancagem
+
+**Utilidade:**
+- Decompor fontes de rentabilidade
+- Identificar alavancas de melhoria
+- Diagnóstico de performance
+
+---
+
+## 2. INDICADORES DE LIQUIDEZ
+
+### 2.1 Liquidez Corrente
+
+**Fórmula:**
+LC = Ativo Circulante / Passivo Circulante
+
+**Interpretação:**
+| Valor | Situação |
+|-------|----------|
+| LC > 2,0 | Folga excessiva (recursos ociosos?) |
+| 1,5 < LC < 2,0 | Situação confortável |
+| 1,0 < LC < 1,5 | Atenção |
+| LC < 1,0 | Risco de liquidez |
+
+### 2.2 Liquidez Seca
+
+**Fórmula:**
+LS = (Ativo Circulante - Estoques) / Passivo Circulante
+
+**Interpretação:**
+- Exclui estoques (menos líquidos)
+- Mais conservador
+- Importante para empresas com giro lento de estoque
+
+### 2.3 Liquidez Imediata
+
+**Fórmula:**
+LI = Disponibilidades / Passivo Circulante
+
+**Interpretação:**
+- Capacidade de pagar dívidas de curto prazo imediatamente
+- Geralmente baixa (0,1 a 0,4)
+- Muito alta indica ineficiência
+
+### 2.4 Capital Circulante Líquido (CCL)
+
+**Fórmula:**
+CCL = Ativo Circulante - Passivo Circulante
+
+**Interpretação:**
+- CCL > 0: Folga financeira
+- CCL < 0: Passivo circulante financiando ativos não circulantes (risco)
+
+---
+
+## 3. INDICADORES DE ESTRUTURA DE CAPITAL
+
+### 3.1 Endividamento Geral
+
+**Fórmula:**
+Endividamento = Passivo Total / Ativo Total × 100
+
+**Interpretação:**
+- Participação de terceiros no financiamento
+- Varia muito por setor
+- Bancos têm endividamento alto (natureza do negócio)
+
+### 3.2 Dívida Líquida / EBITDA
+
+**Fórmula:**
+Dívida Líquida / EBITDA = (Dívida Bruta - Caixa) / EBITDA
+
+**Interpretação:**
+| Valor | Risco |
+|-------|-------|
+| < 1,0x | Baixo risco |
+| 1,0x - 2,5x | Moderado |
+| 2,5x - 3,5x | Elevado |
+| > 3,5x | Alto risco |
+
+**Covenants típicos:**
+- Investment grade: até 2,5x
+- Especulativo: até 4,0x
+
+### 3.3 Dívida Líquida / Patrimônio Líquido
+
+**Fórmula:**
+D/E = Dívida Líquida / Patrimônio Líquido
+
+**Interpretação:**
+- Estrutura de capital
+- Varia por setor e estratégia
+- Empresas de crescimento: maior D/E
+
+### 3.4 Índice de Cobertura de Juros (ICJ)
+
+**Fórmula:**
+ICJ = EBITDA / Despesas Financeiras
+
+**Interpretação:**
+| Valor | Capacidade |
+|-------|------------|
+| > 5,0x | Excelente |
+| 3,0x - 5,0x | Boa |
+| 2,0x - 3,0x | Adequada |
+| < 2,0x | Risco |
+
+### 3.5 DSCR (Debt Service Coverage Ratio)
+
+**Fórmula:**
+DSCR = (EBITDA - CAPEX - IR) / (Juros + Amortização Principal)
+
+**Interpretação:**
+- Capacidade de pagar serviço da dívida
+- Usado em Project Finance
+- Mínimo típico: 1,2x a 1,5x
+
+---
+
+## 4. INDICADORES DE ATIVIDADE/EFICIÊNCIA
+
+### 4.1 Prazo Médio de Recebimento (PMR)
+
+**Fórmula:**
+PMR = (Contas a Receber / Receita Bruta) × 365
+
+**Interpretação:**
+- Dias para receber vendas
+- Quanto menor, melhor
+- Comparar com política de crédito
+
+### 4.2 Prazo Médio de Estocagem (PME)
+
+**Fórmula:**
+PME = (Estoques / CMV) × 365
+
+**Interpretação:**
+- Dias de estoque em mãos
+- Otimizar: nem muito alto (custo) nem baixo (ruptura)
+- Varia muito por setor
+
+### 4.3 Prazo Médio de Pagamento (PMP)
+
+**Fórmula:**
+PMP = (Fornecedores / Compras) × 365
+
+**Interpretação:**
+- Prazo obtido de fornecedores
+- Quanto maior, melhor para capital de giro
+- Mas não prejudicar relacionamento
+
+### 4.4 Ciclo Operacional
+
+**Fórmula:**
+Ciclo Operacional = PME + PMR
+
+**Interpretação:**
+- Tempo da compra até recebimento da venda
+- Quanto menor, menor necessidade de capital de giro
+
+### 4.5 Ciclo Financeiro (Ciclo de Caixa)
+
+**Fórmula:**
+Ciclo Financeiro = PME + PMR - PMP
+
+**Interpretação:**
+- Dias que a empresa precisa financiar
+- Ciclo negativo: fornecedores financiam operação (ex: varejo)
+- Ciclo positivo: precisa de capital de giro
+
+### 4.6 Giro do Ativo
+
+**Fórmula:**
+Giro = Receita Líquida / Ativo Total Médio
+
+**Interpretação:**
+- Eficiência no uso dos ativos
+- Varejo: giro alto, margem baixa
+- Luxo: giro baixo, margem alta
+
+---
+
+## 5. INDICADORES DE MERCADO
+
+### 5.1 P/L (Preço / Lucro)
+
+**Fórmula:**
+P/L = Preço da Ação / Lucro por Ação (LPA)
+
+**Interpretação:**
+- Anos para recuperar investimento via lucro
+- Alto P/L: expectativa de crescimento
+- Baixo P/L: maturidade ou problemas
+
+### 5.2 P/VPA (Preço / Valor Patrimonial)
+
+**Fórmula:**
+P/VPA = Preço da Ação / Valor Patrimonial por Ação
+
+**Interpretação:**
+- P/VPA > 1: Mercado paga prêmio
+- P/VPA < 1: Desconto (problemas ou oportunidade)
+- Relevante para empresas com ativos tangíveis
+
+### 5.3 EV/EBITDA
+
+**Fórmula:**
+EV/EBITDA = Enterprise Value / EBITDA
+
+**Interpretação:**
+- Múltiplo mais usado em M&A
+- Elimina efeitos de estrutura de capital
+- Comparável entre empresas
+
+### 5.4 Dividend Yield
+
+**Fórmula:**
+DY = Dividendos por Ação / Preço da Ação × 100
+
+**Interpretação:**
+- Retorno em dividendos
+- Empresas maduras: yield maior
+- Crescimento: yield menor (reinvestimento)
+
+### 5.5 Payout Ratio
+
+**Fórmula:**
+Payout = Dividendos / Lucro Líquido × 100
+
+**Interpretação:**
+- % do lucro distribuído
+- Brasil: mínimo 25% (Lei das S.A.)
+- Sustentabilidade dos dividendos
+
+---
+
+## 6. KPIs OPERACIONAIS POR SETOR
+
+### 6.1 Varejo
+
+| KPI | Fórmula | Meta Típica |
+|-----|---------|-------------|
+| Vendas Mesmas Lojas (SSS) | Var% receita lojas > 12 meses | > Inflação |
+| Vendas por m² | Receita / Área de vendas | Varia por formato |
+| Ticket Médio | Receita / Nº de transações | Crescente |
+| Taxa de Conversão | Compradores / Visitantes | 20-40% |
+| Ruptura | Itens em falta / SKUs total | < 5% |
+
+### 6.2 SaaS / Tecnologia
+
+| KPI | Fórmula | Meta Típica |
+|-----|---------|-------------|
+| MRR/ARR | Receita Recorrente Mensal/Anual | Crescimento > 20% |
+| Churn Rate | Clientes perdidos / Base inicial | < 5% a.m. |
+| LTV | Receita média × Tempo médio | > 3x CAC |
+| CAC | Custo Aquisição / Novos clientes | LTV/CAC > 3 |
+| NRR | Receita clientes existentes t1 / t0 | > 100% |
+
+### 6.3 Indústria
+
+| KPI | Fórmula | Meta Típica |
+|-----|---------|-------------|
+| OEE | Disponibilidade × Performance × Qualidade | > 85% |
+| Utilização Capacidade | Produção Real / Capacidade | 80-95% |
+| Custo por Unidade | Custo Total / Unidades | Decrescente |
+| Lead Time | Tempo pedido até entrega | Mínimo |
+| Índice de Retrabalho | Itens retrabalhados / Produção | < 2% |
+
+### 6.4 Bancos
+
+| KPI | Fórmula | Meta Típica |
+|-----|---------|-------------|
+| NIM | (Receitas - Despesas Juros) / Ativos | 3-6% |
+| Índice de Eficiência | Despesas / Receitas | < 50% |
+| Índice de Basileia | Capital / Ativos Ponderados | > 11% |
+| Inadimplência | Créditos Vencidos / Carteira | < 3% |
+| ROE | Lucro / PL | > 15% |
+
+---
+
+## 7. DASHBOARD DE INDICADORES
+
+### 7.1 Indicadores Essenciais (Top 10)
+
+1. **Receita e Crescimento**
+2. **Margem EBITDA**
+3. **Margem Líquida**
+4. **ROIC**
+5. **Dívida Líquida / EBITDA**
+6. **Liquidez Corrente**
+7. **Ciclo Financeiro**
+8. **Geração de Caixa Operacional**
+9. **CAPEX / Depreciação**
+10. **EVA**
+
+### 7.2 Frequência de Análise
+
+| Indicador | Frequência |
+|-----------|------------|
+| Caixa, Vendas | Diário |
+| Margem, Custos | Semanal |
+| Todos os indicadores | Mensal |
+| Análise completa | Trimestral |
+| Planejamento | Anual |
+
+---
+
+## 8. FÓRMULAS RÁPIDAS
+
+### Resumo das Principais Fórmulas
+
+```
+RENTABILIDADE:
+Margem Bruta = (Receita - CMV) / Receita
+Margem EBITDA = EBITDA / Receita
+Margem Líquida = LL / Receita
+ROE = LL / PL
+ROA = LL / Ativos
+ROIC = NOPAT / Capital Investido
+
+LIQUIDEZ:
+LC = AC / PC
+LS = (AC - Estoques) / PC
+LI = Disponível / PC
+
+ENDIVIDAMENTO:
+Dívida Líquida = Dívida Bruta - Caixa
+D/EBITDA = Dívida Líquida / EBITDA
+ICJ = EBITDA / Despesas Financeiras
+
+ATIVIDADE:
+PMR = (Clientes / Receita) × 365
+PME = (Estoques / CMV) × 365
+PMP = (Fornecedores / Compras) × 365
+Ciclo Financeiro = PME + PMR - PMP
+
+VALOR:
+EVA = NOPAT - (WACC × Capital Investido)
+Ou: EVA = (ROIC - WACC) × Capital Investido
+```
+
+---
+
+## REFERÊNCIAS BIBLIOGRÁFICAS
+
+1. ASSAF NETO, Alexandre. Estrutura e Análise de Balanços. 12ª ed. Atlas, 2020.
+2. MATARAZZO, Dante C. Análise Financeira de Balanços. 7ª ed. Atlas, 2010.
+3. GITMAN, Lawrence J. Princípios de Administração Financeira. 14ª ed. Pearson, 2017.
+4. IUDÍCIBUS, Sérgio de. Análise de Balanços. 11ª ed. Atlas, 2017.
+5. PADOVEZE, Clóvis Luís. Contabilidade Gerencial. 7ª ed. Atlas, 2010.
+6. KAPLAN, Robert S.; NORTON, David P. A Estratégia em Ação: Balanced Scorecard. Campus, 1997.
