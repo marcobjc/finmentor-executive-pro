@@ -225,7 +225,9 @@ def init_session_state():
     defaults = {
         'fase': 1, 'ctx': None, 'tree': None, 'market_data': None,
         'strategy_response': None, 'excel_data': None, 'audio_transcription': '',
-        'kb_content': '', 'processing': False, 'error_message': None
+        'kb_content': '', 'processing': False, 'error_message': None,
+        'chat_messages': [],  # ✅ NOVO: Histórico do chat
+        'chat_context': ''     # ✅ NOVO: Contexto do tema principal
     }
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -410,6 +412,51 @@ Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
             return response.text
         except Exception as e:
             return f"[Erro na transcrição: {str(e)}]"
+@staticmethod
+    def chat_followup(user_message: str, chat_history: List[Dict], main_context: str, kb: str, api_key: str) -> str:
+        """
+        Responde perguntas de followup mantendo o contexto do tema principal
+        """
+        from openai import OpenAI
+        client = OpenAI(api_key=api_key)
+        
+        # System prompt para followup
+        system_prompt = f"""Você é o FinMentor continuando uma consultoria financeira.
+
+## CONTEXTO PRINCIPAL DA CONSULTA
+{main_context}
+
+## BASE DE CONHECIMENTO
+{kb[:4000] if kb else "Nenhuma base disponível."}
+
+## INSTRUÇÕES
+- Você está em uma conversa contínua sobre o tema acima
+- Responda dúvidas de forma técnica mas acessível
+- Use o conhecimento da base para fundamentar respostas
+- Seja conciso (2-4 parágrafos)
+- Se a pergunta fugir muito do tema, gentilmente redirecione
+- Use fórmulas e exemplos quando apropriado"""
+
+        # Monta histórico de mensagens
+        messages = [{"role": "system", "content": system_prompt}]
+        
+        # Adiciona histórico do chat (últimas 10 mensagens para não estourar contexto)
+        for msg in chat_history[-10:]:
+            messages.append({"role": msg["role"], "content": msg["content"]})
+        
+        # Adiciona mensagem atual
+        messages.append({"role": "user", "content": user_message})
+        
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=messages,
+                temperature=0.7,
+                max_tokens=1000
+            )
+            return response.choices[0].message.content.strip()
+        except Exception as e:
+            return f"❌ Erro: {str(e)}"
 
 class ExcelTemplateGenerator:
     @staticmethod
@@ -543,10 +590,12 @@ def render_phase_2():
     st.markdown(f'''<div style="text-align: center; padding: 1rem 0;"><span class="focus-badge">{response.get('area_identificada', 'Finanças')}</span></div>
     <h1 class="strategy-header">{response.get('titulo', 'Estratégia Financeira')}</h1>''', unsafe_allow_html=True)
     
-    if st.button("⬅️ Nova Consulta"):
+if st.button("⬅️ Nova Consulta"):
         st.session_state.fase = 1
         st.session_state.strategy_response = None
         st.session_state.audio_transcription = ''
+        st.session_state.chat_messages = []      # ✅ Limpa chat
+        st.session_state.chat_context = ''       # ✅ Limpa contexto
         st.rerun()
     
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
@@ -606,7 +655,48 @@ def render_phase_2():
     if response.get('riscos_mitigacoes'):
         st.markdown("### ⚠️ Riscos e Mitigações")
         render_risks(response['riscos_mitigacoes'])
-
+# ✅ NOVO: CHAT INTERATIVO
+    st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
+    st.markdown("### 💬 Tire suas Dúvidas")
+    st.caption("Pergunte mais sobre este tema. O assistente já conhece o contexto da sua consulta.")
+    
+    # Salva contexto principal na primeira vez
+    if not st.session_state.chat_context:
+        st.session_state.chat_context = f"""
+Tema: {response.get('titulo', 'Estratégia Financeira')}
+Área: {response.get('area_identificada', 'Finanças')}
+Contexto original: {st.session_state.ctx}
+KPIs relevantes: {', '.join(response.get('kpis_relevantes', []))}
+Frameworks: {', '.join(response.get('frameworks_utilizados', []))}
+"""
+    
+    # Exibe histórico do chat
+    for msg in st.session_state.chat_messages:
+        with st.chat_message(msg["role"]):
+            st.markdown(msg["content"])
+    
+    # Input do usuário
+    if user_input := st.chat_input("Digite sua pergunta..."):
+        # Adiciona pergunta do usuário
+        st.session_state.chat_messages.append({"role": "user", "content": user_input})
+        with st.chat_message("user"):
+            st.markdown(user_input)
+        
+        # Gera resposta do assistente
+        with st.chat_message("assistant"):
+            with st.spinner("Pensando..."):
+                api_key = os.getenv('OPENAI_API_KEY') or st.secrets.get('OPENAI_API_KEY', '')
+                response_text = LLMClient.chat_followup(
+                    user_message=user_input,
+                    chat_history=st.session_state.chat_messages,
+                    main_context=st.session_state.chat_context,
+                    kb=st.session_state.kb_content,
+                    api_key=api_key
+                )
+                st.markdown(response_text)
+                st.session_state.chat_messages.append({"role": "assistant", "content": response_text})
+        
+        st.rerun()
 def main():
     # ✅ SIDEBAR ÚNICA E LIMPA
     with st.sidebar:
@@ -632,55 +722,39 @@ def main():
         st.markdown("---")
         
         # Mercado em tempo real
-        st.markdown('<div class="market-section"><p class="market-section-title">📊 Mercado em Tempo Real</p></div>', unsafe_allow_html=True)
-        
-        if st.session_state.market_data is None:
-            with st.spinner("Carregando..."):
-                st.session_state.market_data = MarketDataFetcher.get_market_data()
-        
-        market = st.session_state.market_data
-        col1, col2 = st.columns(2)
-        with col1:
-            st.markdown(f'<div class="market-indicator"><div class="value">R$ {market.get("dolar", "N/D")}</div><div class="label">Dólar</div></div>', unsafe_allow_html=True)
-        with col2:
-            st.markdown(f'<div class="market-indicator"><div class="value">{market.get("selic", "N/D")}</div><div class="label">SELIC</div></div>', unsafe_allow_html=True)
-        col3, col4 = st.columns(2)
-        with col3:
-            st.markdown(f'<div class="market-indicator"><div class="value">{market.get("ibov", "N/D")}</div><div class="label">IBOV</div></div>', unsafe_allow_html=True)
-        with col4:
-            st.markdown(f'<div class="market-indicator"><div class="value">{market.get("ipca", "N/D")}</div><div class="label">IPCA</div></div>', unsafe_allow_html=True)
-        st.markdown(f'<p class="market-timestamp">Atualizado: {market.get("timestamp", "N/D")}</p>', unsafe_allow_html=True)
-        
         st.markdown("---")
         
-        # Materiais de apoio
-        st.markdown('<div class="material-section"><p class="material-section-title">📚 Materiais de Apoio</p></div>', unsafe_allow_html=True)
+        # ✅ Dados de mercado carregados em background (usados pela IA, não exibidos)
+        if st.session_state.market_data is None:
+            st.session_state.market_data = MarketDataFetcher.get_market_data()
         
-        materials_folder = "materiais_download"
-        if os.path.exists(materials_folder):
-            files = [f for f in os.listdir(materials_folder) if not f.startswith('.')]
-            if files:
-                for filename in sorted(files):
-                    filepath = os.path.join(materials_folder, filename)
-                    icon = get_file_icon(filename)
-                    display_name = filename.rsplit('.', 1)[0].replace('_', ' ').replace('-', ' ')
-                    if len(display_name) > 25: display_name = display_name[:22] + "..."
-                    try:
-                        with open(filepath, 'rb') as f:
-                            st.download_button(
-                                label=f"{icon} {display_name}",
-                                data=f.read(),
-                                file_name=filename,
-                                mime="application/octet-stream",
-                                key=f"sidebar_dl_{filename}",
-                                use_container_width=True
-                            )
-                    except:
-                        pass
+      # ✅ Materiais de apoio - RECOLHÍVEL
+        with st.expander("📚 Materiais de Apoio", expanded=False):
+            materials_folder = "materiais_download"
+            if os.path.exists(materials_folder):
+                files = [f for f in os.listdir(materials_folder) if not f.startswith('.')]
+                if files:
+                    for filename in sorted(files):
+                        filepath = os.path.join(materials_folder, filename)
+                        icon = get_file_icon(filename)
+                        display_name = filename.rsplit('.', 1)[0].replace('_', ' ').replace('-', ' ')
+                        if len(display_name) > 25: display_name = display_name[:22] + "..."
+                        try:
+                            with open(filepath, 'rb') as f:
+                                st.download_button(
+                                    label=f"{icon} {display_name}",
+                                    data=f.read(),
+                                    file_name=filename,
+                                    mime="application/octet-stream",
+                                    key=f"sidebar_dl_{filename}",
+                                    use_container_width=True
+                                )
+                        except:
+                            pass
+                else:
+                    st.caption("Nenhum material disponível.")
             else:
-                st.markdown('<p class="no-materials">Nenhum material disponível.</p>', unsafe_allow_html=True)
-        else:
-            st.markdown('<p class="no-materials">📁 Adicione arquivos na pasta<br><code>materiais_download</code></p>', unsafe_allow_html=True)
+                st.caption("📁 Adicione arquivos na pasta `materiais_download`")
     
     # Main content
     if st.session_state.fase == 1:
