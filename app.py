@@ -320,171 +320,134 @@ class KnowledgeBaseLoader:
         return "".join(content_parts)
 
 class LLMClient:
-    # ✅ MODELO CONFIGURADO: CLAUDE 4.5 SONNET (Fallback seguro contra erro 404)
-    @staticmethod
-    def _get_system_prompt(conhecimento: str) -> str:
-        return f"""Você é o FinMentor, um CFO Virtual de alto nível especializado em finanças corporativas e pessoais.
-
-## PROTOCOLO DE CADEIA DE RACIOCÍNIO (Chain of Thought)
-
-### ETAPA 1 - IDENTIFICAÇÃO
-- Qual é a área principal? (Tesouraria, Controladoria, FP&A, Contabilidade, Investimentos, Gestão de Caixa, M&A, Valuation)
-- É uma questão operacional, tática ou estratégica?
-- Qual o horizonte temporal (curto/médio/longo prazo)?
-
-### ETAPA 2 - SELEÇÃO
-- Quais KPIs são relevantes? (ROI, ROE, ROIC, EVA, EBITDA, Margem, Liquidez, Alavancagem)
-- Quais autores/frameworks se aplicam? (Damodaran, Ross, IFRS, CPC, Assaf Neto, Gitman)
-- Quais ferramentas de análise usar? (DuPont, WACC, DCF, Monte Carlo, Payback)
-
-### ETAPA 3 - ESTRUTURA
-- Monte a árvore de decisão com nós claros
-- Defina critérios de escolha para cada bifurcação
-- Inclua métricas e thresholds quando possível
-
-### ETAPA 4 - CHECKLIST FINAL
-Antes de enviar, confirme:
-☑ Contexto do pedido foi completamente entendido?
-☑ Dados de mercado foram incorporados (se relevantes)?
-☑ Base de conhecimento foi consultada (se fornecida)?
-☑ Árvore de decisão tem pelo menos 3 níveis de profundidade?
-☑ Fórmulas matemáticas estão corretas?
-☑ Recomendação é prática e acionável?
-
-## BASE DE CONHECIMENTO PREMIUM
-
-{conhecimento}
-
-IMPORTANTE: Use este conhecimento técnico para fundamentar suas respostas.
-⚠️ REGRA DE OURO PARA LATEX: Você DEVE usar barra invertida DUPLA para fórmulas LaTeX dentro do JSON.
-- ERRADO: "\\frac{{A}}{{B}}"
-- CORRETO: "\\\\frac{{A}}{{B}}"
-
-## FORMATO DE RESPOSTA
-Retorne EXCLUSIVAMENTE um JSON válido com esta estrutura:
-{{
-    "titulo": "Título da Estratégia",
-    "area_identificada": "Área principal identificada",
-    "kpis_relevantes": ["KPI1", "KPI2", "KPI3"],
-    "frameworks_utilizados": ["Framework1", "Framework2"],
-    "analise_dos_dados": "Explicação detalhada do raciocínio Chain of Thought usado",
-    "resumo": "Resumo executivo em 3-5 parágrafos com linguagem técnica sênior",
-    "modelagem_matematica": "Fórmulas em LaTeX puro (use double backslash)",
-    "video_sugestao": {{
-        "titulo": "Título chamativo para o vídeo", 
-        "termo_busca": "Termo exato para pesquisar no YouTube (ex: Valuation Damodaran Prática)", 
-        "motivo": "Por que é relevante"
-    }},
-    "template_sugerido": {{"nome": "Nome do template Excel", "colunas": ["Col1", "Col2"], "linhas_exemplo": [{{"Col1": "Val1", "Col2": "Val2"}}], "formulas_sugeridas": ["=FORMULA1"]}},
-    "componentes": {{"pergunta_raiz": "Pergunta principal", "filhos": [{{"condicao": "Se X", "acao": "Faça Y", "filhos": []}}]}},
-    "checklist_implementacao": ["Passo 1", "Passo 2"],
-    "riscos_mitigacoes": [{{"risco": "Descrição", "mitigacao": "Como mitigar"}}]
-}}
-IMPORTANTE: Retorne APENAS o JSON, sem texto adicional ou formatação markdown."""
+    # ✅ ID DE MODELO ESPECÍFICO (Versão Sonnet 4.5 Testada)
+    MODELO_ESCOLHIDO = "claude-sonnet-4-5-20250929"
 
     def __init__(self, api_key: str):
-        self.api_key = api_key # Chave Anthropic
+        self.api_key = api_key
+
+    @staticmethod
+    def _get_system_prompt(conhecimento: str) -> str:
+        return f"""Você é o FinMentor, um CFO Virtual.
+        
+OBJETIVO: Gerar uma estratégia financeira estruturada em JSON.
+
+REGRAS CRÍTICAS DE FORMATAÇÃO (JSON):
+1. NÃO use quebras de linha reais dentro das strings. Use apenas '\\n'.
+2. Para LaTeX, use BARRA DUPLA: '\\\\frac' (nunca use apenas uma barra).
+3. Se precisar usar aspas duplas dentro de um texto, escape-as: \\"texto\\".
+4. Seja conciso na 'analise_dos_dados' para não estourar o limite de texto.
+
+BASE DE CONHECIMENTO:
+{conhecimento}
+
+FORMATO DE RESPOSTA ESPERADO (JSON RAW):
+{{
+    "titulo": "...",
+    "area_identificada": "...",
+    "kpis_relevantes": ["..."],
+    "frameworks_utilizados": ["..."],
+    "analise_dos_dados": "...",
+    "resumo": "...",
+    "modelagem_matematica": "...",
+    "video_sugestao": {{ "titulo": "...", "termo_busca": "...", "motivo": "..." }},
+    "template_sugerido": {{ "nome": "...", "colunas": [], "linhas_exemplo": [], "formulas_sugeridas": [] }},
+    "componentes": {{ "pergunta_raiz": "...", "filhos": [] }},
+    "checklist_implementacao": [],
+    "riscos_mitigacoes": []
+}}"""
+
+    def _sanitize_json(self, raw_content: str) -> str:
+        """Função auxiliar para limpar erros comuns de JSON gerados por LLMs"""
+        content = re.sub(r'^```json\s*', '', raw_content)
+        content = re.sub(r'\s*```$', '', content)
+        content = content.strip()
+        
+        # Corrige barras invertidas simples em LaTeX (transforma \frac em \\frac)
+        # Protegendo caracteres de escape válidos de JSON
+        content = re.sub(r'(?<!\\)\\(?!["\\/bfnrtu])', r'\\\\', content)
+        
+        # Remove quebras de linha reais dentro de strings (erro comum)
+        content = content.replace('\n', ' ').replace('\r', '')
+        
+        return content
 
     def generate_strategy(self, contexto: str, persona: str, mercado: Dict[str, Any], kb: str) -> Dict[str, Any]:
-        # ✅ CLIENTE ANTHROPIC (CLAUDE SONNET)
+        import anthropic
         client = anthropic.Anthropic(api_key=self.api_key)
         
-        system_prompt = self._get_system_prompt(kb[:180000] if kb else "Nenhuma base carregada.")
+        system_prompt = self._get_system_prompt(kb[:150000] if kb else "Nenhuma base carregada.")
         
-        user_prompt = f"""## CONTEXTO DO USUÁRIO
-{contexto}
-
-## PERFIL DO SOLICITANTE
-{persona}
-
-## DADOS DE MERCADO EM TEMPO REAL
-- Dólar: R$ {mercado.get('dolar', 'N/D')}
-- IBOVESPA: {mercado.get('ibov', 'N/D')} pontos
-- SELIC: {mercado.get('selic', 'N/D')}
-- IPCA: {mercado.get('ipca', 'N/D')}
-- Atualizado: {mercado.get('timestamp', 'N/D')}
-
-Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
+        user_prompt = f"""CONTEXTO: {contexto}
+PERFIL: {persona}
+MERCADO: Dólar {mercado.get('dolar')}, IBOV {mercado.get('ibov')}.
+Gere o JSON."""
 
         try:
-            # Chamada da API Anthropic
             response = client.messages.create(
-                # 👇 USO DO MODELO SONNET PARA MÁXIMA COMPATIBILIDADE E INTELIGÊNCIA
-                model="claude-sonnet-4-5-20250929",
-                max_tokens=4096,
-                temperature=0.7,
+                model=self.MODELO_ESCOLHIDO,
+                max_tokens=8000, # ✅ Limite alto para evitar corte de string
+                temperature=0.5, # ✅ Estabilidade
                 system=system_prompt,
-                messages=[
-                    {"role": "user", "content": user_prompt}
-                ]
+                messages=[{"role": "user", "content": user_prompt}]
             )
             
-            content = response.content[0].text.strip()
-            content = re.sub(r'^```json\s*', '', content)
-            content = re.sub(r'\s*```$', '', content)
+            raw_content = response.content[0].text
             
+            # Tentativa 1: Parse direto
             try:
-                return json.loads(content)
+                clean_content = re.sub(r'^```json\s*', '', raw_content)
+                clean_content = re.sub(r'\s*```$', '', clean_content).strip()
+                return json.loads(clean_content, strict=False)
             except json.JSONDecodeError:
-                fixed_content = re.sub(r'(?<!\\)\\(?!["\\/bfnrtu])', r'\\\\', content)
-                return json.loads(fixed_content)
+                # Tentativa 2: Sanitização
+                try:
+                    fixed_content = self._sanitize_json(raw_content)
+                    return json.loads(fixed_content, strict=False)
+                except json.JSONDecodeError as e:
+                    return {
+                        "titulo": "Erro na Formatação",
+                        "area_identificada": "Erro Técnico",
+                        "analise_dos_dados": f"A IA gerou uma resposta válida, mas o formato JSON quebrou. Texto bruto parcial:\n\n{raw_content[:500]}...",
+                        "resumo": "Houve um erro técnico ao processar a resposta. Tente novamente ou simplifique o pedido.",
+                        "kpis_relevantes": [],
+                        "frameworks_utilizados": [],
+                        "checklist_implementacao": ["Tente novamente"],
+                        "error_details": str(e)
+                    }
 
-        except json.JSONDecodeError as e:
-            return {"error": True, "message": f"Erro ao processar JSON: {str(e)}", "raw_content": content[:500] if 'content' in locals() else "N/D"}
         except Exception as e:
             return {"error": True, "message": f"Erro na API Anthropic: {str(e)}"}
 
     @staticmethod
     def transcribe_audio(audio_bytes: bytes, openai_api_key: str) -> str:
-        # ✅ WHISPER VIA OPENAI
-        if not openai_api_key:
-            return "[Erro: Chave OpenAI necessária para áudio]"
-        
+        if not openai_api_key: return "[Erro: Chave OpenAI necessária]"
+        from openai import OpenAI
         client = OpenAI(api_key=openai_api_key)
         try:
             audio_file = BytesIO(audio_bytes)
             audio_file.name = "audio.wav"
-            response = client.audio.transcriptions.create(model="whisper-1", file=audio_file, language="pt")
-            return response.text
+            return client.audio.transcriptions.create(model="whisper-1", file=audio_file, language="pt").text
         except Exception as e:
             return f"[Erro na transcrição: {str(e)}]"
             
     @staticmethod
     def chat_followup(user_message: str, chat_history: List[Dict], main_context: str, kb: str, api_key: str) -> str:
-        # ✅ CLIENTE ANTHROPIC PARA CHAT
+        import anthropic
         client = anthropic.Anthropic(api_key=api_key)
         
-        system_prompt = f"""Você é o FinMentor continuando uma consultoria financeira.
-
-## CONTEXTO PRINCIPAL DA CONSULTA
-{main_context}
-
-## BASE DE CONHECIMENTO
-{kb[:180000] if kb else "Nenhuma base disponível."}
-
-## INSTRUÇÕES
-- Você está em uma conversa contínua sobre o tema acima
-- Responda dúvidas de forma técnica mas acessível
-- Use o conhecimento da base para fundamentar respostas
-- Seja conciso (2-4 parágrafos)
-- Se a pergunta fugir muito do tema, gentilmente redirecione
-- Use fórmulas e exemplos quando apropriado"""
-
-        # Prepara histórico no formato Anthropic (System separado)
         messages_payload = []
         for msg in chat_history[-10:]:
             if msg["role"] in ["user", "assistant"]:
                 messages_payload.append({"role": msg["role"], "content": msg["content"]})
-        
         messages_payload.append({"role": "user", "content": user_message})
         
         try:
             response = client.messages.create(
-                # 👇 USO DO MODELO SONNET
-                model="claude-sonnet-4-5-20250929",
+                model="claude-sonnet-4-5-20250929", # ✅ Mesmo modelo
                 max_tokens=1000,
                 temperature=0.7,
-                system=system_prompt,
+                system=f"Você é o FinMentor. Responda de forma curta e direta. Contexto: {main_context}",
                 messages=messages_payload
             )
             return response.content[0].text.strip()
@@ -604,7 +567,7 @@ def render_phase_1():
         st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
         st.markdown("### 👤 Seu Perfil")
         selected_persona = st.selectbox("Selecione:", ["Diretor Financeiro (CFO)", "Controller", "Gerente de Tesouraria", "Analista de FP&A", "Investidor Individual", "Empreendedor", "Estudante de Finanças"])
-        submitted = st.form_submit_button("🚀 Gerar Estratégia (com Claude)", use_container_width=True)
+        submitted = st.form_submit_button("🚀 Gerar Estratégia (com Claude 4.5)", use_container_width=True)
         
         if submitted:
             if not user_challenge.strip():
@@ -622,7 +585,7 @@ def render_phase_1():
                         st.session_state.ctx += f"\n\n## DADOS DO EXCEL:\n{df.to_string()}"
                     except Exception as e:
                         st.warning(f"⚠️ Erro ao ler arquivo: {e}")
-                with st.spinner("🧠 Claude 4.5 SONNET pensando..."):
+                with st.spinner("🧠 Claude Sonnet 4.5 pensando..."):
                     try:
                         # Usa a chave Anthropic salva na sessão
                         client = LLMClient(st.session_state.anthropic_key)
@@ -695,7 +658,7 @@ def render_phase_2():
         st.markdown("".join([f'<span class="focus-badge">{f}</span>' for f in response.get('frameworks_utilizados', [])]), unsafe_allow_html=True)
     
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
-    st.markdown("### 🧠 Análise Chain of Thought (Claude)")
+    st.markdown("### 🧠 Análise Chain of Thought")
     st.markdown(f'<div class="analysis-section">{response.get("analise_dos_dados", "N/D")}</div>', unsafe_allow_html=True)
     
     st.markdown("### 📋 Resumo Executivo")
@@ -732,7 +695,7 @@ def render_phase_2():
 
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
     st.markdown("### 💬 Tire suas Dúvidas")
-    st.caption("Pergunte mais sobre este tema. Claude 4.5 SONNET já conhece o contexto.")
+    st.caption("Pergunte mais sobre este tema. Claude 4.5 já conhece o contexto.")
     
     if not st.session_state.chat_context:
         st.session_state.chat_context = f"""
