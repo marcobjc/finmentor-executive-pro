@@ -410,7 +410,7 @@ Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
             # Chamada da API Anthropic
             response = client.messages.create(
                 # 👇 USO DO MODELO SONNET PARA MÁXIMA COMPATIBILIDADE E INTELIGÊNCIA
-                model="claude-4-5-sonnet-latest",
+                model="claude-4-5-sonnet",
                 max_tokens=4096,
                 temperature=0.7,
                 system=system_prompt,
@@ -481,7 +481,7 @@ Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
         try:
             response = client.messages.create(
                 # 👇 USO DO MODELO SONNET
-                model="claude-4-5-sonnet-latest",
+                model="claude-4-5-sonnet",
                 max_tokens=1000,
                 temperature=0.7,
                 system=system_prompt,
