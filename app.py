@@ -15,24 +15,7 @@ from datetime import datetime
 from typing import Optional, Dict, Any, List
 from io import BytesIO
 import base64
-
-def carregar_base_conhecimento():
-    """Carrega todos os arquivos .txt da pasta materiais_publicos"""
-    base_path = Path("materiais_publicos")
-    conhecimento = ""
-    
-    if base_path.exists():
-        for arquivo in sorted(base_path.glob("*.txt")):
-            try:
-                with open(arquivo, 'r', encoding='utf-8') as f:
-                    conhecimento += f"\n\n{'='*80}\n"
-                    conhecimento += f"MÓDULO: {arquivo.name}\n"
-                    conhecimento += f"{'='*80}\n\n"
-                    conhecimento += f.read()
-            except Exception as e:
-                st.warning(f"Erro ao ler {arquivo.name}: {e}")
-    
-    return conhecimento
+from pathlib import Path  # ✅ ADICIONADO
 
 warnings.filterwarnings("ignore")
 logging.getLogger("streamlit").setLevel(logging.ERROR)
@@ -62,10 +45,7 @@ CUSTOM_CSS = """
 * { font-family: 'Quicksand', sans-serif !important; }
 footer, .stDeployButton { visibility: hidden !important; display: none !important; }
 span[data-testid="stIconMaterial"] { display: none !important; }
-/* .stIconMaterial { visibility: hidden !important; display: none !important; } */
-/* [data-testid="stToolbar"], [data-testid="stDecoration"] { display: none !important; } */
-[data-testid="stSidebar"] {
-/*
+
 [data-testid="stSidebar"] {
     background: linear-gradient(180deg, #0f1419 0%, #1a1f2e 50%, #0f1419 100%) !important;
     border-right: 1px solid #2d3748;
@@ -73,7 +53,6 @@ span[data-testid="stIconMaterial"] { display: none !important; }
 [data-testid="stSidebar"] > div:first-child { background: transparent !important; padding-top: 1rem; }
 [data-testid="collapsedControl"] { display: flex !important; visibility: visible !important; color: #E2E8F0 !important; }
 [data-testid="stSidebar"][aria-expanded="true"] { min-width: 300px !important; max-width: 300px !important; }
-*/
 
 .avatar-container {
     text-align: center; padding: 1.5rem 1rem;
@@ -289,34 +268,37 @@ class KnowledgeBaseLoader:
     @staticmethod
     @st.cache_data(ttl=3600)
     def load_knowledge_base(folder: str = "materiais_publicos") -> str:
+        """Carrega todos os arquivos .txt da pasta materiais_publicos"""
         content_parts = []
-        if not os.path.exists(folder): return ""
-        for filename in os.listdir(folder):
+        
+        # ✅ CORRIGIDO: Verifica se a pasta existe
+        if not os.path.exists(folder):
+            return ""
+        
+        # ✅ CORRIGIDO: Lê apenas arquivos .txt
+        for filename in sorted(os.listdir(folder)):
+            if not filename.endswith('.txt'):
+                continue
+                
             filepath = os.path.join(folder, filename)
             try:
-                if filename.endswith('.txt'):
-                    with open(filepath, 'r', encoding='utf-8') as f:
-                        content_parts.append(f"[{filename}]\n{f.read()}\n")
-                elif filename.endswith('.pdf'):
-                    try:
-                        from pypdf import PdfReader
-                        reader = PdfReader(filepath)
-                        text = "\n".join([page.extract_text() or "" for page in reader.pages])
-                        content_parts.append(f"[{filename}]\n{text}\n")
-                    except ImportError: pass
-                elif filename.endswith('.docx'):
-                    try:
-                        from docx import Document
-                        doc = Document(filepath)
-                        text = "\n".join([para.text for para in doc.paragraphs])
-                        content_parts.append(f"[{filename}]\n{text}\n")
-                    except ImportError: pass
-            except: continue
-        return "\n---\n".join(content_parts)
+                with open(filepath, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                    content_parts.append(f"\n\n{'='*80}\n")
+                    content_parts.append(f"MÓDULO: {filename}\n")
+                    content_parts.append(f"{'='*80}\n\n")
+                    content_parts.append(content)
+            except Exception as e:
+                print(f"Erro ao ler {filename}: {e}")
+                continue
+        
+        return "".join(content_parts)
 
 class LLMClient:
-    conhecimento = self._carregar_conhecimento()
-    SYSTEM_PROMPT = """Você é o FinMentor, um CFO Virtual de alto nível especializado em finanças corporativas e pessoais.
+    # ✅ CORRIGIDO: SYSTEM_PROMPT como método que recebe o conhecimento
+    @staticmethod
+    def _get_system_prompt(conhecimento: str) -> str:
+        return f"""Você é o FinMentor, um CFO Virtual de alto nível especializado em finanças corporativas e pessoais.
 
 ## PROTOCOLO DE CADEIA DE RACIOCÍNIO (Chain of Thought)
 
@@ -354,11 +336,10 @@ IMPORTANTE: Use este conhecimento técnico para fundamentar suas respostas com:
 - Referências a autores especializados (Damodaran, Ross, Assaf Neto, Gitman)
 - KPIs e métricas apropriadas
 - Frameworks e modelos estabelecidos
-"""
 
 ## FORMATO DE RESPOSTA
 Retorne EXCLUSIVAMENTE um JSON válido com esta estrutura:
-{
+{{
     "titulo": "Título da Estratégia",
     "area_identificada": "Área principal identificada",
     "kpis_relevantes": ["KPI1", "KPI2", "KPI3"],
@@ -366,12 +347,12 @@ Retorne EXCLUSIVAMENTE um JSON válido com esta estrutura:
     "analise_dos_dados": "Explicação detalhada do raciocínio Chain of Thought usado",
     "resumo": "Resumo executivo em 3-5 parágrafos com linguagem técnica sênior",
     "modelagem_matematica": "Fórmulas em LaTeX puro",
-    "video_sugestao": {"titulo": "Título do vídeo", "url": "https://youtube.com/watch?v=...", "motivo": "Por que é relevante"},
-    "template_sugerido": {"nome": "Nome do template Excel", "colunas": ["Col1", "Col2"], "linhas_exemplo": [{"Col1": "Val1", "Col2": "Val2"}], "formulas_sugeridas": ["=FORMULA1"]},
-    "componentes": {"pergunta_raiz": "Pergunta principal", "filhos": [{"condicao": "Se X", "acao": "Faça Y", "filhos": []}]},
+    "video_sugestao": {{"titulo": "Título do vídeo", "url": "https://youtube.com/watch?v=...", "motivo": "Por que é relevante"}},
+    "template_sugerido": {{"nome": "Nome do template Excel", "colunas": ["Col1", "Col2"], "linhas_exemplo": [{{"Col1": "Val1", "Col2": "Val2"}}], "formulas_sugeridas": ["=FORMULA1"]}},
+    "componentes": {{"pergunta_raiz": "Pergunta principal", "filhos": [{{"condicao": "Se X", "acao": "Faça Y", "filhos": []}}]}},
     "checklist_implementacao": ["Passo 1", "Passo 2"],
-    "riscos_mitigacoes": [{"risco": "Descrição", "mitigacao": "Como mitigar"}]
-}
+    "riscos_mitigacoes": [{{"risco": "Descrição", "mitigacao": "Como mitigar"}}]
+}}
 IMPORTANTE: Retorne APENAS o JSON, sem texto adicional ou formatação markdown."""
 
     def __init__(self, api_key: str):
@@ -380,6 +361,10 @@ IMPORTANTE: Retorne APENAS o JSON, sem texto adicional ou formatação markdown.
     def generate_strategy(self, contexto: str, persona: str, mercado: Dict[str, Any], kb: str) -> Dict[str, Any]:
         from openai import OpenAI
         client = OpenAI(api_key=self.api_key)
+        
+        # ✅ CORRIGIDO: Gera o system_prompt com o conhecimento
+        system_prompt = self._get_system_prompt(kb[:8000] if kb else "Nenhuma base carregada.")
+        
         user_prompt = f"""## CONTEXTO DO USUÁRIO
 {contexto}
 
@@ -393,16 +378,17 @@ IMPORTANTE: Retorne APENAS o JSON, sem texto adicional ou formatação markdown.
 - IPCA: {mercado.get('ipca', 'N/D')}
 - Atualizado: {mercado.get('timestamp', 'N/D')}
 
-## BASE DE CONHECIMENTO
-{kb[:4000] if kb else 'Nenhuma base carregada.'}
-
 Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
 
         try:
             response = client.chat.completions.create(
                 model="gpt-4o-mini",
-                messages=[{"role": "system", "content": self.SYSTEM_PROMPT}, {"role": "user", "content": user_prompt}],
-                temperature=0.7, max_tokens=4000
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt}
+                ],
+                temperature=0.7,
+                max_tokens=4000
             )
             content = response.choices[0].message.content.strip()
             content = re.sub(r'^```json\s*', '', content)
@@ -486,68 +472,6 @@ def render_tree_node(node: Dict, level: int = 0):
     for filho in node.get('filhos', []):
         render_tree_node(filho, level + 1)
 
-def render_sidebar():
-    with st.sidebar:
-        avatar_base64 = get_image_base64(AVATAR_PATH) if os.path.exists(AVATAR_PATH) else ""
-        avatar_src = f"data:image/jpeg;base64,{avatar_base64}" if avatar_base64 else "https://ui-avatars.com/api/?name=Marco+Duarte&background=667eea&color=fff&size=200&font-size=0.35"
-        
-        st.markdown(f'''<div class="avatar-container">
-            <img src="{avatar_src}" class="avatar-image" alt="Marco A. Duarte Jr.">
-            <p class="avatar-name">Marco A. Duarte Jr.</p>
-            <p class="avatar-title">Finance Professional | CFO Virtual Creator</p>
-            <p style="color: #94A3B8; font-size: 0.85rem; margin-bottom: 1rem;">
-                📧 marcobjc@gmail.com
-            </p>
-            <a href="https://www.linkedin.com/in/mduarte89/" target="_blank" class="linkedin-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
-                </svg>
-                Conectar no LinkedIn
-            </a>
-        </div>''', unsafe_allow_html=True)
-        
-        st.markdown("---")
-        
-        st.markdown('<div class="market-section"><p class="market-section-title">📊 Mercado em Tempo Real</p></div>', unsafe_allow_html=True)
-        
-        if st.session_state.market_data is None:
-            with st.spinner("Carregando..."):
-                st.session_state.market_data = MarketDataFetcher.get_market_data()
-        
-        market = st.session_state.market_data
-        col1, col2 = st.columns(2)
-        with col1:
-            st.markdown(f'<div class="market-indicator"><div class="value">R$ {market.get("dolar", "N/D")}</div><div class="label">Dólar</div></div>', unsafe_allow_html=True)
-        with col2:
-            st.markdown(f'<div class="market-indicator"><div class="value">{market.get("selic", "N/D")}</div><div class="label">SELIC</div></div>', unsafe_allow_html=True)
-        col3, col4 = st.columns(2)
-        with col3:
-            st.markdown(f'<div class="market-indicator"><div class="value">{market.get("ibov", "N/D")}</div><div class="label">IBOV</div></div>', unsafe_allow_html=True)
-        with col4:
-            st.markdown(f'<div class="market-indicator"><div class="value">{market.get("ipca", "N/D")}</div><div class="label">IPCA</div></div>', unsafe_allow_html=True)
-        st.markdown(f'<p class="market-timestamp">Atualizado: {market.get("timestamp", "N/D")}</p>', unsafe_allow_html=True)
-        
-        st.markdown("---")
-        
-        st.markdown('<div class="material-section"><p class="material-section-title">📚 Materiais de Apoio</p></div>', unsafe_allow_html=True)
-        
-        materials_folder = "materiais_download"
-        if os.path.exists(materials_folder):
-            files = [f for f in os.listdir(materials_folder) if not f.startswith('.')]
-            if files:
-                for filename in sorted(files):
-                    filepath = os.path.join(materials_folder, filename)
-                    icon = get_file_icon(filename)
-                    display_name = filename.rsplit('.', 1)[0].replace('_', ' ').replace('-', ' ')
-                    if len(display_name) > 25: display_name = display_name[:22] + "..."
-                    try:
-                        with open(filepath, 'rb') as f:
-                            st.download_button(label=f"{icon} {display_name}", data=f.read(), file_name=filename, mime="application/octet-stream", key=f"dl_{filename}", use_container_width=True)
-                    except: pass
-            else:
-                st.markdown('<p class="no-materials">Nenhum material disponível.</p>', unsafe_allow_html=True)
-        else:
-            st.markdown('<p class="no-materials">📁 Adicione arquivos na pasta<br><code>materiais_download</code></p>', unsafe_allow_html=True)
 def render_phase_1():
     st.markdown('''<div style="text-align: center; padding: 2rem 0;">
         <h1 style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.5rem; font-weight: 700;">📊 FinMentor: Executive Pro</h1>
@@ -684,39 +608,54 @@ def render_phase_2():
         render_risks(response['riscos_mitigacoes'])
 
 def main():
+    # ✅ SIDEBAR ÚNICA E LIMPA
     with st.sidebar:
         # Avatar
-        if os.path.exists("assets/avatar.jpg"):
-            st.image("assets/avatar.jpg", width=130)
-        else:
-            st.markdown("### 👤")
+        avatar_base64 = get_image_base64(AVATAR_PATH) if os.path.exists(AVATAR_PATH) else ""
+        avatar_src = f"data:image/jpeg;base64,{avatar_base64}" if avatar_base64 else "https://ui-avatars.com/api/?name=Marco+Duarte&background=667eea&color=fff&size=200&font-size=0.35"
         
-        # Nome e contato
-        st.markdown("### Marco A. Duarte Jr.")
-        st.caption("Finance Professional | CFO Virtual Creator")
-        st.markdown("📧 marcobjc@gmail.com")
-        st.link_button("🔗 Conectar no LinkedIn", "https://www.linkedin.com/in/mduarte89/", use_container_width=True)
+        st.markdown(f'''<div class="avatar-container">
+            <img src="{avatar_src}" class="avatar-image" alt="Marco A. Duarte Jr.">
+            <p class="avatar-name">Marco A. Duarte Jr.</p>
+            <p class="avatar-title">Finance Professional | CFO Virtual Creator</p>
+            <p style="color: #94A3B8; font-size: 0.85rem; margin-bottom: 1rem;">
+                📧 marcobjc@gmail.com
+            </p>
+            <a href="https://www.linkedin.com/in/mduarte89/" target="_blank" class="linkedin-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
+                </svg>
+                Conectar no LinkedIn
+            </a>
+        </div>''', unsafe_allow_html=True)
         
-        st.divider()
+        st.markdown("---")
         
         # Mercado em tempo real
-        st.markdown("### 📊 Mercado em Tempo Real")
+        st.markdown('<div class="market-section"><p class="market-section-title">📊 Mercado em Tempo Real</p></div>', unsafe_allow_html=True)
+        
         if st.session_state.market_data is None:
             with st.spinner("Carregando..."):
                 st.session_state.market_data = MarketDataFetcher.get_market_data()
-        m = st.session_state.market_data
-        col1, col2 = st.columns(2)
-        col1.metric("Dólar", f"R$ {m.get('dolar', 'N/D')}")
-        col2.metric("SELIC", m.get('selic', 'N/D'))
-        col3, col4 = st.columns(2)
-        col3.metric("IBOV", m.get('ibov', 'N/D'))
-        col4.metric("IPCA", m.get('ipca', 'N/D'))
-        st.caption(f"Atualizado: {m.get('timestamp', 'N/D')}")
         
-        st.divider()
+        market = st.session_state.market_data
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown(f'<div class="market-indicator"><div class="value">R$ {market.get("dolar", "N/D")}</div><div class="label">Dólar</div></div>', unsafe_allow_html=True)
+        with col2:
+            st.markdown(f'<div class="market-indicator"><div class="value">{market.get("selic", "N/D")}</div><div class="label">SELIC</div></div>', unsafe_allow_html=True)
+        col3, col4 = st.columns(2)
+        with col3:
+            st.markdown(f'<div class="market-indicator"><div class="value">{market.get("ibov", "N/D")}</div><div class="label">IBOV</div></div>', unsafe_allow_html=True)
+        with col4:
+            st.markdown(f'<div class="market-indicator"><div class="value">{market.get("ipca", "N/D")}</div><div class="label">IPCA</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<p class="market-timestamp">Atualizado: {market.get("timestamp", "N/D")}</p>', unsafe_allow_html=True)
+        
+        st.markdown("---")
         
         # Materiais de apoio
-        st.markdown("### 📚 Materiais de Apoio")
+        st.markdown('<div class="material-section"><p class="material-section-title">📚 Materiais de Apoio</p></div>', unsafe_allow_html=True)
+        
         materials_folder = "materiais_download"
         if os.path.exists(materials_folder):
             files = [f for f in os.listdir(materials_folder) if not f.startswith('.')]
@@ -725,6 +664,7 @@ def main():
                     filepath = os.path.join(materials_folder, filename)
                     icon = get_file_icon(filename)
                     display_name = filename.rsplit('.', 1)[0].replace('_', ' ').replace('-', ' ')
+                    if len(display_name) > 25: display_name = display_name[:22] + "..."
                     try:
                         with open(filepath, 'rb') as f:
                             st.download_button(
@@ -738,10 +678,11 @@ def main():
                     except:
                         pass
             else:
-                st.caption("Nenhum material disponível")
+                st.markdown('<p class="no-materials">Nenhum material disponível.</p>', unsafe_allow_html=True)
         else:
-            st.caption("📁 Crie a pasta `materiais_download`")
+            st.markdown('<p class="no-materials">📁 Adicione arquivos na pasta<br><code>materiais_download</code></p>', unsafe_allow_html=True)
     
+    # Main content
     if st.session_state.fase == 1:
         render_phase_1()
     else:
