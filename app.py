@@ -16,6 +16,24 @@ from typing import Optional, Dict, Any, List
 from io import BytesIO
 import base64
 
+def carregar_base_conhecimento():
+    """Carrega todos os arquivos .txt da pasta materiais_publicos"""
+    base_path = Path("materiais_publicos")
+    conhecimento = ""
+    
+    if base_path.exists():
+        for arquivo in sorted(base_path.glob("*.txt")):
+            try:
+                with open(arquivo, 'r', encoding='utf-8') as f:
+                    conhecimento += f"\n\n{'='*80}\n"
+                    conhecimento += f"MÓDULO: {arquivo.name}\n"
+                    conhecimento += f"{'='*80}\n\n"
+                    conhecimento += f.read()
+            except Exception as e:
+                st.warning(f"Erro ao ler {arquivo.name}: {e}")
+    
+    return conhecimento
+
 warnings.filterwarnings("ignore")
 logging.getLogger("streamlit").setLevel(logging.ERROR)
 logging.getLogger("urllib3").setLevel(logging.ERROR)
@@ -297,6 +315,7 @@ class KnowledgeBaseLoader:
         return "\n---\n".join(content_parts)
 
 class LLMClient:
+    conhecimento = self._carregar_conhecimento()
     SYSTEM_PROMPT = """Você é o FinMentor, um CFO Virtual de alto nível especializado em finanças corporativas e pessoais.
 
 ## PROTOCOLO DE CADEIA DE RACIOCÍNIO (Chain of Thought)
@@ -315,6 +334,27 @@ class LLMClient:
 - Monte a árvore de decisão com nós claros
 - Defina critérios de escolha para cada bifurcação
 - Inclua métricas e thresholds quando possível
+
+### ETAPA 4 - CHECKLIST FINAL
+Antes de enviar, confirme:
+☑ Contexto do pedido foi completamente entendido?
+☑ Dados de mercado foram incorporados (se relevantes)?
+☑ Base de conhecimento foi consultada (se fornecida)?
+☑ Árvore de decisão tem pelo menos 3 níveis de profundidade?
+☑ Fórmulas matemáticas estão corretas?
+☑ Recomendação é prática e acionável?
+
+## BASE DE CONHECIMENTO PREMIUM
+
+{conhecimento}
+
+IMPORTANTE: Use este conhecimento técnico para fundamentar suas respostas com:
+- Fórmulas e cálculos corretos
+- Metodologias reconhecidas (DCF, WACC, DuPont, etc)
+- Referências a autores especializados (Damodaran, Ross, Assaf Neto, Gitman)
+- KPIs e métricas apropriadas
+- Frameworks e modelos estabelecidos
+"""
 
 ## FORMATO DE RESPOSTA
 Retorne EXCLUSIVAMENTE um JSON válido com esta estrutura:
