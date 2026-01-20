@@ -659,25 +659,6 @@ def render_phase_2():
         except Exception as e:
             # Fallback: exibe como texto
             st.code(response['modelagem_matematica'], language='latex')
-```
-
----
-
-## 🔍 O QUE MUDOU
-
-**ANTES:**
-```
-Input da IA: \[ \text{EBITDA} = \text{Receita} - \text{Custos} \]
-st.latex() recebe: [ \text{EBITDA} = ... ]  ❌ (clean_latex removeu apenas \)
-Resultado na tela: [ \text{EBITDA} = ... ]
-```
-
-**DEPOIS:**
-```
-Input da IA: \[ \text{EBITDA} = \text{Receita} - \text{Custos} \]
-Limpeza: \text{EBITDA} = \text{Receita} - \text{Custos}  ✅
-st.latex() adiciona delimitadores automaticamente
-Resultado na tela: EBITDA = Receita - Custos (renderizado)
     
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
     st.markdown("### 🌳 Árvore de Decisão")
