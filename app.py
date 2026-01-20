@@ -317,7 +317,7 @@ class KnowledgeBaseLoader:
         return "".join(content_parts)
 
 class LLMClient:
-    # ✅ CORRIGIDO: SYSTEM_PROMPT como método que recebe o conhecimento
+    # ✅ CORRIGIDO: SYSTEM_PROMPT reforçado para evitar erros de LaTeX
     @staticmethod
     def _get_system_prompt(conhecimento: str) -> str:
         return f"""Você é o FinMentor, um CFO Virtual de alto nível especializado em finanças corporativas e pessoais.
@@ -359,8 +359,13 @@ IMPORTANTE: Use este conhecimento técnico para fundamentar suas respostas com:
 - KPIs e métricas apropriadas
 - Frameworks e modelos estabelecidos
 
-## FORMATO DE RESPOSTA
-Retorne EXCLUSIVAMENTE um JSON válido com esta estrutura:
+## FORMATO DE RESPOSTA (CRÍTICO)
+Retorne EXCLUSIVAMENTE um JSON válido.
+⚠️ REGRA DE OURO PARA LATEX: Você DEVE usar barra invertida DUPLA para fórmulas LaTeX dentro do JSON.
+- ERRADO: "\frac{{A}}{{B}}"
+- CORRETO: "\\frac{{A}}{{B}}"
+
+Estrutura do JSON:
 {{
     "titulo": "Título da Estratégia",
     "area_identificada": "Área principal identificada",
@@ -368,7 +373,7 @@ Retorne EXCLUSIVAMENTE um JSON válido com esta estrutura:
     "frameworks_utilizados": ["Framework1", "Framework2"],
     "analise_dos_dados": "Explicação detalhada do raciocínio Chain of Thought usado",
     "resumo": "Resumo executivo em 3-5 parágrafos com linguagem técnica sênior",
-    "modelagem_matematica": "Fórmulas em LaTeX puro",
+    "modelagem_matematica": "Fórmulas em LaTeX puro (use double backslash)",
     "video_sugestao": {{"titulo": "Título do vídeo", "url": "https://youtube.com/watch?v=...", "motivo": "Por que é relevante"}},
     "template_sugerido": {{"nome": "Nome do template Excel", "colunas": ["Col1", "Col2"], "linhas_exemplo": [{{"Col1": "Val1", "Col2": "Val2"}}], "formulas_sugeridas": ["=FORMULA1"]}},
     "componentes": {{"pergunta_raiz": "Pergunta principal", "filhos": [{{"condicao": "Se X", "acao": "Faça Y", "filhos": []}}]}},
@@ -384,7 +389,6 @@ IMPORTANTE: Retorne APENAS o JSON, sem texto adicional ou formatação markdown.
         from openai import OpenAI
         client = OpenAI(api_key=self.api_key)
         
-        # ✅ CORRIGIDO: Gera o system_prompt com o conhecimento
         system_prompt = self._get_system_prompt(kb[:8000] if kb else "Nenhuma base carregada.")
         
         user_prompt = f"""## CONTEXTO DO USUÁRIO
@@ -400,7 +404,7 @@ IMPORTANTE: Retorne APENAS o JSON, sem texto adicional ou formatação markdown.
 - IPCA: {mercado.get('ipca', 'N/D')}
 - Atualizado: {mercado.get('timestamp', 'N/D')}
 
-Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
+Gere uma Estratégia Estruturada. Retorne APENAS o JSON. Cuidado com escapes do LaTeX."""
 
         try:
             response = client.chat.completions.create(
@@ -413,11 +417,22 @@ Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
                 max_tokens=4000
             )
             content = response.choices[0].message.content.strip()
+            # Remove blocos de código Markdown
             content = re.sub(r'^```json\s*', '', content)
             content = re.sub(r'\s*```$', '', content)
-            return json.loads(content.strip())
+            
+            # ✅ CORREÇÃO AUTOMÁTICA DE LATEX
+            # Tenta carregar o JSON. Se falhar por erro de escape, aplica correção via Regex
+            try:
+                return json.loads(content)
+            except json.JSONDecodeError:
+                # Regex mágica: encontra barras invertidas únicas que NÃO são escapes válidos de JSON e as duplica
+                # Isso conserta coisas como "\frac" transformando em "\\frac" sem quebrar "\n" ou "\""
+                fixed_content = re.sub(r'(?<!\\)\\(?!["\\/bfnrtu])', r'\\\\', content)
+                return json.loads(fixed_content)
+
         except json.JSONDecodeError as e:
-            return {"error": True, "message": f"Erro ao processar resposta: {str(e)}", "raw_content": content[:500] if 'content' in locals() else "N/D"}
+            return {"error": True, "message": f"Erro ao processar resposta da IA (JSON inválido mesmo após correção): {str(e)}", "raw_content": content[:500] if 'content' in locals() else "N/D"}
         except Exception as e:
             return {"error": True, "message": f"Erro na API: {str(e)}"}
 
@@ -435,13 +450,9 @@ Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
             
     @staticmethod
     def chat_followup(user_message: str, chat_history: List[Dict], main_context: str, kb: str, api_key: str) -> str:
-        """
-        Responde perguntas de followup mantendo o contexto do tema principal
-        """
         from openai import OpenAI
         client = OpenAI(api_key=api_key)
         
-        # System prompt para followup
         system_prompt = f"""Você é o FinMentor continuando uma consultoria financeira.
 
 ## CONTEXTO PRINCIPAL DA CONSULTA
@@ -458,14 +469,9 @@ Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
 - Se a pergunta fugir muito do tema, gentilmente redirecione
 - Use fórmulas e exemplos quando apropriado"""
 
-        # Monta histórico de mensagens
         messages = [{"role": "system", "content": system_prompt}]
-        
-        # Adiciona histórico do chat (últimas 10 mensagens para não estourar contexto)
         for msg in chat_history[-10:]:
             messages.append({"role": msg["role"], "content": msg["content"]})
-        
-        # Adiciona mensagem atual
         messages.append({"role": "user", "content": user_message})
         
         try:
