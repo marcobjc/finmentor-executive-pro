@@ -11,17 +11,22 @@ import logging
 import os
 import json
 import re
-import urllib.parse  # ✅ ADICIONADO PARA YOUTUBE
+import urllib.parse
 from datetime import datetime
 from typing import Optional, Dict, Any, List
 from io import BytesIO
 import base64
 from pathlib import Path
 
+# ✅ NOVOS IMPORTS
+import anthropic
+from openai import OpenAI
+
 warnings.filterwarnings("ignore")
 logging.getLogger("streamlit").setLevel(logging.ERROR)
 logging.getLogger("urllib3").setLevel(logging.ERROR)
 logging.getLogger("openai").setLevel(logging.ERROR)
+logging.getLogger("anthropic").setLevel(logging.ERROR)
 
 st.set_page_config(
     page_title="FinMentor: Executive Pro",
@@ -40,7 +45,7 @@ def get_image_base64(image_path: str) -> str:
 
 AVATAR_PATH = "assets/avatar.jpg"
 
-# ✅ ALTERAÇÃO 3: CSS ATUALIZADO (Expander sempre branco)
+# ✅ CSS ATUALIZADO (Expander sempre branco)
 CUSTOM_CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
@@ -218,7 +223,7 @@ span[data-testid="stIconMaterial"] { display: none !important; }
 [data-testid="stForm"] { border: none !important; padding: 0 !important; }
 .stSpinner > div { border-color: #667eea transparent transparent transparent; }
 
-/* --- CORREÇÃO AGRESSIVA DO EXPANDER (ALTERAÇÃO 3) --- */
+/* --- CORREÇÃO DO EXPANDER --- */
 .streamlit-expanderHeader {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
     border: 1px solid #334155 !important;
@@ -249,7 +254,10 @@ def init_session_state():
         'strategy_response': None, 'excel_data': None, 'audio_transcription': '',
         'kb_content': '', 'processing': False, 'error_message': None,
         'chat_messages': [],
-        'chat_context': ''
+        'chat_context': '',
+        # Chaves de API na sessão para persistência durante uso
+        'anthropic_key': '',
+        'openai_key': ''
     }
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -312,7 +320,7 @@ class KnowledgeBaseLoader:
         return "".join(content_parts)
 
 class LLMClient:
-    # ✅ ALTERAÇÃO 1 e 2: BLINDAGEM LATEX/JSON E ESTRUTURA YOUTUBE
+    # ✅ CLAUDE 3.5 SONNET IMPLEMENTADO
     @staticmethod
     def _get_system_prompt(conhecimento: str) -> str:
         return f"""Você é o FinMentor, um CFO Virtual de alto nível especializado em finanças corporativas e pessoais.
@@ -375,13 +383,13 @@ Retorne EXCLUSIVAMENTE um JSON válido com esta estrutura:
 IMPORTANTE: Retorne APENAS o JSON, sem texto adicional ou formatação markdown."""
 
     def __init__(self, api_key: str):
-        self.api_key = api_key
+        self.api_key = api_key # Chave Anthropic
 
     def generate_strategy(self, contexto: str, persona: str, mercado: Dict[str, Any], kb: str) -> Dict[str, Any]:
-        from openai import OpenAI
-        client = OpenAI(api_key=self.api_key)
+        # ✅ CLIENTE ANTHROPIC (CLAUDE)
+        client = anthropic.Anthropic(api_key=self.api_key)
         
-        system_prompt = self._get_system_prompt(kb[:8000] if kb else "Nenhuma base carregada.")
+        system_prompt = self._get_system_prompt(kb[:180000] if kb else "Nenhuma base carregada.")
         
         user_prompt = f"""## CONTEXTO DO USUÁRIO
 {contexto}
@@ -399,36 +407,40 @@ IMPORTANTE: Retorne APENAS o JSON, sem texto adicional ou formatação markdown.
 Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
 
         try:
-            response = client.chat.completions.create(
-                model="claude-sonnet-4-20250514",
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_prompt}
-                ],
+            # Chamada da API Anthropic
+            response = client.messages.create(
+                model="claude-3-5-sonnet-20240620",
+                max_tokens=4096,
                 temperature=0.7,
-                max_tokens=4000
+                system=system_prompt,
+                messages=[
+                    {"role": "user", "content": user_prompt}
+                ]
             )
-            content = response.choices[0].message.content.strip()
+            
+            content = response.content[0].text.strip()
             content = re.sub(r'^```json\s*', '', content)
             content = re.sub(r'\s*```$', '', content)
             
-            # ✅ ALTERAÇÃO 1: CORRETOR AUTOMÁTICO DE LATEX/JSON
+            # Tenta parsing direto, se falhar aplica correção de LaTeX
             try:
                 return json.loads(content)
             except json.JSONDecodeError:
-                # Regex mágica: encontra barras invertidas únicas que NÃO são escapes válidos e as duplica
                 fixed_content = re.sub(r'(?<!\\)\\(?!["\\/bfnrtu])', r'\\\\', content)
                 return json.loads(fixed_content)
 
         except json.JSONDecodeError as e:
-            return {"error": True, "message": f"Erro ao processar resposta (JSON inválido mesmo após correção): {str(e)}", "raw_content": content[:500] if 'content' in locals() else "N/D"}
+            return {"error": True, "message": f"Erro ao processar JSON: {str(e)}", "raw_content": content[:500] if 'content' in locals() else "N/D"}
         except Exception as e:
-            return {"error": True, "message": f"Erro na API: {str(e)}"}
+            return {"error": True, "message": f"Erro na API Anthropic: {str(e)}"}
 
     @staticmethod
-    def transcribe_audio(audio_bytes: bytes, api_key: str) -> str:
-        from openai import OpenAI
-        client = OpenAI(api_key=api_key)
+    def transcribe_audio(audio_bytes: bytes, openai_api_key: str) -> str:
+        # ✅ WHISPER VIA OPENAI
+        if not openai_api_key:
+            return "[Erro: Chave OpenAI necessária para áudio]"
+        
+        client = OpenAI(api_key=openai_api_key)
         try:
             audio_file = BytesIO(audio_bytes)
             audio_file.name = "audio.wav"
@@ -439,8 +451,8 @@ Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
             
     @staticmethod
     def chat_followup(user_message: str, chat_history: List[Dict], main_context: str, kb: str, api_key: str) -> str:
-        from openai import OpenAI
-        client = OpenAI(api_key=api_key)
+        # ✅ CLIENTE ANTHROPIC PARA CHAT
+        client = anthropic.Anthropic(api_key=api_key)
         
         system_prompt = f"""Você é o FinMentor continuando uma consultoria financeira.
 
@@ -448,7 +460,7 @@ Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
 {main_context}
 
 ## BASE DE CONHECIMENTO
-{kb[:4000] if kb else "Nenhuma base disponível."}
+{kb[:180000] if kb else "Nenhuma base disponível."}
 
 ## INSTRUÇÕES
 - Você está em uma conversa contínua sobre o tema acima
@@ -458,19 +470,23 @@ Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
 - Se a pergunta fugir muito do tema, gentilmente redirecione
 - Use fórmulas e exemplos quando apropriado"""
 
-        messages = [{"role": "system", "content": system_prompt}]
+        # Prepara histórico no formato Anthropic (System separado)
+        messages_payload = []
         for msg in chat_history[-10:]:
-            messages.append({"role": msg["role"], "content": msg["content"]})
-        messages.append({"role": "user", "content": user_message})
+            if msg["role"] in ["user", "assistant"]:
+                messages_payload.append({"role": msg["role"], "content": msg["content"]})
+        
+        messages_payload.append({"role": "user", "content": user_message})
         
         try:
-            response = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=messages,
+            response = client.messages.create(
+                model="claude-3-5-sonnet-20240620",
+                max_tokens=1000,
                 temperature=0.7,
-                max_tokens=1000
+                system=system_prompt,
+                messages=messages_payload
             )
-            return response.choices[0].message.content.strip()
+            return response.content[0].text.strip()
         except Exception as e:
             return f"❌ Erro: {str(e)}"
 
@@ -543,18 +559,37 @@ def render_phase_1():
         <p style="color: #94A3B8; font-size: 1.1rem; margin-top: 0.5rem;">Seu CFO Virtual de Bolso</p>
     </div>''', unsafe_allow_html=True)
     
-    api_key = os.getenv('OPENAI_API_KEY') or st.secrets.get('OPENAI_API_KEY', '')
-    if not api_key:
-        st.warning("⚠️ Configure sua API Key da OpenAI")
-        api_key = st.text_input("Insira sua API Key:", type="password")
-        if not api_key: st.stop()
+    # ✅ GERENCIAMENTO DE CHAVES (CLAUDE + OPENAI)
+    ant_key = os.getenv('ANTHROPIC_API_KEY') or st.secrets.get('ANTHROPIC_API_KEY', '')
+    oai_key = os.getenv('OPENAI_API_KEY') or st.secrets.get('OPENAI_API_KEY', '')
+    
+    if not ant_key:
+        st.warning("⚠️ Chave ANTHROPIC necessária para o cérebro do FinMentor")
+        ant_key = st.text_input("Anthropic Key (sk-ant...):", type="password", key="input_ant_key")
+    
+    if not oai_key:
+        st.info("ℹ️ Chave OPENAI necessária apenas para áudio")
+        oai_key = st.text_input("OpenAI Key (sk-...):", type="password", key="input_oai_key")
+
+    if not ant_key:
+        st.stop()
+        
+    st.session_state.anthropic_key = ant_key
+    st.session_state.openai_key = oai_key
     
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
     st.markdown("### 🎤 Entrada por Áudio (Opcional)")
-    audio_value = st.audio_input("Grave seu áudio:", key="audio_recorder")
-    if audio_value is not None:
-        with st.spinner("Transcrevendo..."):
-            st.session_state.audio_transcription = LLMClient.transcribe_audio(audio_value.read(), api_key)
+    
+    # Só habilita áudio se tiver chave OpenAI
+    if not st.session_state.openai_key:
+        st.caption("Insira a chave OpenAI para habilitar transcrição de áudio.")
+        audio_value = None
+    else:
+        audio_value = st.audio_input("Grave seu áudio:", key="audio_recorder")
+        
+    if audio_value is not None and st.session_state.openai_key:
+        with st.spinner("Transcrevendo com Whisper (OpenAI)..."):
+            st.session_state.audio_transcription = LLMClient.transcribe_audio(audio_value.read(), st.session_state.openai_key)
             st.success(f"✅ Transcrição: {st.session_state.audio_transcription[:100]}...")
     
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
@@ -568,7 +603,7 @@ def render_phase_1():
         st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
         st.markdown("### 👤 Seu Perfil")
         selected_persona = st.selectbox("Selecione:", ["Diretor Financeiro (CFO)", "Controller", "Gerente de Tesouraria", "Analista de FP&A", "Investidor Individual", "Empreendedor", "Estudante de Finanças"])
-        submitted = st.form_submit_button("🚀 Gerar Estratégia", use_container_width=True)
+        submitted = st.form_submit_button("🚀 Gerar Estratégia (com Claude)", use_container_width=True)
         
         if submitted:
             if not user_challenge.strip():
@@ -586,9 +621,11 @@ def render_phase_1():
                         st.session_state.ctx += f"\n\n## DADOS DO EXCEL:\n{df.to_string()}"
                     except Exception as e:
                         st.warning(f"⚠️ Erro ao ler arquivo: {e}")
-                with st.spinner("🧠 Gerando estratégia..."):
+                with st.spinner("🧠 Claude 3.5 Sonnet pensando..."):
                     try:
-                        response = LLMClient(api_key).generate_strategy(st.session_state.ctx, selected_persona, st.session_state.market_data, st.session_state.kb_content)
+                        # Usa a chave Anthropic salva na sessão
+                        client = LLMClient(st.session_state.anthropic_key)
+                        response = client.generate_strategy(st.session_state.ctx, selected_persona, st.session_state.market_data, st.session_state.kb_content)
                         if response.get('error'):
                             st.error(f"❌ {response.get('message')}")
                         else:
@@ -621,7 +658,6 @@ def render_phase_2():
     col_video, col_excel = st.columns(2)
     with col_video:
         video = response.get('video_sugestao', {})
-        # ✅ ALTERAÇÃO 2: LOGICA DE LINK YOUTUBE DINÂMICO
         termo = video.get('termo_busca')
         
         if termo or video.get('url'):
@@ -657,7 +693,7 @@ def render_phase_2():
         st.markdown("".join([f'<span class="focus-badge">{f}</span>' for f in response.get('frameworks_utilizados', [])]), unsafe_allow_html=True)
     
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
-    st.markdown("### 🧠 Análise Chain of Thought")
+    st.markdown("### 🧠 Análise Chain of Thought (Claude)")
     st.markdown(f'<div class="analysis-section">{response.get("analise_dos_dados", "N/D")}</div>', unsafe_allow_html=True)
     
     st.markdown("### 📋 Resumo Executivo")
@@ -668,7 +704,6 @@ def render_phase_2():
         try:
             formula = response['modelagem_matematica']
             formula = formula.strip()
-            # Remove delimitadores extras que possam vir
             formula = re.sub(r'^\\\[|\\\]$|^\$\$|\$\$$|^\$|\$$', '', formula).strip()
             st.latex(formula)
         except Exception as e:
@@ -694,7 +729,7 @@ def render_phase_2():
 
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
     st.markdown("### 💬 Tire suas Dúvidas")
-    st.caption("Pergunte mais sobre este tema. O assistente já conhece o contexto da sua consulta.")
+    st.caption("Pergunte mais sobre este tema. Claude 3.5 Sonnet já conhece o contexto.")
     
     if not st.session_state.chat_context:
         st.session_state.chat_context = f"""
@@ -714,14 +749,13 @@ KPIs relevantes: {', '.join(response.get('kpis_relevantes', []))}
             st.markdown(user_input)
         
         with st.chat_message("assistant"):
-            with st.spinner("Pensando..."):
-                api_key = os.getenv('OPENAI_API_KEY') or st.secrets.get('OPENAI_API_KEY', '')
+            with st.spinner("Claude pensando..."):
                 response_text = LLMClient.chat_followup(
                     user_message=user_input,
                     chat_history=st.session_state.chat_messages,
                     main_context=st.session_state.chat_context,
                     kb=st.session_state.kb_content,
-                    api_key=api_key
+                    api_key=st.session_state.anthropic_key # Usa chave salva
                 )
                 st.markdown(response_text)
                 st.session_state.chat_messages.append({"role": "assistant", "content": response_text})
