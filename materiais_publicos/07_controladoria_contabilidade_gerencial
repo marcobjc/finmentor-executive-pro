@@ -1,0 +1,832 @@
+# BASE DE CONHECIMENTO FINMENTOR
+# MÓDULO 07: CONTROLADORIA E CONTABILIDADE GERENCIAL
+# Versão: 1.0
+# Última atualização: Janeiro/2025
+
+================================================================================
+SEÇÃO 7.1: FUNDAMENTOS DA CONTROLADORIA
+================================================================================
+
+## 7.1.1 Definição e Escopo
+
+### O que é Controladoria
+
+Controladoria é a função organizacional responsável por:
+- Garantir a integridade das informações contábeis e financeiras
+- Prover informações para tomada de decisão
+- Estabelecer e monitorar controles internos
+- Assegurar compliance com normas e regulamentos
+- Coordenar o processo de gestão
+
+### Missão da Controladoria
+
+"Assegurar a eficácia empresarial através da otimização dos resultados, 
+por meio de um modelo de gestão que integra planejamento, execução e controle, 
+suportado por sistemas de informação que permitem a melhor tomada de decisão."
+
+### Controladoria vs. Contabilidade
+
+| Aspecto           | Contabilidade              | Controladoria                |
+|-------------------|----------------------------|------------------------------|
+| Foco              | Registro e compliance      | Gestão e decisão             |
+| Usuário principal | Externos (fisco, auditores)| Internos (gestores)          |
+| Horizonte         | Passado                    | Passado, presente e futuro   |
+| Frequência        | Mensal/trimestral          | Contínua                     |
+| Normas            | CPC/IFRS obrigatórios      | Flexível por necessidade     |
+| Detalhe           | Por conta contábil         | Por dimensão de gestão       |
+
+--------------------------------------------------------------------------------
+
+## 7.1.2 Estrutura Organizacional
+
+### Posicionamento da Controladoria
+
+```
+ESTRUTURA TÍPICA DA ÁREA FINANCEIRA
+
+                            CFO
+                             |
+     ┌───────────┬───────────┼───────────┬───────────┐
+     |           |           |           |           |
+ Controller  Tesouraria    FP&A         RI      Tax/Legal
+     |
+     ├── Contabilidade Societária
+     ├── Contabilidade Gerencial
+     ├── Contabilidade de Custos
+     ├── Controles Internos
+     ├── Fiscal/Tributário
+     └── Compliance
+```
+
+### Papéis em Controladoria
+
+**Controller (Controlador):**
+- Responsável pela função como um todo
+- Reporte ao CFO
+- Interação com auditoria e conselho
+- Guardião dos controles e políticas
+
+**Gerente de Contabilidade:**
+- Fechamento contábil
+- Demonstrações financeiras
+- Relacionamento com auditoria
+- Compliance contábil
+
+**Gerente de Custos:**
+- Sistema de custeio
+- Análise de margens
+- Precificação
+- Produtividade
+
+--------------------------------------------------------------------------------
+
+## 7.1.3 Funções da Controladoria
+
+### Função Contábil
+
+**Contabilidade Societária:**
+- Registro de transações
+- Fechamento mensal/anual
+- Demonstrações financeiras (IFRS/CPC)
+- Notas explicativas
+- Atendimento à auditoria
+
+**Contabilidade Fiscal:**
+- Apuração de impostos
+- Obrigações acessórias
+- ECF, ECD, SPED
+- Planejamento tributário
+
+### Função Gerencial
+
+**Contabilidade Gerencial:**
+- Relatórios de gestão
+- Análise de resultados
+- Informações para decisão
+- Indicadores de desempenho
+
+**Contabilidade de Custos:**
+- Custeio de produtos/serviços
+- Análise de margens
+- Custo padrão vs. real
+- Formação de preço
+
+### Função de Controle
+
+**Controles Internos:**
+- Políticas e procedimentos
+- Segregação de funções
+- Autorizações e alçadas
+- SOX compliance (se aplicável)
+
+**Gestão de Riscos:**
+- Identificação de riscos
+- Matriz de riscos e controles
+- Monitoramento
+- Planos de mitigação
+
+================================================================================
+SEÇÃO 7.2: CONTABILIDADE GERENCIAL
+================================================================================
+
+## 7.2.1 Conceitos Fundamentais
+
+### Definição
+
+Contabilidade Gerencial é o ramo da contabilidade que:
+- Produz informações para usuários internos
+- Foca em apoio à decisão
+- Não está restrita a normas contábeis
+- Pode usar diferentes critérios de mensuração
+
+### Características
+
+**Usuários:** Gestores internos
+**Normas:** Flexíveis, definidas internamente
+**Horizonte:** Passado, presente e futuro
+**Frequência:** Conforme necessidade (diária a anual)
+**Formato:** Customizado por audiência
+**Foco:** Relevância sobre precisão
+
+### Contabilidade Financeira vs. Gerencial
+
+| Aspecto              | Financeira              | Gerencial                  |
+|----------------------|-------------------------|----------------------------|
+| Obrigatoriedade      | Legal                   | Opcional                   |
+| Usuários             | Externos                | Internos                   |
+| Normas               | IFRS/CPC                | Definidas pela empresa     |
+| Verificação          | Auditada                | Não auditada               |
+| Período              | Histórico               | Histórico e projetado      |
+| Escopo               | Empresa toda            | Segmentos, produtos, etc.  |
+
+--------------------------------------------------------------------------------
+
+## 7.2.2 Sistemas de Informação Gerencial
+
+### Estrutura de Informações
+
+```
+PIRÂMIDE DE INFORMAÇÕES GERENCIAIS
+
+           /\
+          /  \  ESTRATÉGICO
+         / DB \  Dashboard Executivo
+        /------\
+       /        \  TÁTICO
+      / Relat.   \  Relatórios Gerenciais
+     / Gerenciais \  Análises de Variação
+    /--------------\
+   /                \  OPERACIONAL
+  / Rel. Detalhados  \  Transações, Conciliações
+ /____________________\
+
+═══════════════════════════════
+    DADOS TRANSACIONAIS
+  ERP, Sistemas, Planilhas
+```
+
+### Dimensões de Análise
+
+**Dimensões Típicas:**
+- Entidade legal / Empresa
+- Unidade de negócio
+- Centro de custo / Centro de lucro
+- Produto / Serviço
+- Cliente / Segmento de cliente
+- Canal de vendas
+- Região / Geografia
+- Projeto
+- Período (ano, mês, semana)
+
+### Plano de Contas Gerencial
+
+```
+ESTRUTURA HIERÁRQUICA
+
+RECEITA LÍQUIDA
+├── Receita Bruta
+│   ├── Mercado Interno
+│   │   ├── Produto A
+│   │   ├── Produto B
+│   │   └── Serviços
+│   └── Mercado Externo
+│       ├── América Latina
+│       └── Outros
+└── Deduções
+    ├── Impostos sobre Vendas
+    ├── Devoluções
+    └── Descontos
+
+CUSTOS
+├── Custos Variáveis
+│   ├── Matéria-Prima
+│   ├── Embalagem
+│   └── Frete sobre Vendas
+└── Custos Fixos de Produção
+    ├── Mão de Obra Direta
+    ├── Depreciação Industrial
+    └── Utilidades
+
+DESPESAS OPERACIONAIS
+├── Comerciais (Vendas)
+├── Marketing
+├── Administrativas
+├── TI
+└── Outras Despesas/Receitas
+```
+
+--------------------------------------------------------------------------------
+
+## 7.2.3 Relatórios Gerenciais
+
+### Demonstração de Resultados Gerencial
+
+```
+DEMONSTRAÇÃO DE RESULTADOS GERENCIAL
+Período: Janeiro/2025 (R$ milhares)
+
+                                    Real      Budget    Var %
+────────────────────────────────────────────────────────────────
+RECEITA BRUTA                      12.500     12.000    4,2%
+  (-) Impostos sobre Vendas        (2.500)    (2.400)   4,2%
+  (-) Devoluções                     (125)      (120)   4,2%
+  (-) Descontos                      (375)      (480)  -21,9%
+────────────────────────────────────────────────────────────────
+RECEITA LÍQUIDA                     9.500      9.000    5,6%
+────────────────────────────────────────────────────────────────
+CUSTOS VARIÁVEIS                   (4.750)    (4.500)   5,6%
+  Matéria-Prima                    (3.325)    (3.150)   5,6%
+  Embalagem                          (665)      (630)   5,6%
+  Frete sobre Vendas                 (475)      (450)   5,6%
+  Comissões                          (285)      (270)   5,6%
+────────────────────────────────────────────────────────────────
+MARGEM DE CONTRIBUIÇÃO              4.750      4.500    5,6%
+  % Margem de Contribuição          50,0%      50,0%
+────────────────────────────────────────────────────────────────
+CUSTOS FIXOS DE PRODUÇÃO           (1.200)    (1.180)   1,7%
+────────────────────────────────────────────────────────────────
+LUCRO BRUTO                         3.550      3.320    6,9%
+  % Margem Bruta                    37,4%      36,9%
+────────────────────────────────────────────────────────────────
+DESPESAS OPERACIONAIS              (2.200)    (2.100)   4,8%
+────────────────────────────────────────────────────────────────
+EBITDA                              1.350      1.220   10,7%
+  % Margem EBITDA                   14,2%      13,6%
+────────────────────────────────────────────────────────────────
+  (-) Depreciação e Amortização      (400)      (400)   0,0%
+────────────────────────────────────────────────────────────────
+EBIT                                  950        820   15,9%
+  % Margem EBIT                     10,0%       9,1%
+────────────────────────────────────────────────────────────────
+```
+
+================================================================================
+SEÇÃO 7.3: CONTABILIDADE DE CUSTOS
+================================================================================
+
+## 7.3.1 Fundamentos de Custos
+
+### Classificação de Custos
+
+**Por Comportamento:**
+
+| Tipo          | Definição                           | Exemplos                        |
+|---------------|-------------------------------------|---------------------------------|
+| Variável      | Varia com volume de produção        | MP, embalagem, energia variável |
+| Fixo          | Constante independente de volume    | Aluguel, salários fixos         |
+| Semi-variável | Componente fixo + variável          | Telefone, energia               |
+| Escalonado    | Fixo dentro de faixas de capacidade | Supervisão                      |
+
+**Por Função:**
+
+| Tipo           | Definição                          | Exemplos                        |
+|----------------|------------------------------------|---------------------------------|
+| Produção       | Relacionado à fabricação           | MP, MOD, CIF                    |
+| Comercial      | Relacionado a vendas               | Comissões, frete vendas         |
+| Administrativo | Suporte geral                      | Salários adm., TI               |
+| Financeiro     | Custo do dinheiro                  | Juros, tarifas                  |
+
+**Por Rastreabilidade:**
+
+| Tipo      | Definição                             | Exemplos                        |
+|-----------|---------------------------------------|---------------------------------|
+| Direto    | Identificável ao produto/serviço      | Matéria-prima, MOD              |
+| Indireto  | Necessita alocação/rateio             | Aluguel fábrica, supervisão     |
+
+### Terminologia de Custos
+
+**Custo Primário:** MP + MOD
+**Custo de Transformação:** MOD + CIF
+**Custo de Produção:** MP + MOD + CIF
+**Custo do Produto Vendido (CPV):** Custo Produção ajustado por variação estoque
+**Custo Total:** Custos + Despesas
+
+--------------------------------------------------------------------------------
+
+## 7.3.2 Métodos de Custeio
+
+### Custeio por Absorção
+
+**Conceito:**
+- Todos os custos de produção são alocados aos produtos
+- Custos fixos e variáveis de produção no custo do produto
+- Despesas vão diretamente para resultado
+- Método aceito pela legislação fiscal e IFRS/CPC
+
+**Estrutura:**
+
+```
+Custos de Produção
+├── Matéria-Prima (Direto)
+├── Mão de Obra Direta (Direto)
+└── Custos Indiretos de Fabricação (Rateio)
+        |
+        v
+    ESTOQUE (Produto em processo)
+        |
+        v
+    ESTOQUE (Produto acabado)
+        |
+        v (Quando vendido)
+      CPV --> Resultado
+
+Despesas (Vendas, Adm, Financ.) --> Resultado Direto
+```
+
+**Vantagens:**
+- Aceito legalmente
+- Visão completa do custo de produção
+- Valorização adequada de estoques
+
+**Desvantagens:**
+- Arbitrariedade no rateio de CIF
+- Pode distorcer decisões de curto prazo
+- Resultado afetado por variação de estoque
+
+### Custeio Variável (Direto)
+
+**Conceito:**
+- Apenas custos variáveis são alocados aos produtos
+- Custos fixos vão direto para resultado do período
+- Não aceito fiscalmente, apenas para gestão
+
+**Estrutura de Resultado:**
+
+```
+Receita
+(-) Custos Variáveis Vendidos
+(=) MARGEM DE CONTRIBUIÇÃO
+(-) Custos Fixos de Produção
+(-) Despesas Fixas
+(=) Resultado
+```
+
+**Vantagens:**
+- Elimina arbitrariedade de rateio
+- Ideal para decisões de curto prazo
+- Evidencia margem de contribuição
+
+**Desvantagens:**
+- Não aceito fiscalmente
+- Subestima custo real do produto
+
+### Custeio ABC (Activity-Based Costing)
+
+**Conceito:**
+- Custos são alocados a atividades
+- Atividades são alocadas a produtos via cost drivers
+- Mais preciso para custos indiretos
+
+**Estrutura:**
+
+```
+RECURSOS (Pessoal, Equipamentos, Instalações)
+        |
+        v (Resource Drivers)
+ATIVIDADES (Setup, Inspeção, Compras, Expedição)
+        |
+        v (Activity Drivers / Cost Drivers)
+OBJETOS DE CUSTO (Produtos, Clientes, Canais)
+```
+
+**Cost Drivers Típicos:**
+
+| Atividade                | Cost Driver                    |
+|--------------------------|--------------------------------|
+| Programar produção       | Número de ordens               |
+| Setup de máquinas        | Número de setups               |
+| Inspeção de qualidade    | Horas de inspeção              |
+| Processar pedidos        | Número de pedidos              |
+| Expedir produtos         | Número de expedições           |
+
+--------------------------------------------------------------------------------
+
+## 7.3.3 Custo Padrão
+
+### Conceito
+
+Custo Padrão é um custo pré-determinado que serve como:
+- Referência para controle
+- Base para orçamento
+- Parâmetro para análise de variações
+- Meta de eficiência operacional
+
+### Tipos de Padrão
+
+**Padrão Ideal:** Condições perfeitas, sem perdas
+**Padrão Corrente:** Condições normais de operação
+**Padrão Básico:** Estabelecido por longo período
+
+### Ficha de Custo Padrão
+
+```
+FICHA DE CUSTO PADRÃO - Produto: Widget Premium
+
+MATÉRIA-PRIMA
+| Material         | Qtd/Un   | Preço/Un   | Custo Total  |
+|------------------|----------|------------|--------------|
+| Aço inox         | 2,5 kg   | R$ 15/kg   | R$ 37,50     |
+| Componente A     | 3 un     | R$ 8/un    | R$ 24,00     |
+| Embalagem        | 1 un     | R$ 5/un    | R$ 5,00      |
+| Total MP         |          |            | R$ 66,50     |
+
+MÃO DE OBRA DIRETA
+| Operação         | Tempo    | Taxa/Hora  | Custo Total  |
+|------------------|----------|------------|--------------|
+| Usinagem         | 0,5 h    | R$ 40/h    | R$ 20,00     |
+| Montagem         | 0,3 h    | R$ 35/h    | R$ 10,50     |
+| Acabamento       | 0,2 h    | R$ 30/h    | R$ 6,00      |
+| Total MOD        | 1,0 h    |            | R$ 36,50     |
+
+CUSTOS INDIRETOS DE FABRICAÇÃO
+| Item             | Base     | Taxa       | Custo Total  |
+|------------------|----------|------------|--------------|
+| CIF Variável     | 1,0 h MOD| R$ 12/h    | R$ 12,00     |
+| CIF Fixo         | 1,0 h MOD| R$ 18/h    | R$ 18,00     |
+| Total CIF        |          |            | R$ 30,00     |
+
+CUSTO PADRÃO TOTAL POR UNIDADE: R$ 133,00
+```
+
+### Análise de Variações
+
+**Variação de Matéria-Prima:**
+```
+Variação Total MP = Custo Real - Custo Padrão
+
+Decomposta em:
+(1) Variação de Preço = (Preço Real - Preço Padrão) × Qtd Real
+(2) Variação de Quantidade = (Qtd Real - Qtd Padrão) × Preço Padrão
+```
+
+**Variação de Mão de Obra:**
+```
+(1) Variação de Taxa = (Taxa Real - Taxa Padrão) × Horas Reais
+(2) Variação de Eficiência = (Horas Reais - Horas Padrão) × Taxa Padrão
+```
+
+================================================================================
+SEÇÃO 7.4: ANÁLISE DE MARGENS E RENTABILIDADE
+================================================================================
+
+## 7.4.1 Margem de Contribuição
+
+### Definição
+
+```
+Margem de Contribuição = Receita - Custos Variáveis - Despesas Variáveis
+
+MC Unitária = Preço de Venda - Custo Variável Unitário
+
+MC% = MC / Receita × 100
+```
+
+### Importância
+
+1. **Ponto de Equilíbrio:** Base para cálculo do breakeven
+2. **Mix de Produtos:** Priorização de produtos mais rentáveis
+3. **Decisões de Preço:** Piso mínimo de precificação
+4. **Capacidade Restrita:** Otimização de produção
+5. **Análise de Clientes:** Rentabilidade por cliente
+
+--------------------------------------------------------------------------------
+
+## 7.4.2 Ponto de Equilíbrio
+
+### Conceitos
+
+**Ponto de Equilíbrio Contábil:**
+Volume onde Receita Total = Custos Totais (lucro = 0)
+
+```
+PE Contábil (un) = Custos Fixos / MC Unitária
+PE Contábil (R$) = Custos Fixos / MC%
+```
+
+**Ponto de Equilíbrio Econômico:**
+Inclui custo de oportunidade do capital
+
+```
+PE Econômico = (Custos Fixos + Lucro Desejado) / MC Unitária
+```
+
+**Ponto de Equilíbrio Financeiro:**
+Considera apenas desembolsos de caixa
+
+```
+PE Financeiro = (Custos Fixos - Depreciação) / MC Unitária
+```
+
+### Exemplo
+
+```
+DADOS:
+- Preço de Venda: R$ 100/un
+- Custo Variável: R$ 60/un
+- MC Unitária: R$ 40/un (40%)
+- Custos Fixos: R$ 200.000/mês
+- Depreciação: R$ 30.000/mês
+- Lucro desejado: R$ 80.000/mês
+
+CÁLCULOS:
+
+PE Contábil:
+  Em unidades: 200.000 / 40 = 5.000 unidades
+  Em reais: 200.000 / 40% = R$ 500.000
+
+PE Econômico:
+  (200.000 + 80.000) / 40 = 7.000 unidades
+
+PE Financeiro:
+  (200.000 - 30.000) / 40 = 4.250 unidades
+```
+
+--------------------------------------------------------------------------------
+
+## 7.4.3 Alavancagem Operacional
+
+### Conceito
+
+Alavancagem Operacional mede a sensibilidade do lucro a variações na receita:
+
+```
+Grau de Alavancagem Operacional (GAO) = MC / Lucro Operacional
+
+ou
+
+GAO = Variação % Lucro / Variação % Receita
+```
+
+### Interpretação
+
+- GAO = 3 significa que +10% na receita gera +30% no lucro
+- Quanto maior a proporção de custos fixos, maior o GAO
+- Alto GAO = maior risco e maior potencial de retorno
+
+================================================================================
+SEÇÃO 7.5: CONTROLES INTERNOS
+================================================================================
+
+## 7.5.1 Fundamentos
+
+### Definição (COSO)
+
+Controle interno é um processo efetuado pela diretoria, gestão e outras pessoas,
+desenhado para fornecer segurança razoável quanto ao atingimento de objetivos
+relacionados a:
+- Eficácia e eficiência das operações
+- Confiabilidade dos relatórios financeiros
+- Conformidade com leis e regulamentos aplicáveis
+
+### Componentes do COSO
+
+**1. Ambiente de Controle:**
+- Tom da liderança (tone at the top)
+- Valores éticos e integridade
+- Estrutura organizacional
+
+**2. Avaliação de Riscos:**
+- Identificação de riscos
+- Análise de impacto e probabilidade
+- Gestão de mudanças
+
+**3. Atividades de Controle:**
+- Políticas e procedimentos
+- Aprovações e autorizações
+- Verificações e reconciliações
+- Segregação de funções
+
+**4. Informação e Comunicação:**
+- Sistemas de informação
+- Comunicação interna e externa
+
+**5. Monitoramento:**
+- Avaliações contínuas
+- Avaliações independentes
+
+--------------------------------------------------------------------------------
+
+## 7.5.2 Tipos de Controles
+
+### Por Natureza
+
+**Controles Preventivos:**
+- Evitam que erro/fraude ocorra
+- Exemplos: segregação de funções, alçadas, aprovações prévias
+
+**Controles Detectivos:**
+- Identificam erro/fraude após ocorrência
+- Exemplos: reconciliações, revisões, auditorias
+
+**Controles Corretivos:**
+- Corrigem erro/fraude identificado
+- Exemplos: ajustes contábeis, ações disciplinares
+
+### Por Execução
+
+**Controles Manuais:** Executados por pessoas
+**Controles Automáticos:** Executados por sistemas
+**Controles Semi-Automáticos:** Combinação
+
+--------------------------------------------------------------------------------
+
+## 7.5.3 Matriz de Riscos e Controles
+
+### Exemplo - Processo Contas a Receber
+
+```
+| RISCO                   | IMPACTO | PROB. | CONTROLE                | TIPO |
+|-------------------------|---------|-------|-------------------------|------|
+| R1. Crédito inadequado  | Alto    | Média | Análise de crédito      | Prev |
+|                         |         |       | Alçadas de aprovação    | Prev |
+| R2. Faturamento errado  | Alto    | Baixa | Validação automática    | Auto |
+|                         |         |       | Revisão de exceções     | Det  |
+| R3. Recebto não registr.| Médio   | Alta  | Conciliação bancária    | Det  |
+|                         |         |       | Aging review semanal    | Det  |
+| R4. Fraude              | Alto    | Baixa | Segregação de funções   | Prev |
+|                         |         |       | Confirmação de saldos   | Det  |
+```
+
+================================================================================
+SEÇÃO 7.6: FECHAMENTO CONTÁBIL
+================================================================================
+
+## 7.6.1 Calendário de Fechamento
+
+```
+CALENDÁRIO DE FECHAMENTO MENSAL
+
+DIA ÚTIL    ATIVIDADE                           RESPONSÁVEL
+────────────────────────────────────────────────────────────
+DU -1       Cut-off de transações               Todas áreas
+            Inventário (se aplicável)           Operações
+
+DU +1       Fechamento de módulos operacionais  TI/Usuários
+            Importação de dados no GL           Contabilidade
+
+DU +2       Conciliações bancárias              Tesouraria
+            Conciliação de estoques             Custos
+
+DU +3       Conciliações intercompany           Contabilidade
+            Provisões contábeis                 Contabilidade
+
+DU +4       Cálculo de impostos                 Fiscal
+            Ajustes de fechamento               Contabilidade
+
+DU +5       Consolidação                        Contabilidade
+            Análise de variações                FP&A
+
+DU +6       Revisão final                       Controller
+            Apresentação de resultados          CFO
+```
+
+--------------------------------------------------------------------------------
+
+## 7.6.2 Checklist de Fechamento
+
+**ATIVO CIRCULANTE:**
+- [ ] Caixa e equivalentes conciliados
+- [ ] Aplicações financeiras marcadas a mercado
+- [ ] Contas a receber aging revisado
+- [ ] PCLD calculada e registrada
+- [ ] Estoques valorizados e ajustados
+
+**ATIVO NÃO CIRCULANTE:**
+- [ ] Imobilizado: adições, baixas, depreciação
+- [ ] Intangível: amortização calculada
+- [ ] Teste de impairment (se aplicável)
+
+**PASSIVO:**
+- [ ] Fornecedores conciliados
+- [ ] Empréstimos: juros provisionados
+- [ ] Impostos a pagar calculados
+- [ ] Salários e encargos provisionados
+
+**VALIDAÇÕES:**
+- [ ] Balanço fecha (Ativo = Passivo + PL)
+- [ ] Fluxo de caixa bate com variação de caixa
+- [ ] Intercompany eliminado
+
+--------------------------------------------------------------------------------
+
+## 7.6.3 Conciliações
+
+### Modelo de Conciliação Bancária
+
+```
+CONCILIAÇÃO BANCÁRIA
+Conta: Banco XYZ - C/C 12345
+Data: 31/01/2025
+
+SALDO CONFORME EXTRATO BANCÁRIO              R$ 1.234.567,89
+
+(+) Depósitos em trânsito
+    30/01 - Cliente ABC, NF 1234                  50.000,00
+    31/01 - Cliente XYZ, NF 5678                  25.000,00
+    Subtotal                                      75.000,00
+
+(-) Cheques não compensados
+    Ch 001234 - Fornec. Alpha, dt 28/01         (30.000,00)
+    Ch 001235 - Fornec. Beta, dt 30/01          (15.000,00)
+    Subtotal                                    (45.000,00)
+
+(+/-) Outros ajustes
+    Tarifa bancária não contabilizada              (234,56)
+
+═══════════════════════════════════════════════════════════════
+SALDO CONFORME CONTABILIDADE                 R$ 1.264.333,33
+
+Preparado por: ________________  Data: ___/___/___
+Revisado por:  ________________  Data: ___/___/___
+```
+
+================================================================================
+SEÇÃO 7.7: INDICADORES DE CONTROLADORIA
+================================================================================
+
+## 7.7.1 KPIs de Processo
+
+### Fechamento
+
+**Dias para Fechar:**
+- Meta: D+5 ou menos
+- Best practice: D+3
+
+**Taxa de Ajustes Pós-Fechamento:**
+- Meta: Zero ou mínimo
+- Indica qualidade do processo
+
+**Materialidade de Ajustes:**
+- Meta: < 1% do lucro
+
+### Qualidade
+
+**Taxa de Erro em Lançamentos:**
+- Lançamentos corrigidos / Total
+- Meta: < 0,5%
+
+**Contas Conciliadas no Prazo:**
+- % de contas conciliadas até deadline
+- Meta: 100%
+
+### Eficiência
+
+**Custo da Função / Receita:**
+- Total de custos de controladoria
+- Benchmark por indústria
+
+**Transações por FTE:**
+- Volume processado por pessoa
+- Tendência: Aumento com automação
+
+================================================================================
+SEÇÃO 7.8: GLOSSÁRIO
+================================================================================
+
+**ABC:** Activity-Based Costing
+**ABM:** Activity-Based Management
+**Absorção:** Método de custeio que aloca todos custos de produção ao produto
+**Alavancagem Operacional:** Sensibilidade do lucro a variações na receita
+**CIF:** Custos Indiretos de Fabricação
+**Conciliação:** Comparação entre duas fontes para identificar diferenças
+**COSO:** Committee of Sponsoring Organizations
+**Cost Driver:** Direcionador de custo no ABC
+**CPV:** Custo do Produto Vendido
+**Cut-off:** Corte de período para reconhecimento de transações
+**EBIT:** Earnings Before Interest and Taxes
+**EBITDA:** EBIT + Depreciação + Amortização
+**GAO:** Grau de Alavancagem Operacional
+**GL:** General Ledger - Razão Contábil
+**IFRS:** International Financial Reporting Standards
+**Margem de Contribuição:** Receita menos custos/despesas variáveis
+**MOD:** Mão de Obra Direta
+**MP:** Matéria-Prima
+**PCLD:** Provisão para Créditos de Liquidação Duvidosa
+**Ponto de Equilíbrio:** Volume onde receita iguala custos totais
+**Rateio:** Alocação de custos indiretos aos objetos de custo
+**SOX:** Sarbanes-Oxley Act
+**Variação:** Diferença entre padrão/orçado e real
+
+================================================================================
+FIM DO MÓDULO 07
+================================================================================
