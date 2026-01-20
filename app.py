@@ -720,9 +720,7 @@ Frameworks: {', '.join(response.get('frameworks_utilizados', []))}
         
         st.rerun()
 def main():
-    # ✅ SIDEBAR ÚNICA E LIMPA
     with st.sidebar:
-        # Avatar
         avatar_base64 = get_image_base64(AVATAR_PATH) if os.path.exists(AVATAR_PATH) else ""
         avatar_src = f"data:image/jpeg;base64,{avatar_base64}" if avatar_base64 else "https://ui-avatars.com/api/?name=Marco+Duarte&background=667eea&color=fff&size=200&font-size=0.35"
         
@@ -743,11 +741,9 @@ def main():
         
         st.markdown("---")
         
-        # ✅ Dados de mercado carregados em background (usados pela IA, não exibidos)
         if st.session_state.market_data is None:
             st.session_state.market_data = MarketDataFetcher.get_market_data()
         
-        # ✅ Materiais de apoio - RECOLHÍVEL
         with st.expander("📚 Materiais de Apoio", expanded=False):
             materials_folder = "materiais_download"
             if os.path.exists(materials_folder):
@@ -776,7 +772,6 @@ def main():
             else:
                 st.caption("📁 Adicione arquivos na pasta `materiais_download`")
     
-    # Main content
     if st.session_state.fase == 1:
         render_phase_1()
     else:
