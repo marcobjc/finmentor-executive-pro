@@ -320,7 +320,7 @@ class KnowledgeBaseLoader:
         return "".join(content_parts)
 
 class LLMClient:
-    # ✅ MODELO CONFIGURADO: CLAUDE 3 OPUS (Fallback seguro contra erro 404)
+    # ✅ MODELO CONFIGURADO: CLAUDE 4.5 SONNET (Fallback seguro contra erro 404)
     @staticmethod
     def _get_system_prompt(conhecimento: str) -> str:
         return f"""Você é o FinMentor, um CFO Virtual de alto nível especializado em finanças corporativas e pessoais.
@@ -386,7 +386,7 @@ IMPORTANTE: Retorne APENAS o JSON, sem texto adicional ou formatação markdown.
         self.api_key = api_key # Chave Anthropic
 
     def generate_strategy(self, contexto: str, persona: str, mercado: Dict[str, Any], kb: str) -> Dict[str, Any]:
-        # ✅ CLIENTE ANTHROPIC (CLAUDE OPUS)
+        # ✅ CLIENTE ANTHROPIC (CLAUDE SONNET)
         client = anthropic.Anthropic(api_key=self.api_key)
         
         system_prompt = self._get_system_prompt(kb[:180000] if kb else "Nenhuma base carregada.")
@@ -409,8 +409,8 @@ Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
         try:
             # Chamada da API Anthropic
             response = client.messages.create(
-                # 👇 USO DO MODELO OPUS PARA MÁXIMA COMPATIBILIDADE E INTELIGÊNCIA
-                model="claude-3-opus-20240229",
+                # 👇 USO DO MODELO SONNET PARA MÁXIMA COMPATIBILIDADE E INTELIGÊNCIA
+                model="claude-4-5-sonnet-latest",
                 max_tokens=4096,
                 temperature=0.7,
                 system=system_prompt,
@@ -480,8 +480,8 @@ Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
         
         try:
             response = client.messages.create(
-                # 👇 USO DO MODELO OPUS
-                model="claude-3-opus-20240229",
+                # 👇 USO DO MODELO SONNET
+                model="claude-4-5-sonnet-latest",
                 max_tokens=1000,
                 temperature=0.7,
                 system=system_prompt,
@@ -622,7 +622,7 @@ def render_phase_1():
                         st.session_state.ctx += f"\n\n## DADOS DO EXCEL:\n{df.to_string()}"
                     except Exception as e:
                         st.warning(f"⚠️ Erro ao ler arquivo: {e}")
-                with st.spinner("🧠 Claude 3 Opus pensando..."):
+                with st.spinner("🧠 Claude 4.5 SONNET pensando..."):
                     try:
                         # Usa a chave Anthropic salva na sessão
                         client = LLMClient(st.session_state.anthropic_key)
@@ -732,7 +732,7 @@ def render_phase_2():
 
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
     st.markdown("### 💬 Tire suas Dúvidas")
-    st.caption("Pergunte mais sobre este tema. Claude 3 Opus já conhece o contexto.")
+    st.caption("Pergunte mais sobre este tema. Claude 4.5 SONNET já conhece o contexto.")
     
     if not st.session_state.chat_context:
         st.session_state.chat_context = f"""
