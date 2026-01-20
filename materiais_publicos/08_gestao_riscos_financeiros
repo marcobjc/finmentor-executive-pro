@@ -1,0 +1,388 @@
+# BASE DE CONHECIMENTO FINMENTOR
+# MÓDULO 08: GESTÃO DE RISCOS FINANCEIROS
+# Versão: 1.0
+# Última atualização: Janeiro/2025
+
+================================================================================
+SEÇÃO 8.1: FUNDAMENTOS DA GESTÃO DE RISCOS
+================================================================================
+
+## 8.1.1 Conceitos Básicos
+
+### Definição de Risco
+
+Risco é a possibilidade de ocorrência de um evento que pode afetar negativamente
+(ou positivamente) o alcance dos objetivos organizacionais. Em finanças:
+
+**Risco = Probabilidade × Impacto**
+
+### Tipos de Risco Empresarial
+
+**Riscos Estratégicos:** Mudanças no ambiente competitivo, disrupção tecnológica
+**Riscos Operacionais:** Falhas de processo, erros humanos, fraudes
+**Riscos Financeiros:** Mercado (câmbio, juros, commodities), crédito, liquidez
+**Riscos de Compliance:** Regulatório, legal, reputacional
+
+--------------------------------------------------------------------------------
+
+## 8.1.2 Framework de Gestão de Riscos
+
+### Processo de Gestão de Riscos
+
+```
+CICLO DE GESTÃO DE RISCOS
+
+IDENTIFICAR --> AVALIAR --> TRATAR --> MONITORAR --> REPORTAR
+     ^                                                    |
+     └────────────────────────────────────────────────────┘
+```
+
+### Estratégias de Tratamento
+
+**Evitar:** Eliminar a atividade que gera o risco
+**Mitigar:** Reduzir probabilidade ou impacto
+**Transferir:** Passar o risco para terceiros (seguro, hedge)
+**Aceitar:** Assumir o risco dentro do apetite definido
+
+### Apetite e Tolerância a Risco
+
+**Apetite de Risco:** Nível de risco que a organização está disposta a aceitar
+**Tolerância a Risco:** Variação aceitável em torno das metas
+**Capacidade de Risco:** Máximo risco que a organização pode suportar
+
+================================================================================
+SEÇÃO 8.2: RISCO DE MERCADO
+================================================================================
+
+## 8.2.1 Conceitos e Tipos
+
+### Definição
+
+Risco de Mercado é a possibilidade de perdas decorrentes de variações
+adversas nos preços de mercado.
+
+### Principais Fatores de Risco
+
+- Taxas de câmbio
+- Taxas de juros
+- Preços de commodities
+- Preços de ações
+- Spreads de crédito
+
+### Risco Cambial - Tipos de Exposição
+
+| Tipo           | Definição                              | Exemplo                        |
+|----------------|----------------------------------------|--------------------------------|
+| Transacional   | Transações já contratadas              | Importação a pagar em USD      |
+| Econômico      | Impacto na competitividade futura      | Concorrência com importados    |
+| Translação     | Conversão de demonstrações financeiras | Subsidiária no exterior        |
+
+### Exposição Cambial Líquida
+
+```
+Exposição Líquida = Ativos em ME - Passivos em ME + Receitas ME - Custos ME
+
+Exemplo:
+Contas a Receber USD:    + 1.000.000
+Empréstimo USD:          - 3.000.000
+Exportações (12 meses):  + 5.000.000
+Importações (12 meses):  - 2.000.000
+─────────────────────────────────────
+Exposição Líquida:       + 1.000.000 USD (comprado em dólar)
+```
+
+--------------------------------------------------------------------------------
+
+## 8.2.2 Métricas de Risco de Mercado
+
+### Value at Risk (VaR)
+
+**Definição:**
+Perda máxima esperada em condições normais de mercado, dado um nível de
+confiança e horizonte de tempo.
+
+**VaR Paramétrico:**
+```
+VaR = Exposição × Volatilidade × Z × √t
+
+Exemplo:
+Exposição USD: R$ 10.000.000
+Volatilidade diária USD/BRL: 1,2%
+Confiança: 95% (Z = 1,65)
+
+VaR = 10.000.000 × 1,2% × 1,65 = R$ 198.000
+```
+
+### Stress Testing
+
+Avaliação do impacto de cenários extremos:
+- **Histórico:** Eventos passados (Crise 2008, COVID-19)
+- **Hipotético:** Cenários plausíveis não observados
+- **Reverso:** Qual cenário causaria perda X?
+
+--------------------------------------------------------------------------------
+
+## 8.2.3 Instrumentos de Hedge
+
+### Derivativos Cambiais
+
+**NDF (Non-Deliverable Forward):**
+```
+Empresa exportadora protege USD 1.000.000
+Taxa NDF contratada: 5,10
+
+Cenário 1: Dólar a 4,50
+  Receita: 1.000.000 × 4,50 = R$ 4.500.000
+  Ajuste NDF: 1.000.000 × (5,10 - 4,50) = +R$ 600.000
+  Total: R$ 5.100.000
+
+Cenário 2: Dólar a 5,50
+  Receita: 1.000.000 × 5,50 = R$ 5.500.000
+  Ajuste NDF: 1.000.000 × (5,10 - 5,50) = -R$ 400.000
+  Total: R$ 5.100.000
+
+Em ambos cenários: Taxa efetiva de 5,10
+```
+
+**Opções de Câmbio:**
+- Call: Direito de comprar moeda a preço fixo
+- Put: Direito de vender moeda a preço fixo
+
+### Derivativos de Juros
+
+**Swap de Taxa de Juros:**
+```
+Empresa tem dívida de R$ 100 milhões a CDI + 2%
+Quer fixar a taxa
+
+Contrata swap:
+- Paga: Taxa pré de 12% a.a.
+- Recebe: CDI
+
+Custo final: CDI + 2% + CDI - 12% = 14% a.a. fixo
+```
+
+================================================================================
+SEÇÃO 8.3: RISCO DE CRÉDITO
+================================================================================
+
+## 8.3.1 Conceitos Fundamentais
+
+### Definição
+
+Risco de Crédito é a possibilidade de perda decorrente do não cumprimento
+de obrigações financeiras por uma contraparte.
+
+### Componentes
+
+**PD (Probability of Default):** Probabilidade de inadimplência
+**LGD (Loss Given Default):** Perda dado o default (1 - taxa de recuperação)
+**EAD (Exposure at Default):** Exposição no momento do default
+
+**Perda Esperada = PD × LGD × EAD**
+
+--------------------------------------------------------------------------------
+
+## 8.3.2 Análise de Crédito
+
+### Modelo dos 5 Cs
+
+**Caráter:** Histórico e reputação
+**Capacidade:** Geração de caixa
+**Capital:** Patrimônio e estrutura
+**Colateral:** Garantias oferecidas
+**Condições:** Ambiente econômico
+
+### Indicadores de Crédito
+
+```
+INDICADORES CHAVE
+
+LIQUIDEZ
+├── Liquidez Corrente = AC / PC (meta: > 1,2)
+└── Liquidez Seca = (AC - Estoques) / PC (meta: > 1,0)
+
+ENDIVIDAMENTO
+├── Dívida / EBITDA (meta: < 3,0x)
+└── Cobertura de Juros = EBITDA / Desp. Juros (meta: > 3,0x)
+```
+
+### Escala de Rating
+
+| Rating | Descrição              | PD Estimada |
+|--------|------------------------|-------------|
+| AAA    | Qualidade excepcional  | < 0,1%      |
+| AA     | Qualidade muito alta   | 0,1% - 0,3% |
+| A      | Qualidade alta         | 0,3% - 0,5% |
+| BBB    | Qualidade adequada     | 0,5% - 1,5% |
+| BB     | Especulativo           | 1,5% - 5,0% |
+| B      | Altamente especulativo | 5,0% - 15%  |
+
+--------------------------------------------------------------------------------
+
+## 8.3.3 Provisão para Devedores Duvidosos
+
+```
+MATRIZ DE PROVISÃO - PERDA ESPERADA
+
+| Faixa de Atraso | % Provisão | Saldo      | Provisão    |
+|-----------------|------------|------------|-------------|
+| A vencer        | 0,5%       | 85.000.000 | 425.000     |
+| 1-30 dias       | 5%         | 8.000.000  | 400.000     |
+| 31-60 dias      | 20%        | 3.000.000  | 600.000     |
+| 61-90 dias      | 50%        | 2.000.000  | 1.000.000   |
+| 91-180 dias     | 80%        | 1.500.000  | 1.200.000   |
+| > 180 dias      | 100%       | 500.000    | 500.000     |
+| TOTAL           |            | 100.000.000| 4.125.000   |
+```
+
+================================================================================
+SEÇÃO 8.4: RISCO DE LIQUIDEZ
+================================================================================
+
+## 8.4.1 Conceitos
+
+### Definição
+
+Risco de Liquidez é a incapacidade de honrar compromissos financeiros
+nas datas de vencimento, ou fazê-lo apenas a custo excessivo.
+
+### Indicadores de Liquidez
+
+```
+INDICADORES
+
+ESTÁTICOS
+├── Liquidez Corrente = AC / PC
+├── Liquidez Seca = (AC - Estoques) / PC
+└── Capital de Giro Líquido = AC - PC
+
+DINÂMICOS
+├── Cash Burn Rate = (Caixa Inicial - Final) / Período
+├── Runway = Caixa / Cash Burn Rate (meses)
+└── Cobertura de Caixa = FCO / Serviço da Dívida
+```
+
+--------------------------------------------------------------------------------
+
+## 8.4.2 Gestão de Liquidez
+
+### Reserva de Liquidez
+
+```
+CÁLCULO DA RESERVA MÍNIMA
+
+Componentes:
+├── Necessidade operacional média: R$ 50 MM
+├── Desvio-padrão histórico: R$ 15 MM
+├── Vencimentos próximos 90 dias: R$ 30 MM
+├── Buffer adicional (2× desvio): R$ 30 MM
+└── Reserva mínima recomendada: R$ 80 MM
+
+Composição:
+├── Caixa: R$ 20 MM (25%)
+├── Aplicações diárias: R$ 40 MM (50%)
+└── Linhas comprometidas: R$ 20 MM (25%)
+```
+
+### Gap de Liquidez
+
+```
+ANÁLISE DE GAP
+
+| Período        | Entradas | Saídas   | Gap      | Gap Acum. |
+|----------------|----------|----------|----------|-----------|
+| 0-7 dias       | 15.000   | 20.000   | (5.000)  | (5.000)   |
+| 8-30 dias      | 45.000   | 35.000   | 10.000   | 5.000     |
+| 31-60 dias     | 40.000   | 30.000   | 10.000   | 15.000    |
+| 61-90 dias     | 50.000   | 45.000   | 5.000    | 20.000    |
+```
+
+================================================================================
+SEÇÃO 8.5: HEDGE ACCOUNTING
+================================================================================
+
+## 8.5.1 Conceitos
+
+### Definição
+
+Hedge Accounting é o tratamento contábil especial que permite reconhecer
+simultaneamente os resultados do item protegido e do instrumento de hedge.
+
+### Tipos de Hedge
+
+**Hedge de Valor Justo:** Protege variações no valor justo
+**Hedge de Fluxo de Caixa:** Protege variabilidade de fluxos futuros
+**Hedge de Investimento no Exterior:** Protege exposição de subsidiária
+
+--------------------------------------------------------------------------------
+
+## 8.5.2 Hedge de Fluxo de Caixa - Exemplo
+
+```
+HEDGE DE EXPORTAÇÃO COM NDF
+
+Exportação prevista: USD 1.000.000 em 90 dias
+NDF contratado: venda a 5,10
+
+Contabilização:
+- Variação do NDF vai para ORA (PL)
+- Quando receita é reconhecida, reclassifica ORA para resultado
+- Resultado líquido: taxa efetiva de 5,10
+```
+
+================================================================================
+SEÇÃO 8.6: GOVERNANÇA DE RISCOS
+================================================================================
+
+## 8.6.1 Três Linhas de Defesa
+
+```
+MODELO DAS TRÊS LINHAS
+
+1ª LINHA: GESTÃO OPERACIONAL
+├── Donos dos riscos
+├── Executam controles
+└── Ex: Tesouraria, Comercial
+
+2ª LINHA: FUNÇÕES DE RISCO
+├── Define políticas
+├── Monitora a 1ª linha
+└── Ex: Gestão de Riscos, Compliance
+
+3ª LINHA: AUDITORIA INTERNA
+├── Avaliação independente
+├── Testa efetividade
+└── Reporta ao Comitê de Auditoria
+```
+
+## 8.6.2 Política de Riscos
+
+**Elementos:**
+1. Objetivo e escopo
+2. Governança e responsabilidades
+3. Apetite de risco
+4. Estratégias por tipo de risco
+5. Limites operacionais
+6. Monitoramento e reporte
+7. Processo de exceções
+
+================================================================================
+SEÇÃO 8.7: GLOSSÁRIO
+================================================================================
+
+**Derivativo:** Instrumento cujo valor deriva de outro ativo
+**Duration:** Sensibilidade a mudanças nas taxas de juros
+**Forward:** Contrato a termo negociado em balcão
+**Hedge:** Proteção contra risco financeiro
+**NDF:** Non-Deliverable Forward
+**Nocional:** Valor de referência de um derivativo
+**OTC:** Over-the-Counter - Mercado de balcão
+**Stress Test:** Teste de cenários extremos
+**Swap:** Troca de fluxos financeiros
+**VaR:** Value at Risk
+**Volatilidade:** Medida de variação de preços
+
+================================================================================
+FIM DO MÓDULO 08
+================================================================================
