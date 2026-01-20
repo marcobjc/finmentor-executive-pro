@@ -18,7 +18,7 @@ from io import BytesIO
 import base64
 from pathlib import Path
 
-# ✅ NOVOS IMPORTS
+# ✅ IMPORTS DE IA
 import anthropic
 from openai import OpenAI
 
@@ -45,7 +45,7 @@ def get_image_base64(image_path: str) -> str:
 
 AVATAR_PATH = "assets/avatar.jpg"
 
-# ✅ CSS ATUALIZADO (Expander sempre branco)
+# ✅ CSS ATUALIZADO (Expander sempre branco + Estilização Dark)
 CUSTOM_CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
@@ -223,7 +223,7 @@ span[data-testid="stIconMaterial"] { display: none !important; }
 [data-testid="stForm"] { border: none !important; padding: 0 !important; }
 .stSpinner > div { border-color: #667eea transparent transparent transparent; }
 
-/* --- CORREÇÃO DO EXPANDER --- */
+/* --- CORREÇÃO AGRESSIVA DO EXPANDER --- */
 .streamlit-expanderHeader {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
     border: 1px solid #334155 !important;
@@ -320,7 +320,7 @@ class KnowledgeBaseLoader:
         return "".join(content_parts)
 
 class LLMClient:
-    # ✅ CLAUDE 3.5 SONNET IMPLEMENTADO
+    # ✅ MODELO CONFIGURADO: CLAUDE 3 OPUS (Fallback seguro contra erro 404)
     @staticmethod
     def _get_system_prompt(conhecimento: str) -> str:
         return f"""Você é o FinMentor, um CFO Virtual de alto nível especializado em finanças corporativas e pessoais.
@@ -386,7 +386,7 @@ IMPORTANTE: Retorne APENAS o JSON, sem texto adicional ou formatação markdown.
         self.api_key = api_key # Chave Anthropic
 
     def generate_strategy(self, contexto: str, persona: str, mercado: Dict[str, Any], kb: str) -> Dict[str, Any]:
-        # ✅ CLIENTE ANTHROPIC (CLAUDE)
+        # ✅ CLIENTE ANTHROPIC (CLAUDE OPUS)
         client = anthropic.Anthropic(api_key=self.api_key)
         
         system_prompt = self._get_system_prompt(kb[:180000] if kb else "Nenhuma base carregada.")
@@ -409,7 +409,8 @@ Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
         try:
             # Chamada da API Anthropic
             response = client.messages.create(
-                model="claude-3-5-sonnet-20241022",
+                # 👇 USO DO MODELO OPUS PARA MÁXIMA COMPATIBILIDADE E INTELIGÊNCIA
+                model="claude-3-opus-20240229",
                 max_tokens=4096,
                 temperature=0.7,
                 system=system_prompt,
@@ -422,7 +423,6 @@ Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
             content = re.sub(r'^```json\s*', '', content)
             content = re.sub(r'\s*```$', '', content)
             
-            # Tenta parsing direto, se falhar aplica correção de LaTeX
             try:
                 return json.loads(content)
             except json.JSONDecodeError:
@@ -480,7 +480,8 @@ Gere uma Estratégia Estruturada. Retorne APENAS o JSON."""
         
         try:
             response = client.messages.create(
-                model="claude-3-5-sonnet-20241022",
+                # 👇 USO DO MODELO OPUS
+                model="claude-3-opus-20240229",
                 max_tokens=1000,
                 temperature=0.7,
                 system=system_prompt,
@@ -621,7 +622,7 @@ def render_phase_1():
                         st.session_state.ctx += f"\n\n## DADOS DO EXCEL:\n{df.to_string()}"
                     except Exception as e:
                         st.warning(f"⚠️ Erro ao ler arquivo: {e}")
-                with st.spinner("🧠 Claude 3.5 Sonnet pensando..."):
+                with st.spinner("🧠 Claude 3 Opus pensando..."):
                     try:
                         # Usa a chave Anthropic salva na sessão
                         client = LLMClient(st.session_state.anthropic_key)
@@ -658,6 +659,7 @@ def render_phase_2():
     col_video, col_excel = st.columns(2)
     with col_video:
         video = response.get('video_sugestao', {})
+        # ✅ CORREÇÃO LINK YOUTUBE DINÂMICO
         termo = video.get('termo_busca')
         
         if termo or video.get('url'):
@@ -702,6 +704,7 @@ def render_phase_2():
     if response.get('modelagem_matematica'):
         st.markdown("### 📐 Modelagem Matemática")
         try:
+            # Limpeza de delimitadores para evitar duplicação no st.latex
             formula = response['modelagem_matematica']
             formula = formula.strip()
             formula = re.sub(r'^\\\[|\\\]$|^\$\$|\$\$$|^\$|\$$', '', formula).strip()
@@ -729,7 +732,7 @@ def render_phase_2():
 
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
     st.markdown("### 💬 Tire suas Dúvidas")
-    st.caption("Pergunte mais sobre este tema. Claude 3.5 Sonnet já conhece o contexto.")
+    st.caption("Pergunte mais sobre este tema. Claude 3 Opus já conhece o contexto.")
     
     if not st.session_state.chat_context:
         st.session_state.chat_context = f"""
