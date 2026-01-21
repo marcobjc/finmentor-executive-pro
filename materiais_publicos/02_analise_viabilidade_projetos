@@ -16,6 +16,10 @@ VPL = -I₀ + Σ (FC_t / (1 + k)^t)
 - FC_t = Fluxo de caixa no período t
 - k = Taxa de desconto (custo de capital)
 - t = Período
+"No Excel: =VPL(taxa; FC_ano1:FC_anoN) + Investimento_Inicial
+⚠️ ATENÇÃO: A função VPL() do Excel assume que o primeiro fluxo 
+está no período 1, não no período 0. Por isso somamos o investimento 
+inicial separadamente.
 
 **Regra de Decisão:**
 - VPL > 0 → Projeto cria valor → ACEITAR
